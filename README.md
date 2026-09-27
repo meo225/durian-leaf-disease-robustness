@@ -2,41 +2,49 @@
 
 ## Tổng quan
 
-Đây là đồ án nghiên cứu học phần CS406 Xử lý ảnh và ứng dụng. Đề tài nghiên cứu nhận diện bệnh trên lá sầu riêng bền vững khi chất lượng ảnh biến thiên trong điều kiện thực tế.
+Đồ án học phần CS406, Xử lý ảnh và ứng dụng. Đề tài khảo sát phân loại bệnh trên ảnh lá sầu riêng khi chất lượng ảnh thay đổi.
 
 ## Hướng nghiên cứu
 
-Bài toán không dừng ở phân loại ảnh thông thường. Hướng nghiên cứu gồm nhận diện bệnh trên lá sầu riêng. Biến thiên chất lượng ảnh thực tế gồm ánh sáng độ sáng độ tương phản mờ và nhiễu. Nghiên cứu còn gồm xử lý ảnh nhằm tăng tính bền vững. Đánh giá độ bền vững của mô hình. Đánh giá trên tập dữ liệu ngoài khi phân loại lớp và phân bố dữ liệu phù hợp.
+Công việc tập trung vào các điểm sau:
 
-Phương pháp nghiên cứu kiến trúc mô hình kỹ thuật tiền xử lý tham số suy giảm ảnh và phương pháp đề xuất vẫn đang được phát triển. Các quyết định này chưa được chốt.
+- phân loại bệnh trên ảnh lá sầu riêng
+- ảnh hưởng của thay đổi chất lượng ảnh, gồm ánh sáng, độ tương phản, mờ và nhiễu
+- so sánh một số kỹ thuật xử lý ảnh trên cùng thiết lập thí nghiệm
+- đo độ ổn định của mô hình trên ảnh bị suy giảm có kiểm soát
+- kiểm tra thêm trên bộ dữ liệu ngoài nếu hệ nhãn và phân bố dữ liệu tương thích
 
-## Quy trình nghiên cứu dự kiến
+Kiến trúc mô hình, tiền xử lý, tham số suy giảm ảnh và phương pháp đề xuất chưa được chọn. Các lựa chọn này sẽ dựa trên kết quả thí nghiệm.
+
+## Quy trình dự kiến
 
 Kiểm tra dữ liệu
 → Mô hình cơ sở
-→ Chuẩn suy giảm ảnh có kiểm soát
-→ Chuẩn xử lý ảnh
+→ Đánh giá trên ảnh suy giảm có kiểm soát
+→ So sánh kỹ thuật xử lý ảnh
 → Phương pháp đề xuất
-→ Nghiên cứu loại bỏ thành phần
-→ Đánh giá độ bền vững
-→ Đánh giá tập dữ liệu ngoài
-→ Ứng dụng minh họa
+→ Ablation
+→ Đánh giá độ ổn định
+→ Đánh giá bộ dữ liệu ngoài
+→ Demo
 
-## Cấu trúc kho mã nguồn
+## Cấu trúc repo
 
-- `configs`: file cấu hình thí nghiệm sẽ được thêm sau
-- `src`: mã nguồn tái sử dụng gồm dữ liệu mô hình xử lý ảnh đánh giá và tiện ích chung
-- `notebooks`: sổ thí nghiệm nghiên cứu
-- `outputs`: checkpoint hình vẽ nhật ký và kết quả sinh ra khi chạy thí nghiệm
-- `app`: ứng dụng minh họa sẽ được triển khai sau
-- `tests`: kiểm thử tự động cho các mô-đun tái sử dụng
+- `configs`: cấu hình thí nghiệm
+- `src`: mã nguồn dùng lại, gồm dữ liệu, mô hình, xử lý ảnh, đánh giá và tiện ích
+- `notebooks`: notebook thí nghiệm
+- `outputs`: checkpoint, hình, log và kết quả chạy thí nghiệm
+- `app`: demo
+- `tests`: kiểm thử các module dùng lại
 
-Đường dẫn dữ liệu sẽ được cung cấp qua cấu hình hoặc notebook. Mã nguồn tái sử dụng không gắn cứng đường dẫn môi trường thí nghiệm.
+Đường dẫn dữ liệu đưa vào qua cấu hình hoặc notebook. Phần mã trong `src` không gắn cứng đường dẫn máy cục bộ hay Kaggle.
 
 ## Dữ liệu
 
-Kho mã nguồn không lưu tập dữ liệu. Tập đang xem xét là DurianLDD khoảng 4437 ảnh. Các tập sầu riêng khác nếu dùng sau này chỉ phục vụ đánh giá ngoài và không được gộp tự động vào tập huấn luyện vì phân loại lớp và phân bố dữ liệu có thể khác nhau.
+Repo không lưu dữ liệu. Bộ dữ liệu đang xem xét là DurianLDD, khoảng 4437 ảnh.
+
+Bộ dữ liệu khác nếu dùng sau này chỉ để đánh giá ngoài. Không gộp vào tập huấn luyện vì hệ nhãn và phân bố có thể khác.
 
 ## Trạng thái
 
-Đang chuẩn bị khung nghiên cứu và bước kiểm tra dữ liệu.
+Đang dựng repo. Chưa kiểm tra dữ liệu.
