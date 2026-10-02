@@ -31,11 +31,19 @@ Kiểm tra dữ liệu
 ## Cấu trúc repo
 
 - `configs`: cấu hình thí nghiệm
-- `src`: mã nguồn dùng lại, gồm dữ liệu, mô hình, xử lý ảnh, đánh giá và tiện ích
-- `notebooks`: notebook thí nghiệm
-- `outputs`: checkpoint, hình, log và kết quả chạy thí nghiệm
-- `app`: demo
-- `tests`: kiểm thử các module dùng lại
+- `manifests`: siêu dữ liệu phân chia tập dữ liệu cố định (train, val, test)
+- `src`: mã nguồn dùng lại
+  - `data`: tải dữ liệu, kiểm tra dữ liệu, chia tập và tiền xử lý chuẩn
+  - `models`: định nghĩa mô hình
+  - `training`: vòng lặp huấn luyện và lưu checkpoint
+  - `corruption`: tạo suy giảm chất lượng ảnh có kiểm soát (ánh sáng, độ tương phản, mờ, nhiễu)
+  - `processing`: kỹ thuật xử lý/khôi phục ảnh thử nghiệm (Gamma, CLAHE, Retinex, v.v.)
+  - `evaluation`: độ đo đánh giá, phân tích độ ổn định và Grad-CAM
+  - `utils`: tiện ích chung (đường dẫn, seed, logging)
+- `notebooks`: notebook điều phối thí nghiệm trên Kaggle
+- `outputs`: checkpoint, hình ảnh, log và kết quả chạy thí nghiệm
+- `app`: ứng dụng demo
+- `tests`: kiểm thử đơn vị cho các module dùng lại
 
 Đường dẫn dữ liệu đưa vào qua cấu hình hoặc notebook. Phần mã trong `src` không gắn cứng đường dẫn máy cục bộ hay Kaggle.
 
