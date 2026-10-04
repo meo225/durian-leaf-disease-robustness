@@ -1,0 +1,7 @@
+path_a,path_b,split_a,split_b,class_a,class_b,source_id_a,source_id_b,hamming,flip_hamming,relation,cross_split,cross_class
+DLD_FinalDataset_224_spit/test/ALGAL_LEAF_SPOT/to_label_197.jpg,DLD_FinalDataset_224_spit/train/ALGAL_LEAF_SPOT/to_label_196.jpg,test,train,ALGAL_LEAF_SPOT,ALGAL_LEAF_SPOT,197,196,4,36,near,True,False
+DLD_FinalDataset_224_spit/test/HEALTHY_LEAF/to_label_2663.jpg,DLD_FinalDataset_224_spit/train/HEALTHY_LEAF/to_label_2682.jpg,test,train,HEALTHY_LEAF,HEALTHY_LEAF,2663,2682,0,27,near,True,False
+DLD_FinalDataset_224_spit/test/HEALTHY_LEAF/to_label_2663.jpg,DLD_FinalDataset_224_spit/train/HEALTHY_LEAF/to_label_2683.jpg,test,train,HEALTHY_LEAF,HEALTHY_LEAF,2663,2683,4,29,near,True,False
+DLD_FinalDataset_224_spit/test/LEAF_BLIGHT/to_label_3212.jpg,DLD_FinalDataset_224_spit/test/LEAF_BLIGHT/to_label_3222.jpg,test,test,LEAF_BLIGHT,LEAF_BLIGHT,3212,3222,0,33,identical_file,False,False
+DLD_FinalDataset_224_spit/train/ALLOCARIDARA_ATTACK/to_label_909.jpg,DLD_FinalDataset_224_spit/train/ALLOCARIDARA_ATTACK/to_label_921.jpg,train,train,ALLOCARIDARA_ATTACK,ALLOCARIDARA_ATTACK,909,921,5,30,near,False,False
+DLD_FinalDataset_224_spit/train/HEALTHY_LEAF/to_label_2682.jpg,DLD_FinalDataset_224_spit/train/HEALTHY_LEAF/to_label_2683.jpg,train,train,HEALTHY_LEAF,HEALTHY_LEAF,2682,2683,4,30,near,False,False
