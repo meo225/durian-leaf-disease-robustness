@@ -47,9 +47,25 @@ Kiểm tra dữ liệu
 
 Đường dẫn dữ liệu đưa vào qua cấu hình hoặc notebook. Phần mã trong `src` không gắn cứng đường dẫn máy cục bộ hay Kaggle.
 
-## Dữ liệu
+## Cài đặt nhanh
 
-Repo không lưu dữ liệu. Bộ dữ liệu chính là DurianLDD, 4.437 ảnh.
+Cài thư viện:
+
+```text
+python -m pip install -r requirements.txt
+```
+
+Repo không lưu ảnh. Bộ dữ liệu chính là DurianLDD, 4.437 ảnh, giấy phép CC BY 4.0:
+
+https://www.kaggle.com/datasets/cthng123/durian-leaf-disease-dataset
+
+Tải bằng Kaggle CLI, sau khi đã có token trong biến môi trường `KAGGLE_API_TOKEN`:
+
+```text
+python -m kaggle datasets download -d cthng123/durian-leaf-disease-dataset -p datasets/durian-ldd --unzip
+```
+
+Có thể tải zip trên trang Kaggle rồi giải nén vào cùng chỗ. Thư mục cần có là `datasets/durian-ldd/DLD_FinalDataset_224_spit`, bên trong là `train`, `val` và `test`.
 
 Bộ dữ liệu khác nếu dùng sau này chỉ để đánh giá ngoài. Không gộp vào tập huấn luyện vì hệ nhãn và phân bố có thể khác.
 
@@ -60,8 +76,6 @@ DurianLDD đã được kiểm kê. Báo cáo nằm ở `reports/data_quality/du
 ```text
 python -m src.data.quality_audit --dataset-root datasets/durian-ldd --output-dir reports/data_quality
 ```
-
-Ảnh không được commit. Đặt bản giải nén vào `datasets/durian-ldd`.
 
 ## Trạng thái
 
