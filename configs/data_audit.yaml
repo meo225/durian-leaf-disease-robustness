@@ -1,0 +1,10 @@
+dataset_root: datasets/durian-ldd
+output_dir: reports/data_quality
+near_duplicate_max_hamming: 5
+hash_size: 8
+sample_seed: 406
+expected_image_count: 4437
+dark_brightness_below: 40
+bright_brightness_above: 220
+low_contrast_below: 20
+soft_sharpness_below: 50

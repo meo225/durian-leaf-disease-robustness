@@ -49,10 +49,20 @@ Kiểm tra dữ liệu
 
 ## Dữ liệu
 
-Repo không lưu dữ liệu. Bộ dữ liệu đang xem xét là DurianLDD, khoảng 4437 ảnh.
+Repo không lưu dữ liệu. Bộ dữ liệu chính là DurianLDD, 4.437 ảnh.
 
 Bộ dữ liệu khác nếu dùng sau này chỉ để đánh giá ngoài. Không gộp vào tập huấn luyện vì hệ nhãn và phân bố có thể khác.
 
+## Kiểm tra dữ liệu
+
+DurianLDD đã được kiểm kê. Báo cáo nằm ở `reports/data_quality/durian_ldd_data_quality_report.md`. Notebook điều phối là `notebooks/01_durian_ldd_eda.ipynb`.
+
+```text
+python -m src.data.quality_audit --dataset-root datasets/durian-ldd --output-dir reports/data_quality
+```
+
+Ảnh không được commit. Đặt bản giải nén vào `datasets/durian-ldd`.
+
 ## Trạng thái
 
-Đang dựng repo. Chưa kiểm tra dữ liệu.
+Đã kiểm tra DurianLDD. Bộ dữ liệu đủ điều kiện sang bước chia tập. Split có sẵn của nhà phát hành chưa được khóa.

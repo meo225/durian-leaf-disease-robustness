@@ -1,0 +1,339 @@
+{
+  "discovered_images": 4437,
+  "readable_images": 4437,
+  "corrupt_images": 0,
+  "corrupt_rate": 0.0,
+  "expected_image_count": 4437,
+  "count_matches_expected": true,
+  "class_counts": {
+    "HEALTHY_LEAF": 976,
+    "LEAF_BLIGHT": 937,
+    "ALLOCARIDARA_ATTACK": 913,
+    "PHOMOPSIS_LEAF_SPOT": 878,
+    "ALGAL_LEAF_SPOT": 733
+  },
+  "classes_with_at_least_100": 5,
+  "split_counts": {
+    "train": 3104,
+    "test": 890,
+    "val": 443
+  },
+  "resolutions": {
+    "224x224": 4437
+  },
+  "unique_resolutions": 1,
+  "aspect_ratio": {
+    "p0": 1.0,
+    "p5": 1.0,
+    "p25": 1.0,
+    "p50": 1.0,
+    "p75": 1.0,
+    "p95": 1.0,
+    "p100": 1.0
+  },
+  "file_bytes": {
+    "p0": 7824.0,
+    "p5": 9428.8,
+    "p25": 10477.0,
+    "p50": 11223.0,
+    "p75": 11958.0,
+    "p95": 13018.6,
+    "p100": 16277.0
+  },
+  "quality": {
+    "brightness": {
+      "p0": 43.294,
+      "p5": 85.822,
+      "p25": 106.301,
+      "p50": 118.788,
+      "p75": 127.042,
+      "p95": 138.431,
+      "p100": 163.072
+    },
+    "contrast": {
+      "p0": 19.126,
+      "p5": 33.32,
+      "p25": 39.357,
+      "p50": 43.866,
+      "p75": 49.162,
+      "p95": 57.926,
+      "p100": 75.562
+    },
+    "sharpness": {
+      "p0": 119.1,
+      "p5": 254.386,
+      "p25": 388.656,
+      "p50": 520.326,
+      "p75": 677.606,
+      "p95": 1007.768,
+      "p100": 2843.374
+    },
+    "saturation": {
+      "p0": 42.686,
+      "p5": 68.128,
+      "p25": 90.423,
+      "p50": 109.835,
+      "p75": 127.681,
+      "p95": 155.33,
+      "p100": 229.505
+    },
+    "high_frequency": {
+      "p0": 2.508,
+      "p5": 3.603,
+      "p25": 4.426,
+      "p50": 5.098,
+      "p75": 5.81,
+      "p95": 7.041,
+      "p100": 11.689
+    }
+  },
+  "quality_flags": {
+    "very_dark": 0,
+    "very_bright": 0,
+    "low_contrast": 1,
+    "very_soft": 0
+  },
+  "exif_datetime_count": 0,
+  "near_duplicate_max_hamming": 5,
+  "pairs": 6,
+  "exact_pairs": 1,
+  "cross_split_near_pairs": 3,
+  "cross_class_near_pairs": 0,
+  "images_in_cross_class_exact_duplicates": 0,
+  "multi_image_groups": 4,
+  "largest_group_size": 3,
+  "images_in_multi_image_groups": 9,
+  "test_images_with_partner_in_train_or_val": 2,
+  "test_images": 890,
+  "val_images_with_partner_in_train": 0,
+  "val_images": 443,
+  "sensitivity": [
+    {
+      "max_hamming": 0,
+      "pairs": 2,
+      "images": 4,
+      "cross_split_pairs": 1,
+      "cross_class_pairs": 0
+    },
+    {
+      "max_hamming": 5,
+      "pairs": 6,
+      "images": 9,
+      "cross_split_pairs": 3,
+      "cross_class_pairs": 0
+    },
+    {
+      "max_hamming": 8,
+      "pairs": 10,
+      "images": 16,
+      "cross_split_pairs": 4,
+      "cross_class_pairs": 3
+    },
+    {
+      "max_hamming": 10,
+      "pairs": 39,
+      "images": 68,
+      "cross_split_pairs": 15,
+      "cross_class_pairs": 20
+    }
+  ],
+  "adjacent_id_pairs": 4407,
+  "adjacent_id_cross_split_pairs": 2004,
+  "adjacent_id_cross_split_near_pairs": 1,
+  "adjacent_id_cross_class_pairs": 3,
+  "adjacent_hamming": {
+    "p0": 4.0,
+    "p5": 24.0,
+    "p25": 29.0,
+    "p50": 32.0,
+    "p75": 34.0,
+    "p95": 39.0,
+    "p100": 46.0
+  },
+  "relation_counts": {
+    "near": 5,
+    "identical_file": 1
+  },
+  "sample_seed": 406,
+  "review_examples": {
+    "per_class": {
+      "ALGAL_LEAF_SPOT": [
+        "DLD_FinalDataset_224_spit/test/ALGAL_LEAF_SPOT/to_label_328.jpg",
+        "DLD_FinalDataset_224_spit/train/ALGAL_LEAF_SPOT/to_label_68.jpg",
+        "DLD_FinalDataset_224_spit/test/ALGAL_LEAF_SPOT/to_label_339.jpg",
+        "DLD_FinalDataset_224_spit/train/ALGAL_LEAF_SPOT/to_label_655.jpg"
+      ],
+      "ALLOCARIDARA_ATTACK": [
+        "DLD_FinalDataset_224_spit/train/ALLOCARIDARA_ATTACK/to_label_1388.jpg",
+        "DLD_FinalDataset_224_spit/test/ALLOCARIDARA_ATTACK/to_label_1541.jpg",
+        "DLD_FinalDataset_224_spit/test/ALLOCARIDARA_ATTACK/to_label_1411.jpg",
+        "DLD_FinalDataset_224_spit/val/ALLOCARIDARA_ATTACK/to_label_783.jpg"
+      ],
+      "HEALTHY_LEAF": [
+        "DLD_FinalDataset_224_spit/train/HEALTHY_LEAF/to_label_2426.jpg",
+        "DLD_FinalDataset_224_spit/train/HEALTHY_LEAF/to_label_2347.jpg",
+        "DLD_FinalDataset_224_spit/train/HEALTHY_LEAF/to_label_2676.jpg",
+        "DLD_FinalDataset_224_spit/val/HEALTHY_LEAF/to_label_2431.jpg"
+      ],
+      "LEAF_BLIGHT": [
+        "DLD_FinalDataset_224_spit/train/LEAF_BLIGHT/to_label_3065.jpg",
+        "DLD_FinalDataset_224_spit/test/LEAF_BLIGHT/to_label_3019.jpg",
+        "DLD_FinalDataset_224_spit/train/LEAF_BLIGHT/to_label_3135.jpg",
+        "DLD_FinalDataset_224_spit/train/LEAF_BLIGHT/to_label_2737.jpg"
+      ],
+      "PHOMOPSIS_LEAF_SPOT": [
+        "DLD_FinalDataset_224_spit/train/PHOMOPSIS_LEAF_SPOT/to_label_3739.jpg",
+        "DLD_FinalDataset_224_spit/test/PHOMOPSIS_LEAF_SPOT/to_label_3833.jpg",
+        "DLD_FinalDataset_224_spit/test/PHOMOPSIS_LEAF_SPOT/to_label_4106.jpg",
+        "DLD_FinalDataset_224_spit/train/PHOMOPSIS_LEAF_SPOT/to_label_4269.jpg"
+      ]
+    },
+    "darkest": [
+      "DLD_FinalDataset_224_spit/train/ALGAL_LEAF_SPOT/to_label_692.jpg",
+      "DLD_FinalDataset_224_spit/train/ALGAL_LEAF_SPOT/to_label_66.jpg",
+      "DLD_FinalDataset_224_spit/train/HEALTHY_LEAF/to_label_1983.jpg",
+      "DLD_FinalDataset_224_spit/train/ALGAL_LEAF_SPOT/to_label_423.jpg"
+    ],
+    "softest": [
+      "DLD_FinalDataset_224_spit/test/ALLOCARIDARA_ATTACK/to_label_1563.jpg",
+      "DLD_FinalDataset_224_spit/train/PHOMOPSIS_LEAF_SPOT/to_label_3714.jpg",
+      "DLD_FinalDataset_224_spit/train/ALLOCARIDARA_ATTACK/to_label_1626.jpg",
+      "DLD_FinalDataset_224_spit/train/ALGAL_LEAF_SPOT/to_label_188.jpg"
+    ],
+    "cross_class_pairs": [],
+    "cross_split_pairs": [
+      {
+        "path_a": "DLD_FinalDataset_224_spit/test/ALGAL_LEAF_SPOT/to_label_197.jpg",
+        "path_b": "DLD_FinalDataset_224_spit/train/ALGAL_LEAF_SPOT/to_label_196.jpg",
+        "split_a": "test",
+        "split_b": "train",
+        "class_a": "ALGAL_LEAF_SPOT",
+        "class_b": "ALGAL_LEAF_SPOT",
+        "source_id_a": 197,
+        "source_id_b": 196,
+        "hamming": 4,
+        "flip_hamming": 36,
+        "relation": "near",
+        "cross_split": true,
+        "cross_class": false
+      },
+      {
+        "path_a": "DLD_FinalDataset_224_spit/test/HEALTHY_LEAF/to_label_2663.jpg",
+        "path_b": "DLD_FinalDataset_224_spit/train/HEALTHY_LEAF/to_label_2682.jpg",
+        "split_a": "test",
+        "split_b": "train",
+        "class_a": "HEALTHY_LEAF",
+        "class_b": "HEALTHY_LEAF",
+        "source_id_a": 2663,
+        "source_id_b": 2682,
+        "hamming": 0,
+        "flip_hamming": 27,
+        "relation": "near",
+        "cross_split": true,
+        "cross_class": false
+      },
+      {
+        "path_a": "DLD_FinalDataset_224_spit/test/HEALTHY_LEAF/to_label_2663.jpg",
+        "path_b": "DLD_FinalDataset_224_spit/train/HEALTHY_LEAF/to_label_2683.jpg",
+        "split_a": "test",
+        "split_b": "train",
+        "class_a": "HEALTHY_LEAF",
+        "class_b": "HEALTHY_LEAF",
+        "source_id_a": 2663,
+        "source_id_b": 2683,
+        "hamming": 4,
+        "flip_hamming": 29,
+        "relation": "near",
+        "cross_split": true,
+        "cross_class": false
+      }
+    ],
+    "closest_adjacent_pairs": [
+      {
+        "path_a": "DLD_FinalDataset_224_spit/train/ALGAL_LEAF_SPOT/to_label_196.jpg",
+        "path_b": "DLD_FinalDataset_224_spit/test/ALGAL_LEAF_SPOT/to_label_197.jpg",
+        "source_id_a": 196,
+        "source_id_b": 197,
+        "split_a": "train",
+        "split_b": "test",
+        "class_a": "ALGAL_LEAF_SPOT",
+        "class_b": "ALGAL_LEAF_SPOT",
+        "hamming": 4,
+        "same_class": true,
+        "cross_split": true
+      },
+      {
+        "path_a": "DLD_FinalDataset_224_spit/train/HEALTHY_LEAF/to_label_2682.jpg",
+        "path_b": "DLD_FinalDataset_224_spit/train/HEALTHY_LEAF/to_label_2683.jpg",
+        "source_id_a": 2682,
+        "source_id_b": 2683,
+        "split_a": "train",
+        "split_b": "train",
+        "class_a": "HEALTHY_LEAF",
+        "class_b": "HEALTHY_LEAF",
+        "hamming": 4,
+        "same_class": true,
+        "cross_split": false
+      },
+      {
+        "path_a": "DLD_FinalDataset_224_spit/train/ALLOCARIDARA_ATTACK/to_label_1547.jpg",
+        "path_b": "DLD_FinalDataset_224_spit/train/ALLOCARIDARA_ATTACK/to_label_1548.jpg",
+        "source_id_a": 1547,
+        "source_id_b": 1548,
+        "split_a": "train",
+        "split_b": "train",
+        "class_a": "ALLOCARIDARA_ATTACK",
+        "class_b": "ALLOCARIDARA_ATTACK",
+        "hamming": 14,
+        "same_class": true,
+        "cross_split": false
+      },
+      {
+        "path_a": "DLD_FinalDataset_224_spit/train/ALLOCARIDARA_ATTACK/to_label_1524.jpg",
+        "path_b": "DLD_FinalDataset_224_spit/train/ALLOCARIDARA_ATTACK/to_label_1525.jpg",
+        "source_id_a": 1524,
+        "source_id_b": 1525,
+        "split_a": "train",
+        "split_b": "train",
+        "class_a": "ALLOCARIDARA_ATTACK",
+        "class_b": "ALLOCARIDARA_ATTACK",
+        "hamming": 16,
+        "same_class": true,
+        "cross_split": false
+      },
+      {
+        "path_a": "DLD_FinalDataset_224_spit/val/HEALTHY_LEAF/to_label_2430.jpg",
+        "path_b": "DLD_FinalDataset_224_spit/val/HEALTHY_LEAF/to_label_2431.jpg",
+        "source_id_a": 2430,
+        "source_id_b": 2431,
+        "split_a": "val",
+        "split_b": "val",
+        "class_a": "HEALTHY_LEAF",
+        "class_b": "HEALTHY_LEAF",
+        "hamming": 16,
+        "same_class": true,
+        "cross_split": false
+      },
+      {
+        "path_a": "DLD_FinalDataset_224_spit/train/HEALTHY_LEAF/to_label_2566.jpg",
+        "path_b": "DLD_FinalDataset_224_spit/test/HEALTHY_LEAF/to_label_2567.jpg",
+        "source_id_a": 2566,
+        "source_id_b": 2567,
+        "split_a": "train",
+        "split_b": "test",
+        "class_a": "HEALTHY_LEAF",
+        "class_b": "HEALTHY_LEAF",
+        "hamming": 16,
+        "same_class": true,
+        "cross_split": true
+      }
+    ]
+  },
+  "eligible": true,
+  "failures": [],
+  "conditions": [
+    "Split có sẵn chứa cặp gần trùng xuyên train, validation hoặc test. Không dùng split này làm split đã khóa. Bước chia tập phải giữ mỗi nhóm gần trùng trong một tập.",
+    "Mọi ảnh đọc được cùng một kích thước. Thống kê độ phân giải mô tả bản phát hành, không mô tả ảnh lúc chụp.",
+    "Không có thời điểm chụp trong EXIF. Lần kiểm tra này không truy được cùng một phiên chụp khi hai ảnh đã khác nhau rõ."
+  ]
+}
