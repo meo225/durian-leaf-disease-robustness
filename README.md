@@ -77,6 +77,19 @@ DurianLDD đã được kiểm kê. Báo cáo nằm ở `reports/data_quality/du
 python -m src.data.quality_audit --dataset-root datasets/durian-ldd --output-dir reports/data_quality
 ```
 
+## Data pipeline
+
+Pipeline nạp dữ liệu PyTorch cho DurianLDD được cấu hình tại `configs/pipeline.yaml` và kiểm thử điều phối qua `notebooks/02_data_pipeline.ipynb`:
+- **Vị trí dữ liệu:** Đặt thư mục `DLD_FinalDataset_224_spit` vào `datasets/durian-ldd/` (đường dẫn tương đối `image_root: datasets/durian-ldd`).
+- **Huấn luyện (Train):** Áp dụng tiền xử lý tăng cường hình học (RandomHorizontalFlip $p=0.5$, RandomVerticalFlip $p=0.5$, RandomRotation $\pm 15^\circ$), ToTensor và chuẩn hóa ImageNet.
+- **Đánh giá (Val & Test):** Tuyệt đối **không dùng augmentation** (chỉ Resize về 224 khi cần, ToTensor và chuẩn hóa). Tập `test` được bảo vệ bằng khóa an toàn và chặn truy cập trừ khi bật `FINAL_EVAL=1`.
+- **Kỹ thuật xử lý/khôi phục ảnh:** Tuyệt đối không dùng Gamma, CLAHE, Retinex, khử nhiễu (denoising) hay làm nét (sharpening) trong pipeline chuẩn; các kỹ thuật này chỉ được thử nghiệm ở Phase 4.
+- **Kết quả kiểm chứng trên ảnh thật:**
+  - Toàn bộ 4.437/4.437 tệp ảnh trong manifest tồn tại 100% trên đĩa.
+  - Phân chia: Train (3.105 ảnh, 98 batches), Val (444 ảnh, 14 batches), Test (888 ảnh - khóa an toàn).
+  - 100% ảnh thuộc tập Train và Val đều đạt chuẩn kích thước 224x224 và hệ màu RGB (không ảnh lỗi, không cần nội suy resize lại).
+  - Biểu đồ mẫu kiểm tra đã được xuất tại `outputs/figures/pipeline_samples.png`.
+
 ## Trạng thái
 
-Đã kiểm tra DurianLDD. Bộ dữ liệu đủ điều kiện sang bước chia tập. Split có sẵn của nhà phát hành chưa được khóa.
+Đã kiểm tra chất lượng dữ liệu DurianLDD và khóa tập phân chia cố định (train: 3.105, val: 444, test: 888 ảnh). Đã hoàn thiện pipeline nạp dữ liệu (Dataset, Transforms, DataLoader) sẵn sàng cho giai đoạn huấn luyện mô hình.
