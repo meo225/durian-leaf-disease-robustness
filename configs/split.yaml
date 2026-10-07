@@ -1,0 +1,30 @@
+seed: 42
+
+inventory_path: reports/data_quality/tables/image_inventory.csv
+near_dup_path: reports/data_quality/tables/near_duplicate_groups.csv
+manifests_dir: manifests
+manifest_path: manifests/split_manifest.csv
+meta_path: manifests/split_meta.json
+protocol_path: manifests/SPLIT_PROTOCOL.md
+
+train_ratio: 0.70
+val_ratio: 0.10
+test_ratio: 0.20
+
+n_splits_test: 5
+n_splits_val: 8
+
+max_split_ratio_tolerance: 0.01
+max_class_ratio_tolerance: 0.02
+
+expected_total_images: 4437
+expected_class_counts:
+  ALGAL_LEAF_SPOT: 733
+  ALLOCARIDARA_ATTACK: 913
+  HEALTHY_LEAF: 976
+  LEAF_BLIGHT: 937
+  PHOMOPSIS_LEAF_SPOT: 878
+
+expected_near_dup_groups: 4
+expected_near_dup_images: 9
+max_hamming_distance: 5

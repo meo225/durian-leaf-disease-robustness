@@ -1,6 +1,7 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyc
 *$py.class
 *.so
 .Python
@@ -45,6 +46,7 @@ outputs/checkpoints/*
 !outputs/checkpoints/.gitkeep
 outputs/figures/*
 !outputs/figures/.gitkeep
+!outputs/figures/pipeline_samples.png
 outputs/logs/*
 !outputs/logs/.gitkeep
 outputs/results/*

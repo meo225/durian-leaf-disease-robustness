@@ -1,0 +1,53 @@
+{
+  "seed": 42,
+  "ratios": {
+    "train": 0.7,
+    "val": 0.1,
+    "test": 0.2
+  },
+  "method": "2-stage StratifiedGroupKFold (n_splits=5 for test ~20%; n_splits=8 on remainder for val ~10% and train ~70%; groups=group_key to isolate near-duplicates)",
+  "total_images": 4437,
+  "split_counts": {
+    "train": 3105,
+    "test": 888,
+    "val": 444
+  },
+  "class_counts": {
+    "HEALTHY_LEAF": 976,
+    "LEAF_BLIGHT": 937,
+    "ALLOCARIDARA_ATTACK": 913,
+    "PHOMOPSIS_LEAF_SPOT": 878,
+    "ALGAL_LEAF_SPOT": 733
+  },
+  "split_class_distribution": {
+    "test": {
+      "ALGAL_LEAF_SPOT": 146,
+      "ALLOCARIDARA_ATTACK": 183,
+      "HEALTHY_LEAF": 196,
+      "LEAF_BLIGHT": 187,
+      "PHOMOPSIS_LEAF_SPOT": 176
+    },
+    "train": {
+      "ALGAL_LEAF_SPOT": 513,
+      "ALLOCARIDARA_ATTACK": 638,
+      "HEALTHY_LEAF": 683,
+      "LEAF_BLIGHT": 657,
+      "PHOMOPSIS_LEAF_SPOT": 614
+    },
+    "val": {
+      "ALGAL_LEAF_SPOT": 74,
+      "ALLOCARIDARA_ATTACK": 92,
+      "HEALTHY_LEAF": 97,
+      "LEAF_BLIGHT": 93,
+      "PHOMOPSIS_LEAF_SPOT": 88
+    }
+  },
+  "created_at": "2026-10-06T18:00:32.324484+00:00",
+  "versions": {
+    "python": "3.13.2",
+    "pandas": "3.0.1",
+    "scikit_learn": "1.8.0"
+  },
+  "manifest_file": "manifests\\split_manifest.csv",
+  "manifest_sha256": "6294d4cb4e1b7974f4244a6fba6f0d5183b04dbb92ba924aaff23fceac88ff5e"
+}
