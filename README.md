@@ -69,6 +69,138 @@ Có thể tải zip trên trang Kaggle rồi giải nén vào cùng chỗ. Thư 
 
 Bộ dữ liệu khác nếu dùng sau này chỉ để đánh giá ngoài. Không gộp vào tập huấn luyện vì hệ nhãn và phân bố có thể khác.
 
+## Chạy trên Kaggle
+
+Mọi notebook trong `notebooks/` chỉ chạy trên Kaggle. Cell đầu ghi tên file notebook. Cell thứ hai kiểm tra môi trường, kéo nhánh GitHub, rồi gắn DurianLDD public vào `datasets/durian-ldd`.
+
+Nhánh cần kéo nằm ở dòng này trong cell thứ hai:
+
+```python
+GIT_BRANCH = "main"
+```
+
+Đổi giá trị đó rồi chạy lại cell nếu nhóm dùng nhánh khác. Cell in ra nhánh, mã commit và đường dẫn ảnh.
+
+### Tài khoản
+
+1. Đăng nhập https://www.kaggle.com.
+2. Mở https://www.kaggle.com/settings, mục Phone Verification.
+3. Thêm số điện thoại và nhập mã xác nhận.
+
+GPU và Internet chỉ bật được sau bước này. Hạn mức GPU miễn phí khoảng 30 giờ mỗi tuần, có thể cao hơn khi máy rảnh, và reset vào 07:00 sáng thứ Bảy giờ Việt Nam. Một phiên chạy tối đa 12 giờ. Phiên đang sửa notebook tắt sau khoảng 20 phút nếu không chạy cell và không sửa nội dung.
+
+### Token kéo repo private
+
+Repo là https://github.com/meo225/durian-leaf-disease-robustness.
+
+1. Mở https://github.com/settings/personal-access-tokens và tạo fine-grained token.
+2. Resource owner chọn `meo225`. Chỉ cấp cho repo này.
+3. Permissions: Contents là Read-only, Metadata là Read.
+4. Trong notebook Kaggle, mở Add-ons, chọn Secrets.
+5. Thêm secret tên `GITHUB_TOKEN`. Value là token vừa tạo.
+
+Không dán token vào notebook và không commit token.
+
+### Đưa file notebook lên Kaggle
+
+Mỗi file ipynb tương ứng một notebook private. Tạo một lần, các lần sau dùng lại notebook đó. Share và mời Thái với quyền Can edit.
+
+Đưa file lên lần đầu, và đưa lại mỗi khi sửa cell trong file ipynb. Sửa file trong `src/`, config hoặc manifest thì không đưa lại ipynb: trên Kaggle chạy lại cell thứ hai là đủ.
+
+Trên máy, sau khi có Kaggle CLI và `KAGGLE_API_TOKEN`:
+
+```powershell
+$slug = "TEN_KAGGLE/durian-ldd-data-pipeline"
+$nb = "02_data_pipeline.ipynb"
+$dir = Join-Path $env:TEMP "kaggle-push"
+New-Item -ItemType Directory -Force -Path $dir | Out-Null
+Copy-Item "notebooks\$nb" (Join-Path $dir $nb) -Force
+$meta = Join-Path $dir "kernel-metadata.json"
+@"
+{
+  "id": "$slug",
+  "title": "$slug",
+  "code_file": "$nb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": ["cthng123/durian-leaf-disease-dataset"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
+"@ | python -c "import pathlib,sys; pathlib.Path(sys.argv[1]).write_text(sys.stdin.read(), encoding='utf-8')" $meta
+kaggle kernels push --no-run -p $dir
+```
+
+`TEN_KAGGLE` là username trên profile Kaggle. Đổi `$slug` và `$nb` cho từng notebook:
+
+| File | Slug gợi ý | Accelerator |
+|---|---|---|
+| `notebooks/01_durian_ldd_eda.ipynb` | `TEN_KAGGLE/durian-ldd-eda` | None |
+| `notebooks/01_split_durianldd.ipynb` | `TEN_KAGGLE/durian-ldd-split` | None |
+| `notebooks/02_data_pipeline.ipynb` | `TEN_KAGGLE/durian-ldd-data-pipeline` | None |
+
+Ba notebook hiện tại không bật GPU. Notebook train hoặc Grad-CAM sau này mới chọn GPU trong cùng file metadata, hoặc trong Session options.
+
+### Dataset
+
+Dataset public dùng chung:
+
+https://www.kaggle.com/datasets/cthng123/durian-leaf-disease-dataset
+
+Không upload lại 4.437 ảnh. Lệnh push ở trên đã khai báo dataset này trong `dataset_sources`, nên không cần bấm Add Input nếu push thành công.
+
+Nếu tab Input chưa có dataset: Add Input, tìm `cthng123/durian-leaf-disease-dataset`, rồi Add. Gắn một lần cho notebook đó. Lần chạy sau vẫn còn. Notebook mới thì gắn lại.
+
+Folder `train`, `val`, `test` trong dataset Kaggle là folder gốc của DurianLDD. Split của nhóm là cột `split` trong `manifests/split_manifest.csv`.
+
+### Internet và Accelerator
+
+Trong Session options của notebook:
+
+- Internet: On. Tắt thì cell thứ hai không kéo được GitHub.
+- Accelerator: None cho ba notebook hiện tại. GPU khi notebook đó train hoặc chạy Grad-CAM.
+- Đổi Internet hoặc Accelerator sẽ khởi động lại phiên. Chạy lại từ cell đầu.
+
+### Xem kết quả mà chưa lưu version
+
+1. Mở notebook và bấm Edit.
+2. Internet On. Accelerator đúng loại notebook cần.
+3. Run cell thứ hai. Đọc nhánh, commit và đường dẫn ảnh.
+4. Run các cell sau, hoặc Run All trong editor.
+
+Chữ hiện ngay dưới cell. File tạo ra nằm ở tab Output, trong `/kaggle/working`. Cách này chưa tạo version. Tắt phiên thì file của phiên tương tác mất nếu chưa Save Version.
+
+### Chạy và lưu version
+
+1. Save Version.
+2. Chọn Save & Run All.
+3. Đặt tên version ngắn, ví dụ `pipeline-check`.
+4. Có thể đóng trang. Phiên này chạy từ cell đầu trên máy sạch, tối đa 12 giờ.
+
+Log nằm ở tab Logs của version đó. File nằm ở tab Output. Thư mục repo trong phiên là `/kaggle/working/durian-leaf-disease-robustness/`.
+
+Quick Save chỉ chụp những gì đang có trên editor, không chạy lại từ đầu. Dùng Quick Save sau khi đã Run trong editor và muốn giữ output đó.
+
+### Chỗ giữ kết quả
+
+| Loại | Xem trên Kaggle | Giữ lâu dài |
+|---|---|---|
+| Số in trong cell | Dưới cell, hoặc tab Logs | Ghi vào CSV hoặc JSON và commit lên GitHub |
+| Hình, CSV, JSON nhỏ | Tab Output | Tải về và commit lên GitHub |
+| Checkpoint `.pth` | Tab Output | Dataset private trên Kaggle |
+
+Tạo dataset từ output: mở version đã chạy xong, tab Output, New Dataset, để Private, rồi mời Thái trên trang dataset. Quyền của notebook không tự sang dataset. Notebook sau gắn dataset đó bằng Add Input.
+
+Hugging Face chỉ dùng khi nhóm đã chọn model cuối và muốn phát hành bản đó. Checkpoint trung gian và bảng metric không đưa lên Hugging Face.
+
+Ảnh suy giảm và ảnh sau xử lý sinh lúc chạy từ code. Không upload thành dataset ảnh mới, trừ khi một notebook sau phải đọc lại đúng các file đó.
+
+Tập test chỉ mở ở notebook đánh giá cuối, với `FINAL_EVAL=1`. Notebook chọn model chỉ dùng train và val.
+
 ## Kiểm tra dữ liệu
 
 DurianLDD đã được kiểm kê. Báo cáo nằm ở `reports/data_quality/durian_ldd_data_quality_report.md`. Notebook điều phối là `notebooks/01_durian_ldd_eda.ipynb`.
