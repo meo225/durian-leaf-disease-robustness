@@ -1,0 +1,25 @@
+# Phase 3 candidates locked before training.
+# Run in list order. Checkpoint and hyperparameter choices use validation only.
+
+split_manifest: manifests/split_manifest.csv
+image_size: 224
+num_classes: 5
+selection_split: val
+seed: 42
+
+candidates:
+  - name: resnet50
+    timm_name: resnet50
+    family: cnn
+    train_mode: finetune
+    priority: 1
+  - name: convnext_tiny
+    timm_name: convnext_tiny
+    family: modern
+    train_mode: finetune
+    priority: 2
+  - name: mobilenetv3_small
+    timm_name: mobilenetv3_small_100
+    family: lightweight
+    train_mode: finetune
+    priority: 3
