@@ -36,32 +36,31 @@ Git theo dõi code, cấu hình, split, tài liệu và `reports/`. `outputs/` v
 
 ```text
 durian-leaf-disease-robustness/
-├── README.md                 # mô tả dự án, cách chạy Kaggle và quy trình thư mục
-├── requirements.txt          # thư viện dùng chung
-├── .gitignore                # phần ở lại máy chạy
-├── configs/                  # cấu hình từng thí nghiệm
-├── docs/                     # protocol và tài liệu đã đọc
-│   └── sources/              # một file cho mỗi bài báo
-├── manifests/                # split đã khóa, seed và mã băm
-├── notebooks/                # notebook chạy trên Kaggle
-├── src/                      # mã dùng lại giữa các notebook
-│   ├── data/                 # đọc ảnh, kiểm tra dữ liệu, split, tiền xử lý chuẩn
-│   ├── models/               # kiến trúc và cách load model
-│   ├── training/             # vòng train và chọn checkpoint trên validation
-│   ├── corruption/           # tạo brightness, contrast, blur, noise có kiểm soát
-│   ├── processing/           # Gamma, CLAHE, Retinex, denoising, sharpening
-│   ├── evaluation/           # metric, độ bền, Grad-CAM
-│   └── utils/                # seed, đường dẫn, logging
-├── tests/                    # kiểm thử các module trong src
-├── reports/                  # kết quả đã kiểm tra, dùng cho báo cáo
-│   └── data_quality/         # báo cáo EDA DurianLDD
-├── outputs/                  # sản phẩm của một lần chạy, trước khi chốt
-│   ├── checkpoints/          # trọng số model của lần chạy
-│   ├── figures/              # hình của lần chạy
-│   ├── logs/                 # log train và log thí nghiệm
-│   └── results/              # CSV và JSON thô của lần chạy
-├── app/                      # demo
-└── datasets/                 # ảnh DurianLDD trên máy local
+├── README.md
+├── requirements.txt
+├── .gitignore
+├── configs/
+├── docs/
+│   └── sources/
+├── manifests/            # split đã khóa
+├── notebooks/
+├── src/
+│   ├── data/
+│   ├── models/
+│   ├── training/
+│   ├── corruption/       # suy giảm ảnh có kiểm soát
+│   ├── processing/       # kỹ thuật xử lý để so sánh
+│   ├── evaluation/
+│   └── utils/
+├── tests/
+├── reports/              # kết quả đã chốt, commit cùng code
+├── outputs/              # kết quả một lần chạy, không commit
+│   ├── checkpoints/
+│   ├── figures/
+│   ├── logs/
+│   └── results/
+├── app/
+└── datasets/             # ảnh local, không commit
 ```
 
 Đường dẫn dữ liệu đưa vào qua cấu hình hoặc notebook. Phần mã trong `src` không gắn cứng đường dẫn máy cục bộ hay Kaggle.
