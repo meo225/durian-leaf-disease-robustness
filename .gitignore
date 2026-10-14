@@ -22,9 +22,10 @@ ENV/
 *.swp
 *.swo
 
-# Jupyter
+# Jupyter and test cache
 .ipynb_checkpoints/
 */.ipynb_checkpoints/
+.pytest_cache/
 
 # Local datasets
 datasets/
@@ -41,16 +42,10 @@ data/processed/
 *.pickle
 *.safetensors
 
-# Experiment artifacts
-outputs/checkpoints/*
-!outputs/checkpoints/.gitkeep
-outputs/figures/*
-!outputs/figures/.gitkeep
-!outputs/figures/pipeline_samples.png
-outputs/logs/*
-!outputs/logs/.gitkeep
-outputs/results/*
-!outputs/results/.gitkeep
+# Run outputs. Keep folders only.
+outputs/**
+!outputs/**/
+!outputs/**/.gitkeep
 
 # Environment and secrets
 .env
