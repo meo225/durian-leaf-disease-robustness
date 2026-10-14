@@ -164,9 +164,24 @@ def fit_model(
             best_state = copy.deepcopy(model.state_dict())
             best_val = val_scores
             epochs_without_improvement = 0
+            marker = "  checkpoint"
         else:
             epochs_without_improvement += 1
+            marker = ""
+        print(
+            f"Epoch {epoch:02d}/{epochs}"
+            f"  train_loss={train_loss:.4f}"
+            f"  val_loss={val_scores['loss']:.4f}"
+            f"  val_macro_f1={val_scores['macro_f1']:.4f}"
+            f"  val_balanced_accuracy={val_scores['balanced_accuracy']:.4f}"
+            f"{marker}",
+            flush=True,
+        )
         if epochs_without_improvement >= patience:
+            print(
+                f"Dừng sớm sau {patience} epoch validation không tăng macro F1.",
+                flush=True,
+            )
             break
 
     model.load_state_dict(best_state)

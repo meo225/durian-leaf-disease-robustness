@@ -60,6 +60,29 @@ def _save_confusion_figure(matrix: list, class_names: list[str], path: Path) -> 
     plt.close(fig)
 
 
+def _save_history_figure(history: list[dict[str, Any]], path: Path) -> None:
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    epochs = [row["epoch"] for row in history]
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+    axes[0].plot(epochs, [row["train_loss"] for row in history], label="train")
+    axes[0].plot(epochs, [row["val_loss"] for row in history], label="val")
+    axes[0].set_xlabel("Epoch")
+    axes[0].set_ylabel("Loss")
+    axes[0].legend()
+    axes[1].plot(epochs, [row["val_macro_f1"] for row in history], label="val macro F1")
+    axes[1].set_xlabel("Epoch")
+    axes[1].set_ylabel("Macro F1")
+    axes[1].set_ylim(0, 1)
+    axes[1].legend()
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
 def _resource_name(device: torch.device) -> str:
     if device.type == "cuda":
         return str(torch.cuda.get_device_name(device))
@@ -130,28 +153,68 @@ def save_run_artifacts(
     )
     metrics_path.write_text(json.dumps(record, indent=2), encoding="utf-8")
     figure_path = result_dir / f"{stem}_confusion_matrix.png"
+    history_path = result_dir / f"{stem}_history.png"
     _save_confusion_figure(best_val["confusion_matrix"], record["classes"], figure_path)
+    _save_history_figure(result["history"], history_path)
     return {
         "checkpoint": str(checkpoint_path),
         "metrics": str(metrics_path),
         "confusion_matrix": str(figure_path),
+        "history": str(history_path),
     }
+
+
+def load_configs() -> tuple[dict[str, Any], dict[str, Any]]:
+    """Đọc cấu hình train và pipeline. Không mở tập test."""
+    train_cfg = _load_yaml(TRAIN_CONFIG_PATH)
+    if train_cfg.get("model_name") != "resnet50":
+        raise ValueError("File này chỉ chạy resnet50.")
+    pipeline_cfg = _load_yaml(ROOT / str(train_cfg["pipeline_config"]))
+    return train_cfg, pipeline_cfg
+
+
+def prepare_loaders(pipeline_cfg: dict[str, Any]) -> tuple[torch.device, dict]:
+    """Tạo loader train và val. Thiếu GPU thì dừng trước khi train."""
+    set_seed(int(pipeline_cfg["seed"]))
+    device = resolve_device()
+    if device.type != "cuda":
+        raise RuntimeError(
+            "Notebook train cần GPU. Trong Session options chọn Accelerator GPU, rồi chạy lại từ cell đầu."
+        )
+    loaders = build_dataloaders(pipeline_cfg, include_test=False)
+    if "test" in loaders:
+        raise RuntimeError("Task 3.2 không được nạp tập test.")
+    return device, loaders
+
+
+def print_run_report(
+    result: dict[str, Any],
+    paths: dict[str, str],
+    device: torch.device,
+    elapsed_seconds: float,
+) -> None:
+    """In bảng metric ra log. Notebook dùng cùng các số này để hiển thị."""
+    best = result["best_val"]
+    print(f"Thiết bị: {_resource_name(device)}", flush=True)
+    print(f"Thời gian train (giây): {elapsed_seconds:.1f}", flush=True)
+    print(f"Số tham số: {result['trainable_parameters']}", flush=True)
+    print(f"Epoch được chọn: {result['best_epoch']}", flush=True)
+    print(f"Val macro F1: {best['macro_f1']:.4f}", flush=True)
+    print(f"Val balanced accuracy: {best['balanced_accuracy']:.4f}", flush=True)
+    print(f"Val loss: {best['loss']:.4f}", flush=True)
+    print("Recall từng lớp:", flush=True)
+    for name, value in best["per_class_recall"].items():
+        print(f"  {name}: {value:.4f}", flush=True)
+    print(f"Checkpoint: {paths['checkpoint']}", flush=True)
+    print(f"Metric: {paths['metrics']}", flush=True)
+    print(f"Confusion matrix: {paths['confusion_matrix']}", flush=True)
+    print(f"History: {paths['history']}", flush=True)
 
 
 def main() -> dict[str, str]:
     """Chạy fine-tune ResNet-50. Chỉ tạo loader train và val."""
-    train_cfg = _load_yaml(TRAIN_CONFIG_PATH)
-    if train_cfg.get("model_name") != "resnet50":
-        raise ValueError("File này chỉ chạy resnet50.")
-    pipeline_path = ROOT / str(train_cfg["pipeline_config"])
-    pipeline_cfg = _load_yaml(pipeline_path)
-
-    set_seed(int(pipeline_cfg["seed"]))
-    device = resolve_device()
-    loaders = build_dataloaders(pipeline_cfg, include_test=False)
-    if "test" in loaders:
-        raise RuntimeError("Task 3.2 không được nạp tập test.")
-
+    train_cfg, pipeline_cfg = load_configs()
+    device, loaders = prepare_loaders(pipeline_cfg)
     model = build_model(
         timm_name=str(train_cfg["timm_name"]),
         num_classes=int(pipeline_cfg["num_classes"]),
@@ -176,13 +239,7 @@ def main() -> dict[str, str]:
         elapsed_seconds=elapsed,
         output_dir=ROOT / "outputs",
     )
-    print(f"Checkpoint: {paths['checkpoint']}")
-    print(f"Metric: {paths['metrics']}")
-    print(f"Confusion matrix: {paths['confusion_matrix']}")
-    print(f"Val macro F1: {result['best_val']['macro_f1']:.4f}")
-    print(f"Epoch: {result['best_epoch']}")
-    print(f"Thiết bị: {_resource_name(device)}")
-    print(f"Thời gian train (giây): {elapsed:.1f}")
+    print_run_report(result, paths, device, elapsed)
     return paths
 
 
