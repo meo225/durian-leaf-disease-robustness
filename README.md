@@ -2,19 +2,15 @@
 
 ## Tổng quan
 
-Đồ án học phần CS406, Xử lý ảnh và ứng dụng. Đề tài khảo sát phân loại bệnh trên ảnh lá sầu riêng khi chất lượng ảnh thay đổi.
+Đồ án CS406 - Xử lý ảnh và ứng dụng. Đề tài khảo sát phân loại bệnh trên ảnh lá sầu riêng khi chất lượng ảnh thay đổi.
 
 ## Hướng nghiên cứu
 
-Công việc tập trung vào các điểm sau:
-
-- phân loại bệnh trên ảnh lá sầu riêng
-- ảnh hưởng của thay đổi chất lượng ảnh, gồm ánh sáng, độ tương phản, mờ và nhiễu
-- so sánh một số kỹ thuật xử lý ảnh trên cùng thiết lập thí nghiệm
-- đo độ ổn định của mô hình trên ảnh bị suy giảm có kiểm soát
-- kiểm tra thêm trên bộ dữ liệu ngoài nếu hệ nhãn và phân bố dữ liệu tương thích
-
-Kiến trúc mô hình, tiền xử lý, tham số suy giảm ảnh và phương pháp đề xuất chưa được chọn. Các lựa chọn này sẽ dựa trên kết quả thí nghiệm.
+- Phân loại bệnh trên ảnh lá sầu riêng.
+- Ảnh hưởng của thay đổi chất lượng ảnh: ánh sáng, độ tương phản, mờ và nhiễu.
+- So sánh các kỹ thuật xử lý ảnh trên cùng thiết lập thí nghiệm.
+- Độ ổn định của mô hình trên ảnh bị suy giảm có kiểm soát.
+- Đánh giá trên bộ dữ liệu ngoài khi hệ nhãn và phân bố tương thích.
 
 ## Quy trình dự kiến
 
@@ -30,66 +26,148 @@ Kiểm tra dữ liệu
 
 ## Cấu trúc repo
 
-- `configs`: cấu hình thí nghiệm
-- `manifests`: siêu dữ liệu phân chia tập dữ liệu cố định (train, val, test)
-- `src`: mã nguồn dùng lại
-  - `data`: tải dữ liệu, kiểm tra dữ liệu, chia tập và tiền xử lý chuẩn
-  - `models`: định nghĩa mô hình
-  - `training`: vòng lặp huấn luyện và lưu checkpoint
-  - `corruption`: tạo suy giảm chất lượng ảnh có kiểm soát (ánh sáng, độ tương phản, mờ, nhiễu)
-  - `processing`: kỹ thuật xử lý/khôi phục ảnh thử nghiệm (Gamma, CLAHE, Retinex, v.v.)
-  - `evaluation`: độ đo đánh giá, phân tích độ ổn định và Grad-CAM
-  - `utils`: tiện ích chung (đường dẫn, seed, logging)
-- `notebooks`: notebook điều phối thí nghiệm trên Kaggle
-- `outputs`: checkpoint, hình ảnh, log và kết quả chạy thí nghiệm
-- `app`: ứng dụng demo
-- `tests`: kiểm thử đơn vị cho các module dùng lại
+Một lần thí nghiệm đi qua ba nơi.
+
+1. Notebook đọc ảnh từ `datasets/`, cấu hình từ `configs/` và split từ `manifests/`.
+2. File sinh ra trong lần chạy được ghi vào `outputs/`: checkpoint, hình, log và bảng thô.
+3. Sau khi nhóm kiểm tra, bản dùng cho báo cáo chuyển sang `reports/` và đi cùng code khi commit. Checkpoint của lần train được giữ trên một dataset Kaggle. Ảnh gốc ở lại `datasets/`.
+
+Git theo dõi code, cấu hình, split, tài liệu và `reports/`. `outputs/` và `datasets/` ở lại máy chạy.
+
+```text
+durian-leaf-disease-robustness/
+├── README.md
+├── requirements.txt
+├── .gitignore
+├── configs/
+├── docs/
+│   └── sources/
+├── manifests/            # split đã khóa
+├── notebooks/
+├── src/
+│   ├── data/
+│   ├── models/
+│   ├── training/
+│   ├── corruption/       # suy giảm ảnh có kiểm soát
+│   ├── processing/       # kỹ thuật xử lý để so sánh
+│   ├── evaluation/
+│   └── utils/
+├── tests/
+├── reports/              # kết quả đã chốt, commit cùng code
+├── outputs/              # kết quả một lần chạy, không commit
+│   ├── checkpoints/
+│   ├── figures/
+│   ├── logs/
+│   └── results/
+├── app/
+└── datasets/             # ảnh local, không commit
+```
 
 Đường dẫn dữ liệu đưa vào qua cấu hình hoặc notebook. Phần mã trong `src` không gắn cứng đường dẫn máy cục bộ hay Kaggle.
 
-## Cài đặt nhanh
+## Dữ liệu
 
-Cài thư viện:
+Dataset chính là DurianLDD, 4.437 ảnh, năm lớp, giấy phép CC BY 4.0:
+
+https://www.kaggle.com/datasets/cthng123/durian-leaf-disease-dataset
+
+Ảnh không nằm trong Git. Trên máy local, giải nén vào `datasets/durian-ldd/` sao cho có thư mục `DLD_FinalDataset_224_spit`. Trên Kaggle, notebook gắn dataset này làm input. Cell kéo code tìm thư mục đó và nối vào `datasets/durian-ldd`.
+
+Split của nhóm là cột `split` trong `manifests/split_manifest.csv`: train 3.105, val 444, test 888. Folder `train`, `val`, `test` trong bản Kaggle là chia sẵn của dataset, không dùng để train.
+
+Dataset sầu riêng khác, nếu dùng, chỉ để đánh giá ngoài sau khi pipeline đã khóa. Không gộp vào train, val hay test.
+
+## Cài đặt
 
 ```text
 python -m pip install -r requirements.txt
 ```
 
-Repo không lưu ảnh. Bộ dữ liệu chính là DurianLDD, 4.437 ảnh, giấy phép CC BY 4.0:
+Trên Kaggle, image mặc định đã có các thư viện chính. Cài thêm trong notebook khi một thí nghiệm cần gói chưa có.
 
-https://www.kaggle.com/datasets/cthng123/durian-leaf-disease-dataset
+## Chạy trên Kaggle
 
-Tải bằng Kaggle CLI, sau khi đã có token trong biến môi trường `KAGGLE_API_TOKEN`:
+Notebook trong `notebooks/` chạy trên Kaggle. Cell đầu ghi tên file. Cell thứ hai clone repo theo `GIT_BRANCH`, rồi gắn DurianLDD vào `datasets/durian-ldd`.
 
-```text
-python -m kaggle datasets download -d cthng123/durian-leaf-disease-dataset -p datasets/durian-ldd --unzip
+```python
+GIT_BRANCH = "main"
 ```
 
-Có thể tải zip trên trang Kaggle rồi giải nén vào cùng chỗ. Thư mục cần có là `datasets/durian-ldd/DLD_FinalDataset_224_spit`, bên trong là `train`, `val` và `test`.
+Đổi `GIT_BRANCH` khi chạy nhánh khác, rồi chạy lại cell. Cell in nhánh, commit và đường dẫn ảnh.
 
-Bộ dữ liệu khác nếu dùng sau này chỉ để đánh giá ngoài. Không gộp vào tập huấn luyện vì hệ nhãn và phân bố có thể khác.
+Sửa `src/`, `configs/` hoặc `manifests/` thì chạy lại cell thứ hai. Sửa cell trong file ipynb thì cập nhật lại notebook trên Kaggle.
 
-## Kiểm tra dữ liệu
+### Tài khoản
 
-DurianLDD đã được kiểm kê. Báo cáo nằm ở `reports/data_quality/durian_ldd_data_quality_report.md`. Notebook điều phối là `notebooks/01_durian_ldd_eda.ipynb`.
+1. Đăng nhập https://www.kaggle.com.
+2. Xác nhận số điện thoại tại https://www.kaggle.com/settings, mục Phone Verification.
+
+GPU và Internet dùng được sau bước này. Hạn mức GPU miễn phí khoảng 30 giờ mỗi tuần, reset 07:00 thứ Bảy giờ Việt Nam. Một phiên chạy tối đa 12 giờ. Phiên interactive kết thúc sau khoảng 20 phút không có thao tác.
+
+### Đưa notebook lên Kaggle
+
+Mỗi file ipynb tương ứng một notebook trong group `CS406-durian-leaf-disease-robustness`, tạo một lần rồi dùng lại.
+
+`title` là tên hiện trong danh sách Kaggle, đặt theo tên file để giữ thứ tự. `id` là địa chỉ `username/slug`. Kaggle chỉ nhận chữ thường và dấu `-` trong slug, nên `_` trong tên file thành `-` trong `id`.
+
+Cần Kaggle CLI và biến môi trường `KAGGLE_API_TOKEN`. Copy file ipynb vào một thư mục tạm, đặt cạnh `kernel-metadata.json`, rồi chạy:
 
 ```text
-python -m src.data.quality_audit --dataset-root datasets/durian-ldd --output-dir reports/data_quality
+kaggle kernels push --no-run -p <thư-mục-tạm>
 ```
 
-## Data pipeline
+`kernel-metadata.json` cho `01_durian_ldd_eda.ipynb`:
 
-Pipeline nạp dữ liệu PyTorch cho DurianLDD được cấu hình tại `configs/pipeline.yaml` và kiểm thử điều phối qua `notebooks/02_data_pipeline.ipynb`:
-- **Vị trí dữ liệu:** Đặt thư mục `DLD_FinalDataset_224_spit` vào `datasets/durian-ldd/` (đường dẫn tương đối `image_root: datasets/durian-ldd`).
-- **Huấn luyện (Train):** Áp dụng tiền xử lý tăng cường hình học (RandomHorizontalFlip $p=0.5$, RandomVerticalFlip $p=0.5$, RandomRotation $\pm 15^\circ$), ToTensor và chuẩn hóa ImageNet.
-- **Đánh giá (Val & Test):** Tuyệt đối **không dùng augmentation** (chỉ Resize về 224 khi cần, ToTensor và chuẩn hóa). Tập `test` được bảo vệ bằng khóa an toàn và chặn truy cập trừ khi bật `FINAL_EVAL=1`.
-- **Kỹ thuật xử lý/khôi phục ảnh:** Tuyệt đối không dùng Gamma, CLAHE, Retinex, khử nhiễu (denoising) hay làm nét (sharpening) trong pipeline chuẩn; các kỹ thuật này chỉ được thử nghiệm ở Phase 4.
-- **Kết quả kiểm chứng trên ảnh thật:**
-  - Toàn bộ 4.437/4.437 tệp ảnh trong manifest tồn tại 100% trên đĩa.
-  - Phân chia: Train (3.105 ảnh, 98 batches), Val (444 ảnh, 14 batches), Test (888 ảnh - khóa an toàn).
-  - 100% ảnh thuộc tập Train và Val đều đạt chuẩn kích thước 224x224 và hệ màu RGB (không ảnh lỗi, không cần nội suy resize lại).
-  - Biểu đồ mẫu kiểm tra đã được xuất tại `outputs/figures/pipeline_samples.png`.
+```json
+{
+  "id": "TEN_KAGGLE/01-durian-ldd-eda",
+  "title": "01_durian_ldd_eda",
+  "code_file": "01_durian_ldd_eda.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": ["cthng123/durian-leaf-disease-dataset"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
+```
 
-## Trạng thái
+`TEN_KAGGLE` là username trên profile Kaggle. Ba notebook hiện tại dùng Accelerator None.
 
-Đã kiểm tra chất lượng dữ liệu DurianLDD và khóa tập phân chia cố định (train: 3.105, val: 444, test: 888 ảnh). Đã hoàn thiện pipeline nạp dữ liệu (Dataset, Transforms, DataLoader) sẵn sàng cho giai đoạn huấn luyện mô hình.
+| File | `title` | `id` |
+|---|---|---|
+| `notebooks/01_durian_ldd_eda.ipynb` | `01_durian_ldd_eda` | `TEN_KAGGLE/01-durian-ldd-eda` |
+| `notebooks/01_split_durianldd.ipynb` | `01_split_durianldd` | `TEN_KAGGLE/01-split-durianldd` |
+| `notebooks/02_data_pipeline.ipynb` | `02_data_pipeline` | `TEN_KAGGLE/02-data-pipeline` |
+
+Notebook train và Grad-CAM chọn GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
+
+### Phiên chạy
+
+Internet để On. Ba notebook hiện tại để Accelerator là None. Đổi một trong hai tùy chọn này sẽ khởi động lại phiên.
+
+Chạy tương tác: Edit, chạy cell thứ hai, rồi chạy các cell sau. Output hiện dưới cell và trong tab Output tại `/kaggle/working`. Quick Save lưu trạng thái editor tại thời điểm đó.
+
+Lưu version: Save Version, chọn Save & Run All, đặt tên version. Phiên chạy từ cell đầu trên máy sạch. Log ở tab Logs. File ở tab Output, trong `/kaggle/working/durian-leaf-disease-robustness/`.
+
+### Kết quả
+
+| Sản phẩm | Trong phiên | Sau khi chốt |
+|---|---|---|
+| Bảng và hình cho báo cáo | tab Output | `reports/`, rồi commit |
+| Checkpoint | tab Output | dataset Kaggle riêng, chia sẻ trên trang dataset |
+
+Model đưa lên Hugging Face khi đã chọn bản phát hành. Ảnh suy giảm và ảnh sau xử lý sinh lúc chạy. Tập test chỉ mở ở lần đánh giá cuối, với `FINAL_EVAL=1`. Chọn model trên train và val.
+
+## Cấu hình
+
+| Nội dung | File |
+|---|---|
+| Split | `configs/split.yaml`, `manifests/split_manifest.csv` |
+| Pipeline ảnh | `configs/pipeline.yaml` |
+| Kiểm tra dữ liệu | `configs/data_audit.yaml` |
+
+Pipeline chuẩn: train dùng lật ngang, lật dọc, xoay ±15°, rồi chuẩn hóa ImageNet. Val và test resize về 224 khi cần, rồi chuẩn hóa. Gamma, CLAHE, Retinex, khử nhiễu và làm nét không nằm trong pipeline này.
