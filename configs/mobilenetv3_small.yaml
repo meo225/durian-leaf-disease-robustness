@@ -1,0 +1,8 @@
+model: mobilenetv3_small
+pretrained: true
+dropout: 0.2
+
+epochs: 30
+patience: 7
+lr: 0.0005
+weight_decay: 0.01
