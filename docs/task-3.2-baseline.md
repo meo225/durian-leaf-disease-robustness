@@ -26,7 +26,7 @@ Mục tiêu: Thiết lập mức hiệu năng chuẩn (Clean Reference) trên �
 |:---:|:---|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | **1** | **ResNet-50** | CNN đối chứng | `resnet50` | 23.5M | **0.9679** | 0.9676 | 0.1377 | 1262.1 (~21m) | Tesla T4 | **Hoàn thành** |
 | **2** | **ConvNeXt-Tiny** | Modern Vision | `convnext_tiny` | ~28.6M | — | — | — | — | — | *Chờ thực nghiệm* |
-| **3** | **MobileNetV3-Small** | Lightweight | `mobilenetv3_small_100` | ~2.5M | — | — | — | — | — | *Chờ thực nghiệm* |
+| **3** | **MobileNetV3-Small** | Lightweight | `mobilenet_v3_small` (torchvision) | 1.52M | **0.9485** | 0.9484 | 0.2841 | 751.1 (~13m) | Tesla T4 | **Hoàn thành** |
 
 ---
 
@@ -56,12 +56,47 @@ Mục tiêu: Thiết lập mức hiệu năng chuẩn (Clean Reference) trên �
 
 ---
 
-## 4. Nhận xét và Bước tiếp theo
+## 4. Chi tiết kết quả Baseline 3: MobileNetV3-Small (Seed 42)
+
+* **Thiết bị:** NVIDIA Tesla T4 (Kaggle GPU)
+* **Thời gian huấn luyện:** 751,1 giây (29 epochs, dừng sớm). Epoch 1 mất 327,3 giây do khởi động lạnh, các epoch sau trung bình 15,1 giây.
+* **Epoch được chọn làm checkpoint tốt nhất:** **Epoch 22**
+* **Validation Macro F1:** **0.9485** (94.85%)
+* **Validation Balanced Accuracy:** **0.9484** (94.84%)
+* **Validation Loss:** **0.2841** (tại epoch 22)
+* **Siêu tham số:** AdamW (`lr=5e-4`, `weight_decay=1e-2`), cosine annealing, dropout 0.2, batch size 32, tối đa 30 epochs, patience 7. Khác ResNet-50 ở learning rate, số epoch, patience, scheduler và nguồn trọng số (torchvision thay vì timm).
+
+### Recall theo từng lớp bệnh trên tập Validation:
+| Lớp bệnh | Số ảnh val | Recall | Nhầm chính |
+|:---|:---:|:---:|:---|
+| `HEALTHY_LEAF` (Lá khỏe mạnh) | 97 | **100.00%** | Không nhầm ảnh nào |
+| `ALLOCARIDARA_ATTACK` (Rầy nhảy) | 92 | **97.83%** | 1 ảnh sang `ALGAL_LEAF_SPOT`, 1 ảnh sang `PHOMOPSIS_LEAF_SPOT` |
+| `LEAF_BLIGHT` (Cháy lá) | 93 | **93.55%** | 3 ảnh sang `ALGAL_LEAF_SPOT`, 2 sang `PHOMOPSIS_LEAF_SPOT`, 1 sang `HEALTHY_LEAF` |
+| `ALGAL_LEAF_SPOT` (Đốm rong) | 74 | **91.89%** | 4 ảnh sang `PHOMOPSIS_LEAF_SPOT`, 2 sang `ALLOCARIDARA_ATTACK` |
+| `PHOMOPSIS_LEAF_SPOT` (Đốm lá Phomopsis) | 88 | **90.91%** | 4 ảnh sang `HEALTHY_LEAF`, 2 sang `ALGAL_LEAF_SPOT`, 1 sang `ALLOCARIDARA_ATTACK`, 1 sang `LEAF_BLIGHT` |
+
+### Vị trí lưu trữ sản phẩm:
+* **Checkpoint weights:** `outputs/checkpoints/mobilenetv3_small_seed42.pt` (lưu private Kaggle dataset, không commit Git)
+* **Số liệu chi tiết:** `reports/baselines/mobilenetv3_small/mobilenetv3_small_seed42.json`
+* **Hình ảnh Confusion Matrix:** `reports/baselines/mobilenetv3_small/mobilenetv3_small_seed42_confusion_matrix.png`
+* **Hình ảnh Lịch sử train (Loss/F1):** `reports/baselines/mobilenetv3_small/mobilenetv3_small_seed42_history.png`
+* **Nhật ký từng epoch:** `reports/baselines/mobilenetv3_small/mobilenetv3_small_seed42_history.csv`
+* **Notebook đã chạy:** `notebooks/03_mobilenetv3_small.ipynb`
+
+---
+
+## 5. Nhận xét và Bước tiếp theo
 
 1. **Về kết quả ResNet-50:**
    * Điểm số **96.79% Macro F1** trên ảnh sạch khẳng định mô hình và pipeline dữ liệu hoạt động ổn định, không có lỗi rò rỉ dữ liệu (data leakage) giữa các tập.
    * Đây là mốc đối chứng lý tưởng để làm rõ mức độ suy giảm hiệu năng khi bước vào Phase 4 (Corruption benchmark: ảnh rung mờ, nhiễu camera, thiếu sáng, chói sáng).
 
-2. **Kế hoạch tiếp theo:**
-   * Huấn luyện 2 mô hình còn lại: `ConvNeXt-Tiny` (kiến trúc hiện đại) và `MobileNetV3-Small` (mô hình nhẹ) theo cùng protocol để hoàn thiện bảng so sánh.
+2. **Về kết quả MobileNetV3-Small:**
+   * Đạt **94.85% Macro F1**, thấp hơn ResNet-50 khoảng 1,9 điểm phần trăm nhưng chỉ có 1,52M tham số, nhỏ hơn khoảng 15 lần.
+   * Có 5 ảnh bệnh bị dự đoán thành lá khỏe (4 `PHOMOPSIS_LEAF_SPOT`, 1 `LEAF_BLIGHT`) và không có ảnh lá khỏe nào bị dự đoán thành bệnh.
+   * Train accuracy 99.7% trong khi val loss dừng quanh 0.26 đến 0.29 từ epoch 20 trở đi, cho thấy mô hình khớp tốt tập train và val không còn cải thiện.
+   * Siêu tham số không trùng ResNet-50, nên chênh lệch 1,9 điểm chưa thể quy hoàn toàn cho kiến trúc. Cần chạy lại với cùng siêu tham số nếu muốn so sánh chặt chẽ.
+
+3. **Kế hoạch tiếp theo:**
+   * Huấn luyện mô hình còn lại: `ConvNeXt-Tiny` (kiến trúc hiện đại) để hoàn thiện bảng so sánh.
    * Lựa chọn reference model chính thức phục vụ cho các nghiên cứu xử lý ảnh ở Phase 4 & Phase 5.

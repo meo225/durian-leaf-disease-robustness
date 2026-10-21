@@ -1,0 +1,83 @@
+{
+  "run_name": "mobilenetv3_small_seed42",
+  "model": "mobilenetv3_small",
+  "seed": 42,
+  "git_commit": "2c0b5dd",
+  "created_at": "2026-10-21T18:42:53+00:00",
+  "hyperparameters": {
+    "model": "mobilenetv3_small",
+    "pretrained": true,
+    "dropout": 0.2,
+    "epochs": 30,
+    "patience": 7,
+    "lr": 0.0005,
+    "weight_decay": 0.01,
+    "batch_size": 32,
+    "image_size": 224,
+    "optimizer": "AdamW",
+    "scheduler": "CosineAnnealingLR"
+  },
+  "parameters": {
+    "total": 1522981,
+    "trainable": 1522981
+  },
+  "best_epoch": 22,
+  "epochs_run": 29,
+  "train_seconds": 751.1,
+  "environment": {
+    "device": "cuda",
+    "torch": "2.11.0+cu128",
+    "gpu": "Tesla T4",
+    "cuda": "12.8"
+  },
+  "checkpoint": "outputs/checkpoints/mobilenetv3_small_seed42.pt",
+  "val": {
+    "macro_f1": 0.9484755889775464,
+    "balanced_accuracy": 0.9483509137085575,
+    "accuracy": 0.9504504504504504,
+    "per_class_recall": {
+      "ALGAL_LEAF_SPOT": 0.918918918918919,
+      "ALLOCARIDARA_ATTACK": 0.9782608695652174,
+      "HEALTHY_LEAF": 1.0,
+      "LEAF_BLIGHT": 0.9354838709677419,
+      "PHOMOPSIS_LEAF_SPOT": 0.9090909090909091
+    },
+    "confusion_matrix": [
+      [
+        68,
+        2,
+        0,
+        0,
+        4
+      ],
+      [
+        1,
+        90,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        97,
+        0,
+        0
+      ],
+      [
+        3,
+        0,
+        1,
+        87,
+        2
+      ],
+      [
+        2,
+        1,
+        4,
+        1,
+        80
+      ]
+    ]
+  }
+}
