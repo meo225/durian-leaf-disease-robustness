@@ -17,6 +17,8 @@ Không có một bài báo nào trùng câu hỏi nghiên cứu của đồ án.
 - [Task 1.2. Nhận diện bệnh thực vật ngoài thực địa](task-1.2-field-recognition.md)
 - [Task 1.3. Nhận diện bệnh lá sầu riêng](task-1.3-durian-literature.md)
 - [Task 1.4. Experimental protocol](task-1.4-experimental-protocol.md)
+- [Phase 3. Baseline candidates](phase-3-baseline-candidates.md)
+- [Task 3.2. Huấn luyện và Đánh giá Baseline Models](task-3.2-baseline.md)
 
 ## Từng nguồn đã đọc
 

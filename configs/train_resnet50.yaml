@@ -1,0 +1,15 @@
+# Starting setting for the first ResNet-50 run.
+# The checkpoint epoch is chosen by validation macro F1.
+# The test split is not read.
+
+pipeline_config: configs/pipeline.yaml
+model_name: resnet50
+timm_name: resnet50
+pretrained: true
+epochs: 20
+patience: 5
+min_delta: 0.0
+learning_rate: 0.0001
+weight_decay: 0.0001
+optimizer: adamw
+selection_metric: macro_f1

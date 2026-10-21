@@ -49,5 +49,5 @@
     "scikit_learn": "1.8.0"
   },
   "manifest_file": "manifests\\split_manifest.csv",
-  "manifest_sha256": "6294d4cb4e1b7974f4244a6fba6f0d5183b04dbb92ba924aaff23fceac88ff5e"
+  "manifest_sha256": "5ecb0751025aac455ae2d15e0529ed7a47982b31985329d094594e72166d8fea"
 }

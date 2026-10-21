@@ -1,4 +1,4 @@
-"""Huấn luyện và chọn checkpoint trên validation."""
+"""Vòng huấn luyện baseline."""
 
 from src.training.trainer import evaluate, fit, load_checkpoint, train_one_epoch
 

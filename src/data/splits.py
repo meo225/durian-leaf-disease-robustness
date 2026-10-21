@@ -16,9 +16,12 @@ VALID_SPLITS = {"train", "val", "test"}
 
 
 def _compute_sha256(path: Path) -> str:
-    """Tính mã băm SHA256 của tệp, chuẩn hóa xuống dòng về CRLF để kết quả không đổi giữa Windows và Linux."""
-    content = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
-    return hashlib.sha256(content).hexdigest()
+    """SHA256 của nội dung file, quy xuống dòng về LF.
+
+    Windows giữ CRLF và Linux giữ LF. Hai dạng này là cùng một manifest.
+    """
+    payload = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(payload).hexdigest()
 
 
 def get_split(name: str) -> pd.DataFrame:
