@@ -1,9 +1,11 @@
 {
   "model_name": "resnet50",
-  "timm_name": "resnet50",
+  "library": "timm",
+  "backbone": "resnet50",
   "train_mode": "finetune",
   "seed": 42,
   "best_epoch": 19,
+  "epochs_run": 20,
   "selection_metric": "macro_f1",
   "elapsed_seconds": 1162.761,
   "finished_at_utc": "2026-10-21T18:33:17.873342+00:00",
@@ -16,6 +18,8 @@
     "learning_rate": 0.0001,
     "weight_decay": 0.0001,
     "optimizer": "adamw",
+    "scheduler": "none",
+    "dropout": null,
     "batch_size": 32,
     "image_size": 224,
     "pretrained": true
@@ -29,6 +33,7 @@
   ],
   "val_macro_f1": 0.9679377907534439,
   "val_balanced_accuracy": 0.9675934220880071,
+  "val_accuracy": 0.9684684684684685,
   "val_loss": 0.137744360913833,
   "per_class_recall": {
     "ALGAL_LEAF_SPOT": 0.9459459459459459,

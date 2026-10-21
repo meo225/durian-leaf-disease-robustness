@@ -1,8 +1,8 @@
-"""Chỉ số phân loại: macro f1, balanced accuracy, recall từng lớp và confusion matrix."""
+"""Chỉ số phân loại trên một lượt đánh giá."""
 
 from __future__ import annotations
 
-from typing import Any, Sequence
+from typing import Sequence
 
 import numpy as np
 from sklearn.metrics import (
@@ -14,18 +14,45 @@ from sklearn.metrics import (
 )
 
 
-def compute_metrics(
-    y_true: Sequence[int] | np.ndarray,
-    y_pred: Sequence[int] | np.ndarray,
-    classes: Sequence[str],
-) -> dict[str, Any]:
-    """Tính bộ chỉ số chính trên nhãn số nguyên, giữ đủ mọi lớp kể cả lớp không được dự đoán."""
-    labels = list(range(len(classes)))
-    recalls = recall_score(y_true, y_pred, labels=labels, average=None, zero_division=0)
+def classification_scores(
+    y_true: Sequence[int],
+    y_pred: Sequence[int],
+    class_names: Sequence[str],
+) -> dict:
+    """Tính macro F1, balanced accuracy, accuracy, recall từng lớp và confusion matrix.
+
+    Nhãn là chỉ số lớp theo đúng thứ tự ``class_names``.
+    """
+    labels = list(range(len(class_names)))
+    y_true_arr = np.asarray(list(y_true), dtype=np.int64)
+    y_pred_arr = np.asarray(list(y_pred), dtype=np.int64)
+    if y_true_arr.shape != y_pred_arr.shape:
+        raise ValueError("y_true và y_pred phải cùng số phần tử.")
+    if y_true_arr.size == 0:
+        raise ValueError("Không có mẫu để tính metric.")
+
+    per_class = recall_score(
+        y_true_arr,
+        y_pred_arr,
+        labels=labels,
+        average=None,
+        zero_division=0,
+    )
+    matrix = confusion_matrix(y_true_arr, y_pred_arr, labels=labels)
     return {
-        "macro_f1": float(f1_score(y_true, y_pred, labels=labels, average="macro", zero_division=0)),
-        "balanced_accuracy": float(balanced_accuracy_score(y_true, y_pred)),
-        "accuracy": float(accuracy_score(y_true, y_pred)),
-        "per_class_recall": {name: float(value) for name, value in zip(classes, recalls)},
-        "confusion_matrix": confusion_matrix(y_true, y_pred, labels=labels).tolist(),
+        "macro_f1": float(
+            f1_score(
+                y_true_arr,
+                y_pred_arr,
+                labels=labels,
+                average="macro",
+                zero_division=0,
+            )
+        ),
+        "balanced_accuracy": float(balanced_accuracy_score(y_true_arr, y_pred_arr)),
+        "accuracy": float(accuracy_score(y_true_arr, y_pred_arr)),
+        "per_class_recall": {
+            str(name): float(value) for name, value in zip(class_names, per_class)
+        },
+        "confusion_matrix": matrix.astype(int).tolist(),
     }

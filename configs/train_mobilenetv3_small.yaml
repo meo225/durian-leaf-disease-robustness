@@ -1,0 +1,16 @@
+# Cấu hình train MobileNetV3-Small. Checkpoint chọn theo macro F1 trên validation. Không đọc tập test.
+
+pipeline_config: configs/pipeline.yaml
+model_name: mobilenetv3_small
+library: torchvision
+backbone: mobilenet_v3_small
+pretrained: true
+dropout: 0.2
+epochs: 30
+patience: 7
+min_delta: 0.0
+learning_rate: 0.0005
+weight_decay: 0.01
+optimizer: adamw
+scheduler: cosine
+selection_metric: macro_f1

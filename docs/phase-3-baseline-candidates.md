@@ -32,6 +32,6 @@ Swin-Tiny và DINOv2 không nằm trong đợt train này. Swin-Tiny chỉ xét 
 
 ## Quy tắc cho task 3.2 trở đi
 
-Lần train ResNet-50 dùng `configs/train_resnet50.yaml` và `notebooks/03_train_resnet50.ipynb`. Checkpoint chọn bằng macro F1 trên validation. Cùng file kết quả có balanced accuracy, recall từng lớp, confusion matrix, số tham số, thời gian train và loại GPU.
+Mỗi baseline có một file `configs/train_<model>.yaml` và một notebook `notebooks/03_train_<model>.ipynb`, cùng chạy qua `src/training/run.py`. Kết quả đã chốt nằm ở `reports/baselines/README.md`. Checkpoint chọn bằng macro F1 trên validation. Cùng file kết quả có balanced accuracy, recall từng lớp, confusion matrix, số tham số, thời gian train và loại GPU.
 
 Seed đầu là 42. Chạy lặp khi điểm validation gần nhau hoặc khi chốt reference model. Richter và Kim là căn cứ để lặp, không thay cách chọn model bằng validation. Nếu điểm sạch gần nhau, sanity check độ bền trên validation trước khi chốt reference model. Tập test vẫn khóa đến lần đánh giá cuối.
