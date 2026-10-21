@@ -6,7 +6,7 @@ from src.models.build import build_model
 
 @pytest.mark.parametrize(
     "library, backbone",
-    [("timm", "resnet50"), ("torchvision", "mobilenet_v3_small")],
+    [("timm", "resnet50"), ("timm", "mobilenetv3_small_100"), ("torchvision", "mobilenet_v3_small")],
 )
 def test_build_model_outputs_one_logit_per_class(library, backbone):
     cfg = {"library": library, "backbone": backbone, "pretrained": False}

@@ -22,20 +22,11 @@ Cả hai chạy trên Tesla T4. Thời gian MobileNetV3-Small gồm epoch 1 mấ
 | LEAF_BLIGHT | 0.9462 | 0.9355 |
 | PHOMOPSIS_LEAF_SPOT | 0.9773 | 0.9091 |
 
-## Cấu hình khác nhau giữa hai lần chạy
+## Giao thức chung
 
-| | ResNet-50 | MobileNetV3-Small |
-|---|---|---|
-| Nguồn model | timm `resnet50` | torchvision `mobilenet_v3_small` |
-| Learning rate | 1e-4 | 5e-4 |
-| Weight decay | 1e-4 | 1e-2 |
-| Scheduler | không | cosine |
-| Dropout | mặc định | 0.2 |
-| Epoch tối đa, patience | 20, 5 | 30, 7 |
+Từ nay mọi baseline dùng cùng một cấu hình train, chỉ khác model: timm, AdamW, learning rate 2e-4, weight decay 1e-2, cosine, tối đa 30 epoch, patience 7, không dropout thêm. Xem `configs/train_<model>.yaml`.
 
-Hai model chưa chung hyperparameter, nên chênh lệch điểm chưa chỉ do kiến trúc. `configs/baselines.yaml` ghi MobileNetV3-Small là timm `mobilenetv3_small_100`, còn lần chạy này dùng bản torchvision.
-
-Hai lần chạy này train trước khi gộp code vào `src/training/run.py`. Số liệu giữ nguyên, chỉ đổi JSON sang cùng một định dạng. Lịch sử của ResNet-50 chưa có cột lr, train_accuracy và seconds. Chạy lại notebook trên Kaggle sẽ tạo lại kết quả bằng code hiện tại.
+Bảng trên là hai lần chạy cũ, khi hai model còn dùng cấu hình khác nhau (ResNet-50: lr 1e-4, weight decay 1e-4, không scheduler, 20 epoch, patience 5. MobileNetV3-Small: torchvision, lr 5e-4, weight decay 1e-2, cosine, dropout 0.2, 30 epoch, patience 7). Chưa so sánh trực tiếp được. Cần chạy lại cả hai notebook theo giao thức chung, rồi thay số vào bảng.
 
 ## File
 
