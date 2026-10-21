@@ -60,3 +60,10 @@ Thumbs.db
 *.xlsx
 *.xls
 ~$*.xlsx
+*.docx
+*.doc
+~$*.docx
+
+# Archives
+*.zip
+*.tar.gz
