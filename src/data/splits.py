@@ -16,12 +16,9 @@ VALID_SPLITS = {"train", "val", "test"}
 
 
 def _compute_sha256(path: Path) -> str:
-    """Tính mã băm SHA256 của tệp."""
-    hasher = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(65536), b""):
-            hasher.update(chunk)
-    return hasher.hexdigest()
+    """Tính mã băm SHA256 của tệp, chuẩn hóa xuống dòng về CRLF để kết quả không đổi giữa Windows và Linux."""
+    content = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+    return hashlib.sha256(content).hexdigest()
 
 
 def get_split(name: str) -> pd.DataFrame:

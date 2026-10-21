@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from src.data.splits import get_split
+from src.data.splits import _compute_sha256, get_split
 
 
 def test_get_split_train_and_val_load_successfully() -> None:
@@ -72,3 +72,11 @@ def test_no_duplicate_image_paths_across_all_splits(monkeypatch: pytest.MonkeyPa
 def test_get_split_invalid_name_raises_value_error() -> None:
     with pytest.raises(ValueError, match="Tên tập không hợp lệ"):
         get_split("unknown")
+
+
+def test_manifest_hash_ignores_line_endings(tmp_path: Path) -> None:
+    lf_file = tmp_path / "lf.csv"
+    crlf_file = tmp_path / "crlf.csv"
+    lf_file.write_bytes(b"a,b\n1,2\n")
+    crlf_file.write_bytes(b"a,b\r\n1,2\r\n")
+    assert _compute_sha256(lf_file) == _compute_sha256(crlf_file)
