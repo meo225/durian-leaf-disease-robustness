@@ -6,6 +6,18 @@ import pytest
 from src.data.splits import get_split
 
 
+def test_manifest_hash_ignores_newline_style(tmp_path: Path) -> None:
+    from src.data.splits import _compute_sha256
+
+    text = "image_path,class_name,group_id,split\na.jpg,HEALTHY_LEAF,1,train\n"
+    lf_path = tmp_path / "lf.csv"
+    crlf_path = tmp_path / "crlf.csv"
+    lf_path.write_bytes(text.encode("utf-8"))
+    crlf_path.write_bytes(text.replace("\n", "\r\n").encode("utf-8"))
+
+    assert _compute_sha256(lf_path) == _compute_sha256(crlf_path)
+
+
 def test_get_split_train_and_val_load_successfully() -> None:
     df_train = get_split("train")
     df_val = get_split("val")

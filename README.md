@@ -135,19 +135,20 @@ kaggle kernels push --no-run -p <thư-mục-tạm>
 }
 ```
 
-`TEN_KAGGLE` là username trên profile Kaggle. Ba notebook hiện tại dùng Accelerator None.
+`TEN_KAGGLE` là username trên profile Kaggle.
 
 | File | `title` | `id` |
 |---|---|---|
 | `notebooks/01_durian_ldd_eda.ipynb` | `01_durian_ldd_eda` | `TEN_KAGGLE/01-durian-ldd-eda` |
 | `notebooks/01_split_durianldd.ipynb` | `01_split_durianldd` | `TEN_KAGGLE/01-split-durianldd` |
 | `notebooks/02_data_pipeline.ipynb` | `02_data_pipeline` | `TEN_KAGGLE/02-data-pipeline` |
+| `notebooks/03_train_resnet50.ipynb` | `03_train_resnet50` | `TEN_KAGGLE/03-train-resnet50` |
 
-Notebook train và Grad-CAM chọn GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
+Ba notebook kiểm tra dữ liệu dùng Accelerator None. `03_train_resnet50` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
 
 ### Phiên chạy
 
-Internet để On. Ba notebook hiện tại để Accelerator là None. Đổi một trong hai tùy chọn này sẽ khởi động lại phiên.
+Internet để On. Notebook train dùng GPU. Ba notebook kiểm tra dữ liệu để Accelerator là None. Đổi một trong hai tùy chọn này sẽ khởi động lại phiên.
 
 Chạy tương tác: Edit, chạy cell thứ hai, rồi chạy các cell sau. Output hiện dưới cell và trong tab Output tại `/kaggle/working`. Quick Save lưu trạng thái editor tại thời điểm đó.
 
@@ -168,6 +169,7 @@ Model đưa lên Hugging Face khi đã chọn bản phát hành. Ảnh suy giả
 |---|---|
 | Split | `configs/split.yaml`, `manifests/split_manifest.csv` |
 | Pipeline ảnh | `configs/pipeline.yaml` |
+| Train ResNet-50 | `configs/train_resnet50.yaml` |
 | Kiểm tra dữ liệu | `configs/data_audit.yaml` |
 
 Pipeline chuẩn: train dùng lật ngang, lật dọc, xoay ±15°, rồi chuẩn hóa ImageNet. Val và test resize về 224 khi cần, rồi chuẩn hóa. Gamma, CLAHE, Retinex, khử nhiễu và làm nét không nằm trong pipeline này.
