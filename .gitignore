@@ -55,3 +55,8 @@ outputs/**
 # OS
 .DS_Store
 Thumbs.db
+
+# Office / Excel files
+*.xlsx
+*.xls
+~$*.xlsx
