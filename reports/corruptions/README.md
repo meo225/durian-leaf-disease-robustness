@@ -1,0 +1,32 @@
+# Benchmark suy giảm ảnh (task 4.1)
+
+Mười bốn họ suy giảm, mỗi họ ba mức, tổng 42 điều kiện. Cấu hình ở `configs/corruption.yaml`, code ở `src/corruption/`. Năm họ đầu thuộc bốn nhóm của plan. Chín họ mở rộng mô phỏng điều kiện chụp ngoài vườn.
+
+Suy giảm áp lên đúng ảnh test đã khóa, giữ nguyên mẫu và nhãn giữa ảnh sạch và ảnh suy giảm. Phần ngẫu nhiên (nhiễu, hướng mờ, vị trí chói, hình bóng) lấy seed từ nội dung ảnh, tên điều kiện và seed 42, nên một ảnh luôn nhận cùng một suy giảm. Ảnh được làm tròn về 8 bit sau khi suy giảm.
+
+## Hiệu chỉnh trên validation
+
+Các mức chọn bằng cách xem ảnh mẫu (`severity_examples.png`) và đo ConvNeXt-Tiny, reference model, trên tập validation qua hai vòng. Macro F1 sạch là 0.977. Bảng ghi giá trị mức và macro F1 trong ngoặc.
+
+| Họ | Nhóm | Mô tả | Mức 1 | Mức 2 | Mức 3 |
+|---|---|---|---|---|---|
+| `brightness_dark` | plan | Tối đi (nhân độ sáng) | 0.7 (0.954) | 0.5 (0.892) | 0.3 (0.604) |
+| `brightness_bright` | plan | Sáng lên, cháy sáng | 1.3 (0.950) | 1.6 (0.804) | 2.0 (0.576) |
+| `contrast_low` | plan | Tương phản thấp | 0.7 (0.956) | 0.5 (0.874) | 0.3 (0.426) |
+| `blur` | plan | Mờ Gauss (mất nét), sigma px | 0.5 (0.948) | 1.0 (0.698) | 2.0 (0.577) |
+| `noise` | plan | Nhiễu Gauss, độ lệch chuẩn | 0.03 (0.957) | 0.06 (0.849) | 0.1 (0.622) |
+| `contrast_high` | mở rộng | Tương phản cao (nắng gắt) | 1.5 (0.933) | 2.2 (0.713) | 3.0 (0.528) |
+| `glare` | mở rộng | Vệt chói nắng cục bộ | 0.4 (0.968) | 0.7 (0.954) | 1.0 (0.918) |
+| `shadow` | mở rộng | Bóng tán lá loang lổ | 0.4 (0.959) | 0.7 (0.908) | 1.0 (0.792) |
+| `lowlight` | mở rộng | Thiếu sáng kèm nhiễu hạt (hệ số sáng) | 0.7 (0.904) | 0.5 (0.826) | 0.35 (0.637) |
+| `motion_blur` | mở rộng | Mờ chuyển động (rung tay), độ dài px | 3 (0.909) | 5 (0.768) | 9 (0.635) |
+| `sensor_noise` | mở rộng | Nhiễu cảm biến, peak (thấp là nhiễu hơn) | 250 (0.926) | 120 (0.848) | 60 (0.750) |
+| `jpeg` | mở rộng | Nén JPEG, chất lượng (thấp là nặng hơn) | 50 (0.896) | 25 (0.885) | 10 (0.711) |
+| `lowres` | mở rộng | Độ phân giải thấp, tỉ lệ giữ lại | 0.75 (0.768) | 0.6 (0.692) | 0.45 (0.636) |
+| `color_cast` | mở rộng | Ám vàng đỏ (nắng chiều) | 0.15 (0.944) | 0.3 (0.889) | 0.45 (0.820) |
+
+Vòng đầu cho thấy `lowlight`, `motion_blur`, `sensor_noise`, `jpeg`, `lowres` và `blur` quá mạnh ngay từ mức 1 nên đã hạ. Vòng hai đạt: điểm giảm dần theo mức và không họ nào về mức đoán bừa ở mức 3. Hai họ còn lệch nhẹ nhưng giữ nguyên: `glare` ít ảnh hưởng (mức 3 vẫn 0.918) và `lowres` mức 1 đã 0.768. Hai điểm này là kết quả của model, không chỉnh thêm. Kết quả chi tiết nằm trong `notebooks/04_corruption_benchmark.ipynb`.
+
+## Khóa
+
+`locked: true` từ commit này. Mức không được chỉnh theo kết quả test. Test chỉ mở ở task 4.2 với `FINAL_EVAL=1`.

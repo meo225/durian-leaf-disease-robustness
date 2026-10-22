@@ -4,7 +4,7 @@
 # locked: true nghĩa là đã khóa. Code từ chối mở tập test khi chưa khóa. Sau khi khóa không chỉnh theo kết quả test.
 
 version: 3
-locked: false
+locked: true
 seed: 42
 
 families:
