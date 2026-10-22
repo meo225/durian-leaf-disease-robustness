@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import sys
+import zipfile
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -50,6 +51,32 @@ def _val_loader(pipeline_cfg: Mapping[str, Any], spec: Mapping[str, Any] | None)
         classes=pipeline_cfg["classes"],
     )
     return DataLoader(dataset, batch_size=int(pipeline_cfg["batch_size"]), shuffle=False, num_workers=0)
+
+
+def collect_checkpoint(search_root: str | Path, file_name: str, target_dir: str | Path) -> Path:
+    """Đưa checkpoint về một file `.pt` trong target_dir.
+
+    Kaggle có thể giải nén file `.pt` thành thư mục cùng tên. Khi đó ghép lại thành file zip như torch.save tạo ra.
+    """
+    search_root, target_dir = Path(search_root), Path(target_dir)
+    target_dir.mkdir(parents=True, exist_ok=True)
+    target = target_dir / file_name
+    if target.exists() or target.is_symlink():
+        target.unlink()
+    found = sorted(search_root.rglob(file_name))
+    if found and found[0].is_file():
+        target.symlink_to(found[0])
+        return target
+    stem = Path(file_name).stem
+    for pickle in sorted(search_root.rglob("data.pkl")):
+        if pickle.parent.name == stem:
+            root = pickle.parent
+            members = sorted((path for path in root.rglob("*") if path.is_file()), key=lambda path: (path != pickle, str(path)))
+            with zipfile.ZipFile(target, "w", zipfile.ZIP_STORED) as archive:
+                for path in members:
+                    archive.write(path, f"{stem}/{path.relative_to(root).as_posix()}")
+            return target
+    raise FileNotFoundError(f"Không thấy checkpoint {file_name} trong {search_root}.")
 
 
 def load_trained_model(train_cfg: Mapping[str, Any], checkpoint_path: Path, num_classes: int, device: torch.device) -> nn.Module:

@@ -93,3 +93,30 @@ def test_main_end_to_end_on_small_validation(tmp_path, monkeypatch):
     assert saved["selection"]["reference"] == "mobilenetv3_small"
     assert saved["models"]["mobilenetv3_small"]["model"]["parameters"] == 1522981
     assert record["models"]["mobilenetv3_small"]["clean"]["matches_recorded"] is False
+
+
+def test_collect_checkpoint_rebuilds_unzipped_directory(tmp_path):
+    import zipfile
+
+    source = torch.nn.Linear(4, 2)
+    original = tmp_path / "m_seed42.pt"
+    torch.save({"state_dict": source.state_dict()}, original)
+    unpacked = tmp_path / "input" / "m_seed42" / "m_seed42"
+    with zipfile.ZipFile(original) as archive:
+        for info in archive.infolist():
+            archive.extract(info, unpacked.parent)
+    assert (unpacked / "data.pkl").is_file()
+
+    path = reference.collect_checkpoint(tmp_path / "input", "m_seed42.pt", tmp_path / "out")
+    restored = torch.nn.Linear(4, 2)
+    restored.load_state_dict(torch.load(path, map_location="cpu")["state_dict"])
+    assert torch.equal(restored.weight, source.weight)
+
+
+def test_collect_checkpoint_links_plain_file(tmp_path):
+    (tmp_path / "in").mkdir()
+    (tmp_path / "in" / "m_seed42.pt").write_bytes(b"x")
+    path = reference.collect_checkpoint(tmp_path / "in", "m_seed42.pt", tmp_path / "out")
+    assert path.read_bytes() == b"x"
+    with pytest.raises(FileNotFoundError):
+        reference.collect_checkpoint(tmp_path / "in", "missing.pt", tmp_path / "out")
