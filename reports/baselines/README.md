@@ -1,57 +1,43 @@
-# Phase 3: Baseline Models Report
+# Kết quả baseline
 
-Tài liệu tổng hợp kết quả của 3 mô hình Baseline trong Phase 3 (theo danh mục đã khóa trong `configs/baselines.yaml` và kế hoạch đồ án CS406).
+Fine-tune trên split khóa `manifests/split_manifest.csv`, ảnh 224×224, 5 lớp, seed 42, một lần chạy mỗi model. Checkpoint chọn bằng macro F1 trên validation. Tập test chưa mở.
 
-Các mô hình được fine-tune trên cùng một giao thức phân chia dữ liệu (`manifests/split_manifest.csv`), kích thước ảnh 224×224, 5 nhãn bệnh lá sầu riêng. Mọi checkpoint và siêu tham số được chọn dựa trên **Validation Macro F1**. Tập Test được khóa hoàn toàn.
+## Bảng so sánh
 
----
+| Mô hình | Họ kiến trúc | Số tham số | Val macro F1 | Val balanced acc | Val loss | Thời gian train | Epoch chọn / đã chạy |
+|---|---|---:|---:|---:|---:|---:|---:|
+| ResNet-50 | CNN cổ điển | 23,518,277 | 0.9720 | 0.9719 | 0.1112 | 1740.7 giây | 23 / 30 |
+| ConvNeXt-Tiny | Vision hiện đại | | | | | | chưa chạy |
+| MobileNetV3-Small | CNN nhẹ | 1,522,981 | 0.9292 | 0.9297 | 0.2635 | 551.7 giây | 15 / 22 |
 
-## 1. Bảng so sánh tổng hợp (Baseline Leaderboard)
+Chạy trên Tesla T4. Epoch 1 luôn chậm hơn nhiều do khởi động lạnh (MobileNetV3-Small 243 giây, ResNet-50 305 giây), nên thời gian train gồm cả phần này.
 
-| Thứ tự | Mô hình | Họ kiến trúc (Family) | `timm` backbone | Số tham số | Val Macro F1 | Val Balanced Acc | Val Loss | Thời gian train (s) | Trạng thái |
-|:---:|:---|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **1** | **ResNet-50** | Classical CNN | `resnet50` | 23,518,277 | **0.9679** | 0.9676 | 0.1377 | 1262.1 (T4) | **Đã hoàn thành** |
-| **2** | **ConvNeXt-Tiny** | Modern Vision | `convnext_tiny` | - | - | - | - | - | *Chờ thực nghiệm* |
-| **3** | **MobileNetV3-Small** | Lightweight | `mobilenetv3_small_100` | - | - | - | - | - | *Chờ thực nghiệm* |
+## Recall từng lớp
 
----
+| Lớp | ResNet-50 | MobileNetV3-Small |
+|---|---:|---:|
+| ALGAL_LEAF_SPOT | 0.9595 | 0.9459 |
+| ALLOCARIDARA_ATTACK | 0.9891 | 0.9348 |
+| HEALTHY_LEAF | 1.0000 | 0.9897 |
+| LEAF_BLIGHT | 0.9677 | 0.9032 |
+| PHOMOPSIS_LEAF_SPOT | 0.9432 | 0.8750 |
 
-## 2. Chi tiết Baseline 1: ResNet-50 (Seed 42)
+## Giao thức chung
 
-* **Backbone:** ResNet-50 (pretrained ImageNet-1k)
-* **Số epoch tối đa:** 20 (Early stopping patience: 5)
-* **Epoch được chọn:** **Epoch 19**
-* **Validation Macro F1:** **0.9679** (96.79%)
-* **Validation Balanced Accuracy:** **0.9676** (96.76%)
-* **Validation Loss:** **0.1377**
+Mọi baseline dùng cùng một cấu hình, chỉ khác model: timm, AdamW, learning rate 2e-4, weight decay 1e-2, cosine, tối đa 30 epoch, patience 7, không dropout thêm. Xem `configs/train_<model>.yaml`.
 
-### Recall theo từng lớp bệnh:
-| Lớp bệnh | Recall |
-|:---|:---:|
-| `ALGAL_LEAF_SPOT` | 94.59% |
-| `ALLOCARIDARA_ATTACK` | 98.91% |
-| `HEALTHY_LEAF` | 97.94% |
-| `LEAF_BLIGHT` | 94.62% |
-| `PHOMOPSIS_LEAF_SPOT` | 97.73% |
+## Đọc kết quả
 
-### Tài liệu trực quan:
-* **Confusion Matrix:** `resnet50/resnet50_seed42_confusion_matrix.png`
-* **Lịch sử huấn luyện (Loss & F1):** `resnet50/resnet50_seed42_history.png`
-* **Chi tiết dạng JSON:** `resnet50/resnet50_seed42.json`
+- Tập validation có 444 ảnh. Một điểm F1 tương đương vài ảnh, và đường val F1 dao động theo epoch. Chênh lệch dưới khoảng 0.01 chưa đủ để xếp hạng.
+- Mỗi model mới chạy một seed. Phase 3 ghi rõ cần chạy lặp khi điểm gần nhau.
+- MobileNetV3-Small dừng sớm ở epoch 22 nên cosine chưa giảm learning rate về mức thấp.
 
----
+## File
 
-## 3. Cấu trúc thư mục
+Mỗi model có thư mục riêng, tên file có hậu tố `_seed42`:
 
-```text
-reports/baselines/
-├── README.md                      # Báo cáo và bảng so sánh này
-├── resnet50/                      # Baseline 1: CNN đối chứng
-│   ├── resnet50_seed42.json
-│   ├── resnet50_seed42_confusion_matrix.png
-│   └── resnet50_seed42_history.png
-├── convnext_tiny/                 # Baseline 2: Kiến trúc hiện đại (sắp chạy)
-│   └── .gitkeep
-└── mobilenetv3_small/             # Baseline 3: Mô hình gọn nhẹ (sắp chạy)
-    └── .gitkeep
-```
+- `<model>_seed42.json`: toàn bộ số liệu, hyperparameter và lịch sử từng epoch
+- `<model>_seed42_history.png`: loss và val macro F1 theo epoch
+- `<model>_seed42_confusion_matrix.png`: confusion matrix của checkpoint đã chọn
+
+Code: `src/training/run.py`, config: `configs/train_<model>.yaml`, notebook đã chạy: `notebooks/03_train_<model>.ipynb`.

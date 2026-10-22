@@ -1,4 +1,4 @@
-"""Metric phân loại trên một lượt đánh giá."""
+"""Chỉ số phân loại trên một lượt đánh giá."""
 
 from __future__ import annotations
 
@@ -6,6 +6,7 @@ from typing import Sequence
 
 import numpy as np
 from sklearn.metrics import (
+    accuracy_score,
     balanced_accuracy_score,
     confusion_matrix,
     f1_score,
@@ -18,7 +19,7 @@ def classification_scores(
     y_pred: Sequence[int],
     class_names: Sequence[str],
 ) -> dict:
-    """Tính macro F1, balanced accuracy, recall từng lớp và confusion matrix.
+    """Tính macro F1, balanced accuracy, accuracy, recall từng lớp và confusion matrix.
 
     Nhãn là chỉ số lớp theo đúng thứ tự ``class_names``.
     """
@@ -49,6 +50,7 @@ def classification_scores(
             )
         ),
         "balanced_accuracy": float(balanced_accuracy_score(y_true_arr, y_pred_arr)),
+        "accuracy": float(accuracy_score(y_true_arr, y_pred_arr)),
         "per_class_recall": {
             str(name): float(value) for name, value in zip(class_names, per_class)
         },

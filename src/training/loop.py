@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import copy
+import time
 from typing import Any, Mapping, Sequence
 
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
 
-from src.training.metrics import classification_scores
+from src.evaluation.metrics import classification_scores
 
 
 def set_seed(seed: int) -> None:
@@ -53,24 +54,27 @@ def train_one_epoch(
     optimizer: torch.optim.Optimizer,
     criterion: nn.Module,
     device: torch.device,
-) -> float:
-    """Một epoch train. Trả về loss trung bình theo mẫu."""
+) -> dict[str, float]:
+    """Một epoch train. Trả về loss và accuracy trung bình theo mẫu."""
     model.train()
     total_loss = 0.0
+    total_correct = 0
     total_count = 0
     for images, labels in _batches(loader):
         images = images.to(device, non_blocking=device.type == "cuda")
         labels = labels.to(device, non_blocking=device.type == "cuda")
         optimizer.zero_grad(set_to_none=True)
-        loss = criterion(model(images), labels)
+        logits = model(images)
+        loss = criterion(logits, labels)
         loss.backward()
         optimizer.step()
         batch_size = int(labels.shape[0])
         total_loss += float(loss.item()) * batch_size
+        total_correct += int((logits.argmax(dim=1) == labels).sum().item())
         total_count += batch_size
     if total_count == 0:
         raise ValueError("Train loader không có mẫu.")
-    return total_loss / total_count
+    return {"loss": total_loss / total_count, "accuracy": total_correct / total_count}
 
 
 @torch.no_grad()
@@ -117,6 +121,18 @@ def build_optimizer(model: nn.Module, train_cfg: Mapping[str, Any]) -> torch.opt
     )
 
 
+def build_scheduler(
+    optimizer: torch.optim.Optimizer, train_cfg: Mapping[str, Any]
+) -> torch.optim.lr_scheduler.LRScheduler | None:
+    """Tạo scheduler từ cấu hình. `none` giữ learning rate cố định, `cosine` giảm dần theo số epoch."""
+    name = str(train_cfg.get("scheduler", "none")).lower()
+    if name == "none":
+        return None
+    if name == "cosine":
+        return torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=int(train_cfg["epochs"]))
+    raise ValueError(f"Scheduler chưa hỗ trợ: {name}.")
+
+
 def fit_model(
     model: nn.Module,
     train_loader: DataLoader,
@@ -127,13 +143,15 @@ def fit_model(
 ) -> dict[str, Any]:
     """Fine-tune và giữ trọng số có macro F1 validation cao nhất.
 
-    Tập test không được truyền vào hàm này.
+    Tập test không được truyền vào hàm này. Kết quả gồm epoch được chọn, chỉ số validation,
+    lịch sử từng epoch, trọng số tốt nhất, thời gian train và số tham số.
     """
     if str(train_cfg.get("selection_metric", "macro_f1")) != "macro_f1":
         raise ValueError("Checkpoint chỉ chọn bằng macro_f1 trên validation.")
 
     model.to(device)
     optimizer = build_optimizer(model, train_cfg)
+    scheduler = build_scheduler(optimizer, train_cfg)
     criterion = nn.CrossEntropyLoss()
     epochs = int(train_cfg["epochs"])
     patience = int(train_cfg["patience"])
@@ -145,16 +163,24 @@ def fit_model(
     best_val: dict[str, Any] | None = None
     epochs_without_improvement = 0
     history: list[dict[str, Any]] = []
+    started = time.perf_counter()
 
     for epoch in range(1, epochs + 1):
-        train_loss = train_one_epoch(model, train_loader, optimizer, criterion, device)
+        epoch_started = time.perf_counter()
+        learning_rate = optimizer.param_groups[0]["lr"]
+        train_scores = train_one_epoch(model, train_loader, optimizer, criterion, device)
         val_scores = evaluate_loader(model, val_loader, criterion, device, class_names)
+        if scheduler is not None:
+            scheduler.step()
         row = {
             "epoch": epoch,
-            "train_loss": train_loss,
+            "lr": learning_rate,
+            "train_loss": train_scores["loss"],
+            "train_accuracy": train_scores["accuracy"],
             "val_loss": val_scores["loss"],
             "val_macro_f1": val_scores["macro_f1"],
             "val_balanced_accuracy": val_scores["balanced_accuracy"],
+            "seconds": time.perf_counter() - epoch_started,
         }
         history.append(row)
         improved = val_scores["macro_f1"] > best_score + min_delta
@@ -170,10 +196,11 @@ def fit_model(
             marker = ""
         print(
             f"Epoch {epoch:02d}/{epochs}"
-            f"  train_loss={train_loss:.4f}"
+            f"  train_loss={train_scores['loss']:.4f}"
             f"  val_loss={val_scores['loss']:.4f}"
             f"  val_macro_f1={val_scores['macro_f1']:.4f}"
             f"  val_balanced_accuracy={val_scores['balanced_accuracy']:.4f}"
+            f"  {row['seconds']:.1f}s"
             f"{marker}",
             flush=True,
         )
@@ -192,4 +219,6 @@ def fit_model(
         "best_val": best_val,
         "history": history,
         "state_dict": best_state,
+        "elapsed_seconds": time.perf_counter() - started,
+        "trainable_parameters": trainable_parameter_count(model),
     }

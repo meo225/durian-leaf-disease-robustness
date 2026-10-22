@@ -50,8 +50,7 @@ durian-leaf-disease-robustness/
 │   ├── training/
 │   ├── corruption/       # suy giảm ảnh có kiểm soát
 │   ├── processing/       # kỹ thuật xử lý để so sánh
-│   ├── evaluation/
-│   └── utils/
+│   └── evaluation/
 ├── tests/
 ├── reports/              # kết quả đã chốt, commit cùng code
 ├── outputs/              # kết quả một lần chạy, không commit
@@ -143,8 +142,9 @@ kaggle kernels push --no-run -p <thư-mục-tạm>
 | `notebooks/01_split_durianldd.ipynb` | `01_split_durianldd` | `TEN_KAGGLE/01-split-durianldd` |
 | `notebooks/02_data_pipeline.ipynb` | `02_data_pipeline` | `TEN_KAGGLE/02-data-pipeline` |
 | `notebooks/03_train_resnet50.ipynb` | `03_train_resnet50` | `TEN_KAGGLE/03-train-resnet50` |
+| `notebooks/03_train_mobilenetv3_small.ipynb` | `03_train_mobilenetv3_small` | `TEN_KAGGLE/03-train-mobilenetv3-small` |
 
-Ba notebook kiểm tra dữ liệu dùng Accelerator None. `03_train_resnet50` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
+Ba notebook kiểm tra dữ liệu dùng Accelerator None. `03_train_resnet50` và `03_train_mobilenetv3_small` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
 
 ### Phiên chạy
 
@@ -170,6 +170,7 @@ Model đưa lên Hugging Face khi đã chọn bản phát hành. Ảnh suy giả
 | Split | `configs/split.yaml`, `manifests/split_manifest.csv` |
 | Pipeline ảnh | `configs/pipeline.yaml` |
 | Train ResNet-50 | `configs/train_resnet50.yaml` |
+| Train MobileNetV3-Small | `configs/train_mobilenetv3_small.yaml` |
 | Kiểm tra dữ liệu | `configs/data_audit.yaml` |
 
 Pipeline chuẩn: train dùng lật ngang, lật dọc, xoay ±15°, rồi chuẩn hóa ImageNet. Val và test resize về 224 khi cần, rồi chuẩn hóa. Gamma, CLAHE, Retinex, khử nhiễu và làm nét không nằm trong pipeline này.

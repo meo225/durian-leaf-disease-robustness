@@ -1,4 +1,4 @@
-"""Khởi tạo kiến trúc baseline."""
+"""Kiến trúc baseline."""
 
 from src.models.build import build_model
 
