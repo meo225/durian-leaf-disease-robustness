@@ -61,7 +61,7 @@ def sensor_noise(image: torch.Tensor, peak: float, generator: torch.Generator | 
 
 def lowlight(image: torch.Tensor, factor: float, generator: torch.Generator | None = None) -> torch.Tensor:
     """Chụp thiếu sáng: ảnh tối đi theo factor và nhiễu hạt tăng theo, vì ít photon hơn."""
-    return sensor_noise(image * factor, 40.0, generator)
+    return sensor_noise(image * factor, 200.0, generator)
 
 
 def glare(image: torch.Tensor, strength: float, generator: torch.Generator | None = None) -> torch.Tensor:
