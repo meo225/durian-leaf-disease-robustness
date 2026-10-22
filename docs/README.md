@@ -40,3 +40,15 @@ Các mục này xuất hiện ở phase sau của plan. Chưa viết thành tài
 - DS-MENet 2022, DOI 10.3389/fpls.2022.884464.
 - PlantRefineDet 2023, DOI 10.1016/j.eswa.2023.120717.
 - Deep learning for guava anthracnose 2026, DOI 10.1186/s12870-026-09125-1.
+
+## Bổ sung về độ bền suy giảm ảnh
+
+Các nguồn này gần nhất với phần benchmark và xử lý ảnh. Chưa có bản phân tích riêng.
+
+- ImageNet-C 2019, arXiv 1903.12261. Họ suy giảm chuẩn, năm mức, chỉ số mCE.
+- From Code to Field, MangoLeafDB-C 2025, arXiv 2512.13641. Benchmark suy giảm kiểu ImageNet-C cho bệnh lá xoài, không đánh giá xử lý ảnh. Vì vậy benchmark không phải đóng góp riêng của đồ án.
+- DPA-Net 2025, https://www.mdpi.com/2504-3110/9/11/691. Thiếu sáng kèm nhiễu, xử lý bằng kiến trúc mạng.
+- KDID-Net 2026, DOI 10.1007/s44443-026-01080-z. Khử mờ chuyển động bằng mạng học sâu rồi phân loại.
+- Robust identification of plant diseases, củ cải, PLOS ONE 2026, DOI 10.1371/journal.pone.0353374. So sánh bộ lọc tiền xử lý, độ bền chỉ kiểm tra trong cùng dataset.
+
+Khoảng trống đồ án nhắm tới: đánh giá kỹ thuật xử lý ảnh cổ điển theo chỉ số nhận diện trên cặp mẫu ghép, và chọn kỹ thuật thích ứng khi không biết trước loại suy giảm.
