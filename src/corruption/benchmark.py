@@ -11,7 +11,7 @@ import yaml
 from torch.utils.data import DataLoader
 from torchvision import transforms
 
-from src.corruption.basic import apply_corruption
+from src.corruption.basic import RANDOM_TYPES, apply_corruption
 from src.data.dataset import DurianDataset
 from src.data.splits import get_split
 from src.data.transforms import ConditionalResize
@@ -22,14 +22,14 @@ ROOT = Path(__file__).resolve().parents[2]
 def load_conditions(config_path: str | Path, split: str) -> dict[str, dict[str, Any]]:
     """Đọc các điều kiện suy giảm từ config. Tập test chỉ dùng được khi config đã khóa.
 
-    Tên điều kiện có dạng `<họ>_s<mức>`, ví dụ `blur_s2`. Mỗi điều kiện có type, value, family và severity.
+    Tên điều kiện có dạng `<họ>_s<mức>`, ví dụ `blur_s2`. Mỗi điều kiện có type, value, family, severity và group (plan hoặc extension).
     """
     path = Path(config_path)
     cfg = yaml.safe_load((path if path.is_absolute() else ROOT / path).read_text(encoding="utf-8"))
     if split == "test" and not cfg["locked"]:
         raise PermissionError("Config suy giảm chưa khóa (locked: false). Không mở tập test.")
     return {
-        f"{family}_s{severity}": {"type": spec["type"], "value": value, "family": family, "severity": severity}
+        f"{family}_s{severity}": {"type": spec["type"], "value": value, "family": family, "severity": severity, "group": spec.get("group", "plan")}
         for family, spec in cfg["families"].items()
         for severity, value in enumerate(spec["levels"], start=1)
     }
@@ -43,11 +43,11 @@ def load_seed(config_path: str | Path) -> int:
 def corrupt_tensor(image: torch.Tensor, name: str, spec: Mapping[str, Any], seed: int) -> torch.Tensor:
     """Áp một điều kiện lên ảnh 0 đến 1 rồi làm tròn về 8 bit, như khi lưu ảnh.
 
-    Nhiễu lấy seed từ nội dung ảnh, tên điều kiện và seed chung. Một ảnh luôn nhận cùng một nhiễu,
+    Yếu tố ngẫu nhiên (nhiễu, hướng mờ, vị trí chói, hình bóng) lấy seed từ nội dung ảnh, tên điều kiện và seed chung. Một ảnh luôn nhận cùng một suy giảm,
     không phụ thuộc thứ tự batch hay số worker.
     """
     generator = None
-    if spec["type"] == "noise":
+    if spec["type"] in RANDOM_TYPES:
         digest = hashlib.sha256(image.numpy().tobytes() + f"{seed}:{name}".encode()).digest()
         generator = torch.Generator().manual_seed(int.from_bytes(digest[:8], "big") & 0x7FFFFFFFFFFFFFFF)
     return torch.round(apply_corruption(image, spec, generator) * 255) / 255

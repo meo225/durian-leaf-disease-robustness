@@ -46,7 +46,7 @@ def val_data(tmp_path, monkeypatch):
 def test_conditions_are_named_by_family_and_severity(tmp_path):
     conditions = load_conditions(_write_config(tmp_path / "c.yaml", locked=False), "val")
     assert list(conditions) == ["brightness_dark_s1", "brightness_dark_s2", "noise_s1", "noise_s2"]
-    assert conditions["noise_s2"] == {"type": "noise", "value": 0.1, "family": "noise", "severity": 2}
+    assert conditions["noise_s2"] == {"type": "noise", "value": 0.1, "family": "noise", "severity": 2, "group": "plan"}
 
 
 def test_test_split_needs_locked_config(tmp_path):
@@ -57,7 +57,8 @@ def test_test_split_needs_locked_config(tmp_path):
 
 def test_project_config_is_valid_and_not_yet_locked_for_test():
     conditions = load_conditions("configs/corruption.yaml", "val")
-    assert len(conditions) == 15
+    assert len(conditions) == 42
+    assert {spec["group"] for spec in conditions.values()} == {"plan", "extension"}
     assert {spec["severity"] for spec in conditions.values()} == {1, 2, 3}
 
 
@@ -120,3 +121,34 @@ def test_calibration_end_to_end(val_data, tmp_path, monkeypatch):
     saved = json.loads((tmp_path / "out" / "calibration.json").read_text(encoding="utf-8"))
     assert set(saved["conditions"]) == {"brightness_dark_s1", "brightness_dark_s2", "noise_s1", "noise_s2"}
     assert record["clean_macro_f1"] == saved["clean_macro_f1"]
+
+
+@pytest.mark.parametrize("kind,value", [("motion_blur", 9), ("glare", 0.7), ("shadow", 0.5), ("lowlight", 0.3), ("sensor_noise", 30)])
+def test_random_corruptions_repeat_per_image_and_change_the_image(kind, value):
+    spec = {"type": kind, "value": value}
+    image = torch.rand(3, 32, 32)
+    first = corrupt_tensor(image, f"{kind}_s2", spec, seed=1)
+    assert torch.equal(first, corrupt_tensor(image, f"{kind}_s2", spec, seed=1))
+    assert not torch.equal(first, corrupt_tensor(image, f"{kind}_s2", spec, seed=2))
+    assert first.shape == image.shape and 0.0 <= float(first.min()) and float(first.max()) <= 1.0
+
+
+@pytest.mark.parametrize("kind,value", [("jpeg", 10), ("lowres", 0.33), ("color_cast", 0.2), ("contrast", 1.6)])
+def test_deterministic_corruptions_change_the_image_and_keep_shape(kind, value):
+    image = torch.rand(3, 32, 32)
+    out = corrupt_tensor(image, f"{kind}_s1", {"type": kind, "value": value}, seed=0)
+    assert out.shape == image.shape and not torch.equal(out, image)
+
+
+def test_glare_brightens_and_color_cast_warms():
+    image = torch.full((3, 32, 32), 0.4)
+    assert corrupt_tensor(image, "g", {"type": "glare", "value": 1.0}, seed=0).mean() > 0.4
+    warm = corrupt_tensor(image, "c", {"type": "color_cast", "value": 0.2}, seed=0)
+    assert warm[0].mean() > warm[2].mean()
+
+
+def test_motion_blur_is_directional():
+    image = torch.zeros(3, 33, 33)
+    image[:, 16, 16] = 1.0
+    out = corrupt_tensor(image, "m", {"type": "motion_blur", "value": 9}, seed=3)
+    assert (out[0] > 0).sum() > 1 and abs(float(out[0].sum()) - 1.0) < 0.1

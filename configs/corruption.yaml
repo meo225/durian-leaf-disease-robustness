@@ -1,8 +1,9 @@
 # Benchmark suy giảm chất lượng ảnh (task 4.1).
 # Mỗi họ có ba mức, tăng dần từ nhẹ đến mạnh. Giá trị chọn theo mẫu ảnh và điểm reference model trên validation.
+# group plan: bốn họ của plan (độ sáng, tương phản, mờ, nhiễu). group extension: tình huống chụp ngoài vườn.
 # locked: true nghĩa là đã khóa. Code từ chối mở tập test khi chưa khóa. Sau khi khóa không chỉnh theo kết quả test.
 
-version: 1
+version: 2
 locked: false
 seed: 42
 
@@ -22,3 +23,39 @@ families:
   noise:
     type: noise
     levels: [0.03, 0.06, 0.10]
+  contrast_high:
+    group: extension
+    type: contrast
+    levels: [1.3, 1.6, 2.0]
+  glare:
+    group: extension
+    type: glare
+    levels: [0.4, 0.7, 1.0]
+  shadow:
+    group: extension
+    type: shadow
+    levels: [0.3, 0.5, 0.7]
+  lowlight:
+    group: extension
+    type: lowlight
+    levels: [0.5, 0.3, 0.15]
+  motion_blur:
+    group: extension
+    type: motion_blur
+    levels: [5, 9, 15]
+  sensor_noise:
+    group: extension
+    type: sensor_noise
+    levels: [60, 30, 15]
+  jpeg:
+    group: extension
+    type: jpeg
+    levels: [30, 15, 5]
+  lowres:
+    group: extension
+    type: lowres
+    levels: [0.5, 0.33, 0.2]
+  color_cast:
+    group: extension
+    type: color_cast
+    levels: [0.1, 0.2, 0.3]
