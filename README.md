@@ -145,8 +145,9 @@ kaggle kernels push --no-run -p <thư-mục-tạm>
 | `notebooks/03_train_mobilenetv3_small.ipynb` | `03_train_mobilenetv3_small` | `TEN_KAGGLE/03-train-mobilenetv3-small` |
 | `notebooks/03_train_convnext_tiny.ipynb` | `03_train_convnext_tiny` | `TEN_KAGGLE/03-train-convnext-tiny` |
 | `notebooks/03_select_reference_model.ipynb` | `03_select_reference_model` | `TEN_KAGGLE/03-select-reference-model` |
+| `notebooks/04_corruption_benchmark.ipynb` | `04_corruption_benchmark` | `TEN_KAGGLE/04-corruption-benchmark` |
 
-Ba notebook kiểm tra dữ liệu dùng Accelerator None. `03_train_resnet50`, `03_train_mobilenetv3_small`, `03_train_convnext_tiny` và `03_select_reference_model` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
+Ba notebook kiểm tra dữ liệu dùng Accelerator None. `03_train_resnet50`, `03_train_mobilenetv3_small`, `03_train_convnext_tiny`, `03_select_reference_model` và `04_corruption_benchmark` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
 
 ### Phiên chạy
 
@@ -175,6 +176,7 @@ Model đưa lên Hugging Face khi đã chọn bản phát hành. Ảnh suy giả
 | Train MobileNetV3-Small | `configs/train_mobilenetv3_small.yaml` |
 | Train ConvNeXt-Tiny | `configs/train_convnext_tiny.yaml` |
 | Chọn reference model | `configs/reference_selection.yaml` |
+| Suy giảm ảnh | `configs/corruption.yaml` |
 | Kiểm tra dữ liệu | `configs/data_audit.yaml` |
 
 Pipeline chuẩn: train dùng lật ngang, lật dọc, xoay ±15°, rồi chuẩn hóa ImageNet. Val và test resize về 224 khi cần, rồi chuẩn hóa. Gamma, CLAHE, Retinex, khử nhiễu và làm nét không nằm trong pipeline này.

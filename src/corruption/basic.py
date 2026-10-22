@@ -26,9 +26,10 @@ def blur(image: torch.Tensor, sigma: float) -> torch.Tensor:
     return TF.gaussian_blur(image, [kernel, kernel], [sigma, sigma])
 
 
-def noise(image: torch.Tensor, std: float) -> torch.Tensor:
-    """Cộng nhiễu Gauss với độ lệch chuẩn std."""
-    return (image + torch.randn_like(image) * std).clamp(0.0, 1.0)
+def noise(image: torch.Tensor, std: float, generator: torch.Generator | None = None) -> torch.Tensor:
+    """Cộng nhiễu Gauss với độ lệch chuẩn std. Có generator thì nhiễu lặp lại được."""
+    sample = torch.randn(image.shape, generator=generator) if generator is not None else torch.randn_like(image)
+    return (image + sample * std).clamp(0.0, 1.0)
 
 
 CORRUPTIONS: dict[str, Callable[..., torch.Tensor]] = {
@@ -39,9 +40,13 @@ CORRUPTIONS: dict[str, Callable[..., torch.Tensor]] = {
 }
 
 
-def apply_corruption(image: torch.Tensor, spec: Mapping[str, Any]) -> torch.Tensor:
-    """Áp một suy giảm theo spec, ví dụ {"type": "brightness", "value": 0.5}."""
+def apply_corruption(
+    image: torch.Tensor, spec: Mapping[str, Any], generator: torch.Generator | None = None
+) -> torch.Tensor:
+    """Áp một suy giảm theo spec, ví dụ {"type": "brightness", "value": 0.5}. Generator chỉ dùng cho noise."""
     kind = str(spec["type"])
     if kind not in CORRUPTIONS:
         raise ValueError(f"Kiểu suy giảm chưa hỗ trợ: {kind}.")
+    if kind == "noise":
+        return noise(image, float(spec["value"]), generator)
     return CORRUPTIONS[kind](image, float(spec["value"]))

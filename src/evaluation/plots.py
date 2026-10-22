@@ -69,3 +69,25 @@ def plot_confusion_matrix(
     fig.colorbar(image, ax=ax)
     fig.tight_layout()
     fig.savefig(path, dpi=150)
+
+
+def plot_corruption_examples(rows: Sequence[tuple[str, Sequence[tuple[str, Any]]]], path: str | Path) -> None:
+    """Vẽ lưới ảnh mẫu: mỗi dòng là một họ suy giảm, cột đầu là ảnh sạch, các cột sau là từng mức."""
+    columns = max(len(cells) for _, cells in rows)
+    fig = Figure(figsize=(2.2 * columns, 2.3 * len(rows)))
+    axes = fig.subplots(len(rows), columns, squeeze=False)
+    for row_index, (family, cells) in enumerate(rows):
+        for col_index in range(columns):
+            ax = axes[row_index][col_index]
+            ax.set_xticks([])
+            ax.set_yticks([])
+            if col_index >= len(cells):
+                ax.axis("off")
+                continue
+            title, image = cells[col_index]
+            ax.imshow(image)
+            ax.set_title(title, fontsize=8)
+            if col_index == 0:
+                ax.set_ylabel(family, fontsize=8)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
