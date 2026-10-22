@@ -8,6 +8,18 @@ Protocol xác định trước cách thực hiện và đánh giá thí nghiệm
 
 Đối tượng đánh giá chính là hiệu năng nhận diện bệnh. Chất lượng ảnh nhìn bằng mắt chỉ hỗ trợ phân tích.
 
+## Trọng tâm và đóng góp
+
+Đóng góp chính là một cơ chế xử lý ảnh thích ứng theo chất lượng ảnh, đặt trước bộ phân loại bệnh lá sầu riêng được giữ nguyên. Cơ chế ước lượng dạng và mức suy giảm từ chính ảnh bằng đặc trưng chất lượng nhẹ, rồi chọn kỹ thuật xử lý phù hợp hoặc không xử lý.
+
+Bằng chứng nền là bản đồ phục hồi: kỹ thuật cổ điển nào phục hồi nhận diện, ở họ và mức suy giảm nào, với chi phí bao nhiêu trên ảnh sạch và theo từng lớp. Cơ chế thích ứng được thiết kế từ bản đồ này, không đoán trước.
+
+Benchmark suy giảm, đánh giá ngoài phân phối và Grad-CAM là phương tiện kiểm chứng, không phải đóng góp riêng. Các nghiên cứu trước đã có benchmark suy giảm cho bệnh lá, nên bản thân benchmark không được coi là điểm mới.
+
+Điều kiện so sánh ở đánh giá cuối: không xử lý, kỹ thuật cố định tốt nhất, chọn thích ứng, oracle biết trước loại suy giảm, và đối chứng huấn luyện lại reference model bằng augmentation suy giảm. Nếu chọn thích ứng không vượt kỹ thuật cố định, đóng góp còn lại là bản đồ phục hồi và kết quả âm kèm nó.
+
+Ngoài phạm vi: khôi phục ảnh bằng học sâu, thiết kế kiến trúc phân loại mới, DINOv2 đóng băng.
+
 ## 2. Phạm vi
 
 Input là ảnh RGB lá sầu riêng. Output là nhãn bệnh hoặc healthy theo hệ nhãn của dataset chính. Bài toán chính là phân loại ảnh. Localization và segmentation không bắt buộc.
@@ -20,17 +32,17 @@ Hai nhánh báo cáo riêng. Corruption có kiểm soát cho biết model phản
 
 ## 3. Câu hỏi nghiên cứu
 
-- RQ1. Brightness, contrast, blur và noise ảnh hưởng thế nào khi severity tăng?
-- RQ2. Kỹ thuật xử lý ảnh phù hợp với từng loại suy giảm phục hồi hiệu năng đến mức nào?
-- RQ3. Hiệu quả có phụ thuộc loại corruption và severity hay không?
-- RQ4. Xử lý ảnh có làm giảm hiệu năng trên ảnh sạch, làm mất texture tổn thương hoặc tạo artifact hay không?
-- RQ5. Model và pipeline cuối tổng quát hóa thế nào trên dataset sầu riêng độc lập?
+- RQ1. Độ sáng, tương phản, mờ, nhiễu và các họ mô phỏng điều kiện ngoài vườn ảnh hưởng thế nào đến hiệu năng khi severity tăng?
+- RQ2. Kỹ thuật xử lý ảnh cổ điển nào phục hồi hiệu năng, với họ và mức suy giảm nào, và chi phí trên ảnh sạch và theo từng lớp là bao nhiêu?
+- RQ3. Chọn được kỹ thuật phù hợp chỉ từ ảnh, khi không biết trước loại suy giảm, đến mức nào so với kỹ thuật cố định, oracle và huấn luyện lại bằng augmentation?
+- RQ4. Xử lý ảnh có làm giảm hiệu năng trên ảnh sạch, làm mất kết cấu vết bệnh hoặc tạo artifact hay không?
+- RQ5. Pipeline cuối còn hoạt động thế nào trên dataset sầu riêng độc lập? Đây là kiểm chứng, báo riêng.
 
 ## 4. Giả thuyết
 
 - H1. Hiệu năng giảm khi severity tăng, mức giảm khác nhau giữa bốn loại corruption.
 - H2. Kỹ thuật phù hợp failure mode có thể phục hồi một phần. Không giả định một kỹ thuật luôn tốt cho mọi corruption.
-- H3. Xử lý cố định trên mọi input có thể có tác dụng ngược, nhất là ảnh sạch hoặc tổn thương có texture nhỏ.
+- H3. Xử lý cố định trên mọi input có thể có tác dụng ngược, nhất là ảnh sạch hoặc tổn thương có texture nhỏ. Chọn thích ứng theo chất lượng ảnh giữ được phần lớn mức phục hồi của oracle mà không làm xấu ảnh sạch.
 - H4. Metric nhận diện phản ánh giá trị của preprocessing rõ hơn việc chỉ xem ảnh có đẹp hơn hay không.
 - H5. Hiệu năng trên dataset độc lập thấp hơn clean test cùng nguồn nếu domain shift đáng kể.
 
