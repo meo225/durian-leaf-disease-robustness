@@ -1,0 +1,87 @@
+{
+  "model_name": "hog_svm",
+  "library": "skimage+sklearn",
+  "backbone": "hog_svm_rbf",
+  "train_mode": "classical",
+  "seed": 42,
+  "best_epoch": null,
+  "epochs_run": null,
+  "selection_metric": "macro_f1",
+  "elapsed_seconds": 240.702,
+  "finished_at_utc": "2026-10-26T05:53:18.012296+00:00",
+  "resource": "cpu",
+  "trainable_parameters": null,
+  "feature_dimension": 6084,
+  "hyperparameters": {
+    "hog": {
+      "cell_size": 16,
+      "block_cells": 2,
+      "bins": 9
+    },
+    "svm": {
+      "kernel": "rbf",
+      "C": 1.0,
+      "gamma": "scale",
+      "class_weight": null
+    },
+    "image_size": 224,
+    "grayscale": true,
+    "augmentation": false
+  },
+  "classes": [
+    "ALGAL_LEAF_SPOT",
+    "ALLOCARIDARA_ATTACK",
+    "HEALTHY_LEAF",
+    "LEAF_BLIGHT",
+    "PHOMOPSIS_LEAF_SPOT"
+  ],
+  "val_macro_f1": 0.40029574656171585,
+  "val_balanced_accuracy": 0.40736383559253386,
+  "val_accuracy": 0.4189189189189189,
+  "val_loss": null,
+  "per_class_recall": {
+    "ALGAL_LEAF_SPOT": 0.20270270270270271,
+    "ALLOCARIDARA_ATTACK": 0.5652173913043478,
+    "HEALTHY_LEAF": 0.5463917525773195,
+    "LEAF_BLIGHT": 0.4838709677419355,
+    "PHOMOPSIS_LEAF_SPOT": 0.23863636363636365
+  },
+  "confusion_matrix": [
+    [
+      15,
+      14,
+      15,
+      17,
+      13
+    ],
+    [
+      13,
+      52,
+      8,
+      13,
+      6
+    ],
+    [
+      7,
+      8,
+      53,
+      21,
+      8
+    ],
+    [
+      7,
+      12,
+      17,
+      45,
+      12
+    ],
+    [
+      10,
+      4,
+      24,
+      29,
+      21
+    ]
+  ],
+  "history": []
+}

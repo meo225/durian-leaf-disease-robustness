@@ -1,0 +1,23 @@
+# Baseline truyền thống HOG + SVM. Chạy trên CPU, cùng split khóa và cùng ảnh 224 với các baseline học sâu.
+# Không tối ưu siêu tham số, chỉ để đo khoảng cách với học sâu. Chọn theo macro F1 trên validation. Không đọc tập test.
+
+pipeline_config: configs/pipeline.yaml
+model_name: hog_svm
+library: skimage+sklearn
+backbone: hog_svm_rbf
+train_mode: classical
+selection_metric: macro_f1
+seed: 42
+
+# HOG (skimage) trên ảnh xám 224×224: ô 16 px, khối 2×2 ô, bước một ô, 9 hướng, chuẩn hóa L2-Hys.
+hog:
+  cell_size: 16
+  block_cells: 2
+  bins: 9
+
+# Chuẩn hóa từng chiều rồi SVM nhân RBF. Giá trị mặc định của sklearn, không dò.
+svm:
+  kernel: rbf
+  C: 1.0
+  gamma: scale
+  class_weight: null

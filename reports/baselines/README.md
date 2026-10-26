@@ -9,6 +9,7 @@ Fine-tune trên split khóa `manifests/split_manifest.csv`, ảnh 224×224, 5 l�
 | ResNet-50 | CNN cổ điển | 23,518,277 | 0.9720 | 0.9719 | 0.1112 | 1740.7 giây | 23 / 30 |
 | ConvNeXt-Tiny | Vision hiện đại | 27,823,973 | 0.9775 | 0.9775 | 0.1173 | 3109.2 giây | 24 / 30 |
 | MobileNetV3-Small | CNN nhẹ | 1,522,981 | 0.9292 | 0.9297 | 0.2635 | 551.7 giây | 15 / 22 |
+| HOG + SVM | Truyền thống | không áp dụng | 0.4003 | 0.4074 | không áp dụng | 240.7 giây (CPU) | không áp dụng |
 
 Chạy trên Tesla T4. Epoch 1 luôn chậm hơn nhiều do khởi động lạnh (ConvNeXt-Tiny 515 giây, ResNet-50 305 giây, MobileNetV3-Small 243 giây), nên thời gian train gồm cả phần này.
 
@@ -22,6 +23,8 @@ Chạy trên Tesla T4. Epoch 1 luôn chậm hơn nhiều do khởi động lạn
 | LEAF_BLIGHT | 0.9677 | 0.9462 | 0.9032 |
 | PHOMOPSIS_LEAF_SPOT | 0.9432 | 1.0000 | 0.8750 |
 
+Recall từng lớp của HOG + SVM: ALGAL_LEAF_SPOT 0.2027, ALLOCARIDARA_ATTACK 0.5652, HEALTHY_LEAF 0.5464, LEAF_BLIGHT 0.4839, PHOMOPSIS_LEAF_SPOT 0.2386.
+
 ## Giao thức chung
 
 Mọi baseline dùng cùng một cấu hình, chỉ khác model: timm, AdamW, learning rate 2e-4, weight decay 1e-2, cosine, tối đa 30 epoch, patience 7, không dropout thêm. Xem `configs/train_<model>.yaml`.
@@ -31,6 +34,12 @@ Mọi baseline dùng cùng một cấu hình, chỉ khác model: timm, AdamW, le
 - Tập validation có 444 ảnh. Một điểm F1 tương đương vài ảnh, và đường val F1 dao động theo epoch. Chênh lệch dưới khoảng 0.01 chưa đủ để xếp hạng, nên ConvNeXt-Tiny và ResNet-50 (chênh 0.0055) chưa phân biệt được.
 - Mỗi model mới chạy một seed. Phase 3 ghi rõ cần chạy lặp khi điểm gần nhau.
 - MobileNetV3-Small dừng sớm ở epoch 22 nên cosine chưa giảm learning rate về mức thấp.
+
+## Mốc truyền thống: HOG + SVM
+
+Mốc rẻ theo yêu cầu môn học, để thấy khoảng cách với học sâu. Chạy trên CPU, cùng split khóa, cùng ảnh 224×224, seed 42. HOG tính trên ảnh xám (ô 16 px, khối 2×2 ô, 9 hướng, 6.084 chiều), chuẩn hóa từng chiều rồi SVM nhân RBF với tham số mặc định (C = 1, gamma = scale). Không augmentation, không dò siêu tham số. Cấu hình ở `configs/train_hog_svm.yaml`, code ở `src/training/hog_svm.py`, notebook `03_train_hog_svm.ipynb`.
+
+Macro F1 validation 0.4003, thấp hơn ConvNeXt-Tiny 0.9775 khoảng 0.58. Mức ngẫu nhiên giữa năm lớp xấp xỉ 0.2. Hai lớp ALGAL_LEAF_SPOT và PHOMOPSIS_LEAF_SPOT bị nhận sai nhiều nhất (recall khoảng 0.2). HOG chỉ giữ cạnh và kết cấu trên ảnh xám nên bỏ mất màu, vốn là dấu hiệu chính của vết bệnh. Đây là một seed, không tối ưu, nên con số chỉ là mốc. HOG + SVM không tham gia chọn reference model và chưa đo dưới suy giảm.
 
 ## Reference model
 
@@ -60,7 +69,7 @@ Lưu ý: ba checkpoint tái hiện đúng macro F1 đã ghi lúc train. Năm m�
 
 Mỗi model có thư mục riêng, tên file có hậu tố `_seed42`:
 
-- `<model>_seed42.json`: toàn bộ số liệu, hyperparameter và lịch sử từng epoch
+- `<model>_seed42.json`: toàn bộ số liệu, hyperparameter và lịch sử từng epoch (HOG + SVM không có epoch nên `history` rỗng, và không có `_history.png`)
 - `<model>_seed42_history.png`: loss và val macro F1 theo epoch
 - `<model>_seed42_confusion_matrix.png`: confusion matrix của checkpoint đã chọn
 
