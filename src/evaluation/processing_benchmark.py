@@ -39,10 +39,11 @@ class ImageCache:
         conditions: Mapping[str, Mapping[str, Any]],
         seed: int,
         limit: int | None = None,
+        split: str = SPLIT,
     ) -> None:
         root = Path(pipeline_cfg["image_root"])
         dataset = DurianDataset(
-            split_df=get_split(SPLIT),
+            split_df=get_split(split),
             image_root=root if root.is_absolute() else ROOT / root,
             transform=transforms.Compose([ConditionalResize(int(pipeline_cfg["image_size"])), transforms.ToTensor()]),
             classes=pipeline_cfg["classes"],
@@ -59,6 +60,10 @@ class ImageCache:
 
     def __len__(self) -> int:
         return len(self.labels)
+
+    def release(self, condition: str) -> None:
+        """Bỏ ảnh đã tạo của một điều kiện để giải phóng RAM. Gọi `get` lần sau sẽ tạo lại."""
+        self._cache.pop(condition, None)
 
     def get(self, condition: str) -> torch.Tensor:
         """Ảnh uint8 của một điều kiện. `clean` là ảnh không suy giảm."""

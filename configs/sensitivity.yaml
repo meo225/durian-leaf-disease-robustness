@@ -1,0 +1,44 @@
+# Task 4.2. Phân tích độ nhạy của reference model với suy giảm ảnh.
+# Ngưỡng phân loại mức ảnh hưởng đặt trước khi xem kết quả test, không chỉnh sau đó.
+
+corruption_config: configs/corruption.yaml
+checkpoint_name: convnext_tiny_seed42.pt
+splits: [val, test]
+
+bootstrap:
+  resamples: 2000
+  seed: 42
+  confidence: 0.95
+
+alpha: 0.05
+
+# Phân loại họ theo mức giảm macro F1 trung bình qua ba mức.
+thresholds:
+  severe: 0.15
+  moderate: 0.05
+  mild: 0.02
+
+# Ảnh hưởng ngay ở mức 1: giảm từ ngưỡng này trở lên khi suy giảm còn nhẹ.
+early_drop: 0.05
+
+# Task nhận xử lý từng họ. Rỗng nghĩa là không có kỹ thuật phù hợp, giữ làm đối chứng.
+handlers:
+  brightness_dark: ["4.3"]
+  brightness_bright: ["4.3"]
+  contrast_low: ["4.3"]
+  contrast_high: ["4.3"]
+  glare: ["4.3"]
+  shadow: ["4.3"]
+  color_cast: ["4.3"]
+  lowlight: ["4.3", "4.4"]
+  blur: ["4.4"]
+  motion_blur: ["4.4"]
+  noise: ["4.4"]
+  sensor_noise: ["4.4"]
+  lowres: ["4.4"]
+  jpeg: []
+
+fragile_top: 8
+
+quality:
+  external_limit: 500
