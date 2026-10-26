@@ -142,12 +142,13 @@ kaggle kernels push --no-run -p <thư-mục-tạm>
 | `notebooks/01_split_durianldd.ipynb` | `01_split_durianldd` | `TEN_KAGGLE/01-split-durianldd` |
 | `notebooks/02_data_pipeline.ipynb` | `02_data_pipeline` | `TEN_KAGGLE/02-data-pipeline` |
 | `notebooks/03_train_resnet50.ipynb` | `03_train_resnet50` | `TEN_KAGGLE/03-train-resnet50` |
+| `notebooks/03_train_hog_svm.ipynb` | `03_train_hog_svm` | `TEN_KAGGLE/03-train-hog-svm` |
 | `notebooks/03_train_mobilenetv3_small.ipynb` | `03_train_mobilenetv3_small` | `TEN_KAGGLE/03-train-mobilenetv3-small` |
 | `notebooks/03_train_convnext_tiny.ipynb` | `03_train_convnext_tiny` | `TEN_KAGGLE/03-train-convnext-tiny` |
 | `notebooks/03_select_reference_model.ipynb` | `03_select_reference_model` | `TEN_KAGGLE/03-select-reference-model` |
 | `notebooks/04_corruption_benchmark.ipynb` | `04_corruption_benchmark` | `TEN_KAGGLE/04-corruption-benchmark` |
 
-Ba notebook kiểm tra dữ liệu dùng Accelerator None. `03_train_resnet50`, `03_train_mobilenetv3_small`, `03_train_convnext_tiny`, `03_select_reference_model` và `04_corruption_benchmark` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
+Ba notebook kiểm tra dữ liệu và `03_train_hog_svm` dùng Accelerator None. `03_train_resnet50`, `03_train_mobilenetv3_small`, `03_train_convnext_tiny`, `03_select_reference_model` và `04_corruption_benchmark` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
 
 ### Phiên chạy
 
@@ -175,6 +176,7 @@ Model đưa lên Hugging Face khi đã chọn bản phát hành. Ảnh suy giả
 | Train ResNet-50 | `configs/train_resnet50.yaml` |
 | Train MobileNetV3-Small | `configs/train_mobilenetv3_small.yaml` |
 | Train ConvNeXt-Tiny | `configs/train_convnext_tiny.yaml` |
+| Train HOG + SVM (CPU) | `configs/train_hog_svm.yaml` |
 | Chọn reference model | `configs/reference_selection.yaml` |
 | Suy giảm ảnh | `configs/corruption.yaml` |
 | Kiểm tra dữ liệu | `configs/data_audit.yaml` |
