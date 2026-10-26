@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 from matplotlib.colors import TwoSlopeNorm
 from matplotlib.figure import Figure
+from matplotlib.patches import Patch
 
 SEVERITY_COLORS = {1: "#4c78a8", 2: "#f58518", 3: "#b3262d"}
 CATEGORY_COLORS = {"severe": "#b3262d", "moderate": "#f58518", "mild": "#e6c229", "negligible": "#9aa0a6"}
@@ -212,9 +213,7 @@ def plot_priority(summary: pd.DataFrame, path: str | Path, title: str) -> None:
     ax.set_yticks(positions)
     ax.set_yticklabels(ordered["family"], fontsize=8)
     ax.set_xlabel("degradation trung bình qua ba mức (vạch: từ mức 1 đến mức lớn nhất)")
-    for name, color in CATEGORY_COLORS.items():
-        ax.barh([], [], color=color, label=name)
-    ax.legend(loc="lower right", fontsize=8)
+    ax.legend(handles=[Patch(color=color, label=name) for name, color in CATEGORY_COLORS.items()], loc="lower right", fontsize=8)
     ax.set_xlim(0, float(ordered["max_degradation"].max()) + 0.14)
     ax.set_title(title, fontsize=10)
     _save(fig, path)
