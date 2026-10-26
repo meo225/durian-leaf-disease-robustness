@@ -71,7 +71,7 @@ def plot_confusion_matrix(
     fig.savefig(path, dpi=150)
 
 
-def plot_corruption_examples(rows: Sequence[tuple[str, Sequence[tuple[str, Any]]]], path: str | Path) -> None:
+def plot_corruption_examples(rows: Sequence[tuple[str, Sequence[tuple[str, Any]]]], path: str | Path, dpi: int = 150) -> None:
     """Vẽ lưới ảnh mẫu: mỗi dòng là một họ suy giảm, cột đầu là ảnh sạch, các cột sau là từng mức."""
     columns = max(len(cells) for _, cells in rows)
     fig = Figure(figsize=(2.2 * columns, 2.3 * len(rows)))
@@ -90,4 +90,4 @@ def plot_corruption_examples(rows: Sequence[tuple[str, Sequence[tuple[str, Any]]
             if col_index == 0:
                 ax.set_ylabel(family, fontsize=8)
     fig.tight_layout()
-    fig.savefig(path, dpi=150)
+    fig.savefig(path, dpi=dpi)

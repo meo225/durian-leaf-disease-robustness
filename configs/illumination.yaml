@@ -1,0 +1,66 @@
+# Lưới tham số cho nhóm kỹ thuật ánh sáng, tương phản và màu (task 4.3).
+# Chỉ tối ưu trên validation. Tập test chưa mở, tham số chốt xong mới sang 4.5.
+# families: họ suy giảm phù hợp với kỹ thuật, dùng để chọn tham số.
+# Các họ còn lại trong scope_families chỉ chạy một cấu hình chung làm đối chứng không phù hợp.
+
+version: 1
+corruption_config: configs/corruption.yaml
+checkpoint_name: convnext_tiny_seed42.pt
+
+scope_families:
+  - brightness_dark
+  - brightness_bright
+  - lowlight
+  - glare
+  - shadow
+  - contrast_low
+  - contrast_high
+  - color_cast
+
+selection:
+  # Điểm của một cấu hình là macro F1 trung bình trên ba mức của họ suy giảm.
+  # Các cấu hình trong khoảng này so với cấu hình tốt nhất được coi là ngang nhau, chọn cấu hình giữ F1 ảnh sạch cao hơn.
+  tie_margin: 0.003
+  # Chỉ tính normalized recovery khi mức giảm của ảnh suy giảm lớn hơn ngưỡng này, tránh chia cho số quá nhỏ.
+  min_degradation: 0.02
+
+techniques:
+  gamma:
+    families: [brightness_dark, lowlight, brightness_bright, glare]
+    grid:
+      gamma_0.4: {gamma: 0.4}
+      gamma_0.5: {gamma: 0.5}
+      gamma_0.6: {gamma: 0.6}
+      gamma_0.7: {gamma: 0.7}
+      gamma_0.85: {gamma: 0.85}
+      gamma_1.25: {gamma: 1.25}
+      gamma_1.5: {gamma: 1.5}
+      gamma_2.0: {gamma: 2.0}
+      gamma_2.5: {gamma: 2.5}
+  gamma_auto:
+    families: [brightness_dark, lowlight, brightness_bright, glare]
+    grid:
+      auto_0.4: {target: 0.4}
+      auto_0.5: {target: 0.5}
+      auto_0.6: {target: 0.6}
+  clahe:
+    families: [contrast_low, shadow, lowlight, brightness_dark]
+    grid:
+      clahe_c1_t4: {clip: 1.0, tiles: 4}
+      clahe_c1_t8: {clip: 1.0, tiles: 8}
+      clahe_c2_t4: {clip: 2.0, tiles: 4}
+      clahe_c2_t8: {clip: 2.0, tiles: 8}
+      clahe_c4_t4: {clip: 4.0, tiles: 4}
+      clahe_c4_t8: {clip: 4.0, tiles: 8}
+  retinex:
+    families: [shadow, glare, lowlight, brightness_dark, contrast_low]
+    grid:
+      msr_small_a1.0: {sigmas: [5, 20, 60], alpha: 1.0}
+      msr_small_a0.5: {sigmas: [5, 20, 60], alpha: 0.5}
+      msr_large_a1.0: {sigmas: [15, 60, 120], alpha: 1.0}
+      msr_large_a0.5: {sigmas: [15, 60, 120], alpha: 0.5}
+  gray_world:
+    families: [color_cast]
+    grid:
+      gw_0.5: {strength: 0.5}
+      gw_1.0: {strength: 1.0}
