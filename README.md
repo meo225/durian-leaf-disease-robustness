@@ -148,8 +148,9 @@ kaggle kernels push --no-run -p <thư-mục-tạm>
 | `notebooks/03_select_reference_model.ipynb` | `03_select_reference_model` | `TEN_KAGGLE/03-select-reference-model` |
 | `notebooks/04_corruption_benchmark.ipynb` | `04_corruption_benchmark` | `TEN_KAGGLE/04-corruption-benchmark` |
 | `notebooks/06_restoration_benchmark.ipynb` | `06_restoration_benchmark` | `TEN_KAGGLE/06-restoration-benchmark` |
+| `notebooks/07_augmentation_control.ipynb` | `07_augmentation_control` | `TEN_KAGGLE/07-augmentation-control` |
 
-Ba notebook kiểm tra dữ liệu và `03_train_hog_svm` dùng Accelerator None. `03_train_resnet50`, `03_train_mobilenetv3_small`, `03_train_convnext_tiny`, `03_select_reference_model`, `04_corruption_benchmark` và `06_restoration_benchmark` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
+Ba notebook kiểm tra dữ liệu và `03_train_hog_svm` dùng Accelerator None. `03_train_resnet50`, `03_train_mobilenetv3_small`, `03_train_convnext_tiny`, `03_select_reference_model`, `04_corruption_benchmark`, `06_restoration_benchmark` và `07_augmentation_control` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
 
 ### Phiên chạy
 
@@ -181,6 +182,7 @@ Model đưa lên Hugging Face khi đã chọn bản phát hành. Ảnh suy giả
 | Chọn reference model | `configs/reference_selection.yaml` |
 | Suy giảm ảnh | `configs/corruption.yaml` |
 | Khử nhiễu và làm nét | `configs/restoration.yaml` |
+| Đối chứng huấn luyện lại bằng augmentation suy giảm | `configs/train_convnext_tiny_aug.yaml` |
 | Kiểm tra dữ liệu | `configs/data_audit.yaml` |
 
 Pipeline chuẩn: train dùng lật ngang, lật dọc, xoay ±15°, rồi chuẩn hóa ImageNet. Val và test resize về 224 khi cần, rồi chuẩn hóa. Gamma, CLAHE, Retinex, khử nhiễu và làm nét không nằm trong pipeline này.
