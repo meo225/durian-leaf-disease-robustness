@@ -1,0 +1,321 @@
+{
+  "task": "4.3",
+  "split": "val",
+  "reference_model": "convnext_tiny",
+  "corruption_config": "configs/corruption.yaml",
+  "grid_config_version": 1,
+  "clean_macro_f1": 0.9774605109108083,
+  "selection_rule": {
+    "tie_margin": 0.003,
+    "min_degradation": 0.02
+  },
+  "selected": {
+    "gamma": {
+      "families": [
+        "brightness_dark",
+        "lowlight",
+        "brightness_bright",
+        "glare"
+      ],
+      "per_family": {
+        "brightness_dark": {
+          "config_id": "gamma_0.6",
+          "params": {
+            "gamma": 0.6
+          },
+          "mean_macro_f1": 0.8938786107436781
+        },
+        "lowlight": {
+          "config_id": "gamma_0.6",
+          "params": {
+            "gamma": 0.6
+          },
+          "mean_macro_f1": 0.8754059893704679
+        },
+        "brightness_bright": {
+          "config_id": "gamma_0.6",
+          "params": {
+            "gamma": 0.6
+          },
+          "mean_macro_f1": 0.7913081019655563
+        },
+        "glare": {
+          "config_id": "gamma_1.25",
+          "params": {
+            "gamma": 1.25
+          },
+          "mean_macro_f1": 0.9485971538313437
+        }
+      },
+      "general": {
+        "config_id": "gamma_0.7",
+        "params": {
+          "gamma": 0.7
+        },
+        "mean_macro_f1": 0.8656896291541485,
+        "clean_macro_f1": 0.9685300146922687
+      }
+    },
+    "gamma_auto": {
+      "families": [
+        "brightness_dark",
+        "lowlight",
+        "brightness_bright",
+        "glare"
+      ],
+      "per_family": {
+        "brightness_dark": {
+          "config_id": "auto_0.4",
+          "params": {
+            "target": 0.4
+          },
+          "mean_macro_f1": 0.9002764740160644
+        },
+        "lowlight": {
+          "config_id": "auto_0.4",
+          "params": {
+            "target": 0.4
+          },
+          "mean_macro_f1": 0.870534204334877
+        },
+        "brightness_bright": {
+          "config_id": "auto_0.6",
+          "params": {
+            "target": 0.6
+          },
+          "mean_macro_f1": 0.7098485812046383
+        },
+        "glare": {
+          "config_id": "auto_0.5",
+          "params": {
+            "target": 0.5
+          },
+          "mean_macro_f1": 0.9512849819660597
+        }
+      },
+      "general": {
+        "config_id": "auto_0.5",
+        "params": {
+          "target": 0.5
+        },
+        "mean_macro_f1": 0.8476627688121477,
+        "clean_macro_f1": 0.9730271537006075
+      }
+    },
+    "clahe": {
+      "families": [
+        "contrast_low",
+        "shadow",
+        "lowlight",
+        "brightness_dark"
+      ],
+      "per_family": {
+        "contrast_low": {
+          "config_id": "clahe_c1_t4",
+          "params": {
+            "clip": 1.0,
+            "tiles": 4
+          },
+          "mean_macro_f1": 0.8890999633646378
+        },
+        "shadow": {
+          "config_id": "clahe_c1_t4",
+          "params": {
+            "clip": 1.0,
+            "tiles": 4
+          },
+          "mean_macro_f1": 0.8964168568243598
+        },
+        "lowlight": {
+          "config_id": "clahe_c1_t4",
+          "params": {
+            "clip": 1.0,
+            "tiles": 4
+          },
+          "mean_macro_f1": 0.4701916320434347
+        },
+        "brightness_dark": {
+          "config_id": "clahe_c1_t4",
+          "params": {
+            "clip": 1.0,
+            "tiles": 4
+          },
+          "mean_macro_f1": 0.88827605403179
+        }
+      },
+      "general": {
+        "config_id": "clahe_c1_t4",
+        "params": {
+          "clip": 1.0,
+          "tiles": 4
+        },
+        "mean_macro_f1": 0.7859961265660557,
+        "clean_macro_f1": 0.9592239794630301
+      }
+    },
+    "retinex": {
+      "families": [
+        "shadow",
+        "glare",
+        "lowlight",
+        "brightness_dark",
+        "contrast_low"
+      ],
+      "per_family": {
+        "shadow": {
+          "config_id": "msr_small_a0.5",
+          "params": {
+            "sigmas": [
+              5,
+              20,
+              60
+            ],
+            "alpha": 0.5
+          },
+          "mean_macro_f1": 0.9009690782444176
+        },
+        "glare": {
+          "config_id": "msr_large_a0.5",
+          "params": {
+            "sigmas": [
+              15,
+              60,
+              120
+            ],
+            "alpha": 0.5
+          },
+          "mean_macro_f1": 0.9347725125719117
+        },
+        "lowlight": {
+          "config_id": "msr_large_a0.5",
+          "params": {
+            "sigmas": [
+              15,
+              60,
+              120
+            ],
+            "alpha": 0.5
+          },
+          "mean_macro_f1": 0.7552206146512307
+        },
+        "brightness_dark": {
+          "config_id": "msr_small_a0.5",
+          "params": {
+            "sigmas": [
+              5,
+              20,
+              60
+            ],
+            "alpha": 0.5
+          },
+          "mean_macro_f1": 0.9532673187914295
+        },
+        "contrast_low": {
+          "config_id": "msr_large_a0.5",
+          "params": {
+            "sigmas": [
+              15,
+              60,
+              120
+            ],
+            "alpha": 0.5
+          },
+          "mean_macro_f1": 0.9019352467148428
+        }
+      },
+      "general": {
+        "config_id": "msr_large_a0.5",
+        "params": {
+          "sigmas": [
+            15,
+            60,
+            120
+          ],
+          "alpha": 0.5
+        },
+        "mean_macro_f1": 0.8866698506738513,
+        "clean_macro_f1": 0.9538020449818496
+      }
+    },
+    "gray_world": {
+      "families": [
+        "color_cast"
+      ],
+      "per_family": {
+        "color_cast": {
+          "config_id": "gw_0.5",
+          "params": {
+            "strength": 0.5
+          },
+          "mean_macro_f1": 0.8120925234999818
+        }
+      },
+      "general": {
+        "config_id": "gw_0.5",
+        "params": {
+          "strength": 0.5
+        },
+        "mean_macro_f1": 0.8120925234999818,
+        "clean_macro_f1": 0.8985857836509238
+      }
+    }
+  },
+  "clean_cost": [
+    {
+      "technique": "gamma",
+      "config_id": "gamma_0.7",
+      "macro_f1": 0.9685300146922687,
+      "change_macro_f1": -0.008930496218539585,
+      "d_recall_ALGAL_LEAF_SPOT": 0.0,
+      "d_recall_ALLOCARIDARA_ATTACK": -0.032608695652173836,
+      "d_recall_HEALTHY_LEAF": 0.0,
+      "d_recall_LEAF_BLIGHT": 0.010752688172043001,
+      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.022727272727272707
+    },
+    {
+      "technique": "gamma_auto",
+      "config_id": "auto_0.5",
+      "macro_f1": 0.9730271537006075,
+      "change_macro_f1": -0.004433357210200772,
+      "d_recall_ALGAL_LEAF_SPOT": 0.0,
+      "d_recall_ALLOCARIDARA_ATTACK": 0.0,
+      "d_recall_HEALTHY_LEAF": 0.0,
+      "d_recall_LEAF_BLIGHT": 0.0,
+      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.022727272727272707
+    },
+    {
+      "technique": "clahe",
+      "config_id": "clahe_c1_t4",
+      "macro_f1": 0.9592239794630301,
+      "change_macro_f1": -0.01823653144777826,
+      "d_recall_ALGAL_LEAF_SPOT": -0.04054054054054057,
+      "d_recall_ALLOCARIDARA_ATTACK": -0.010869565217391242,
+      "d_recall_HEALTHY_LEAF": 0.0,
+      "d_recall_LEAF_BLIGHT": -0.010752688172043112,
+      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.03409090909090906
+    },
+    {
+      "technique": "retinex",
+      "config_id": "msr_large_a0.5",
+      "macro_f1": 0.9538020449818496,
+      "change_macro_f1": -0.023658465928958705,
+      "d_recall_ALGAL_LEAF_SPOT": -0.08108108108108114,
+      "d_recall_ALLOCARIDARA_ATTACK": 0.0,
+      "d_recall_HEALTHY_LEAF": -0.010309278350515427,
+      "d_recall_LEAF_BLIGHT": -0.010752688172043112,
+      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.022727272727272707
+    },
+    {
+      "technique": "gray_world",
+      "config_id": "gw_0.5",
+      "macro_f1": 0.8985857836509238,
+      "change_macro_f1": -0.07887472725988454,
+      "d_recall_ALGAL_LEAF_SPOT": -0.013513513513513598,
+      "d_recall_ALLOCARIDARA_ATTACK": -0.06521739130434778,
+      "d_recall_HEALTHY_LEAF": -0.24742268041237114,
+      "d_recall_LEAF_BLIGHT": 0.043010752688172005,
+      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.11363636363636365
+    }
+  ],
+  "note": "Tham số chọn trên validation. Tập test chưa mở. Task 4.5 đo bản đồ phục hồi trên test với đúng các cấu hình này."
+}
