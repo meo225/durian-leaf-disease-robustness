@@ -38,7 +38,7 @@ handlers:
   lowres: ["4.4"]
   jpeg: []
 
-fragile_top: 8
+flip_top: 8
 
 quality:
   external_limit: 500

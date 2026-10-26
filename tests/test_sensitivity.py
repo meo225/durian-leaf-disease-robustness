@@ -8,7 +8,7 @@ from src.evaluation.sensitivity import (
     compare_splits,
     condition_table,
     family_summary,
-    fragile_samples,
+    sample_flips,
     flip_destinations,
     holm_adjust,
     image_quality,
@@ -104,16 +104,16 @@ def test_family_summary_and_priority():
     assert any(item["condition"] == "fam_a_s2" for item in plan["damaging_conditions"])
 
 
-def test_flip_destinations_and_fragile():
+def test_flip_destinations_and_sample_flips():
     labels, probs, conditions = make_case()
     names = list(conditions)
     flips = flip_destinations(labels, probs, CLASSES, names).set_index("condition")
     assert flips.loc["fam_a_s2", "lost"] > 0
     assert sum(flips.loc["fam_a_s2", f"to_{c}"] for c in CLASSES) == pytest.approx(1.0)
     assert flips.loc["fam_b_s1", "lost"] == 0
-    fragile = fragile_samples(labels, [f"img{i}" for i in range(len(labels))], probs, CLASSES, names)
-    assert (fragile["flips"].diff().dropna() <= 0).all()
-    assert fragile["flips"].iloc[0] >= 1
+    per_sample = sample_flips(labels, [f"img{i}" for i in range(len(labels))], probs, CLASSES, names)
+    assert (per_sample["flips"].diff().dropna() <= 0).all()
+    assert per_sample["flips"].iloc[0] >= 1
 
 
 def test_compare_splits_identical():

@@ -107,7 +107,7 @@ def plot_class_recall_change(table: pd.DataFrame, classes: Sequence[str], path: 
 
 
 def plot_flip_destinations(flips: pd.DataFrame, classes: Sequence[str], path: str | Path, title: str) -> None:
-    """Mẫu đúng ở ảnh sạch nhưng sai khi suy giảm rơi vào lớp nào. Ba cột là ba mức. Cột lệch về một lớp là model sụp về lớp đó."""
+    """Mẫu đúng ở ảnh sạch nhưng sai khi suy giảm rơi vào lớp nào. Ba cột là ba mức. Cột lệch về một lớp nghĩa là dự đoán dồn về lớp đó."""
     fig = Figure(figsize=(15, 0.36 * flips["condition"].map(lambda c: c.rsplit("_s", 1)[0]).nunique() + 2.4))
     axes = fig.subplots(1, 3, sharey=True)
     families = list(dict.fromkeys(flips["condition"].map(lambda c: c.rsplit("_s", 1)[0])))
@@ -158,16 +158,16 @@ def plot_confusion_grid(matrices: Mapping[str, np.ndarray], classes: Sequence[st
     _save(fig, path)
 
 
-def plot_fragile_samples(fragile: pd.DataFrame, images: np.ndarray, conditions_total: int, top: int, path: str | Path, title: str) -> None:
-    """Phân bố số điều kiện làm mỗi ảnh sai, và các ảnh mong manh nhất. images là mảng N×H×W×3 trong 0 đến 1 theo chỉ số ảnh."""
+def plot_sample_flips(per_sample: pd.DataFrame, images: np.ndarray, conditions_total: int, top: int, path: str | Path, title: str) -> None:
+    """Phân bố số điều kiện làm mỗi ảnh sai, và các ảnh bị đổi dự đoán nhiều nhất. images là mảng N×H×W×3 trong 0 đến 1 theo chỉ số ảnh."""
     fig = Figure(figsize=(2.2 * top / 2 + 4.6, 6.6))
     grid = fig.add_gridspec(3, max(top // 2, 1), height_ratios=[1.3, 1, 1])
     hist = fig.add_subplot(grid[0, :])
-    hist.hist(fragile["flips"], bins=np.arange(0, conditions_total + 2) - 0.5, color="#4c78a8")
+    hist.hist(per_sample["flips"], bins=np.arange(0, conditions_total + 2) - 0.5, color="#4c78a8")
     hist.set_xlabel(f"số điều kiện làm ảnh sai, trên {conditions_total}")
     hist.set_ylabel("số ảnh")
     hist.set_title(title, fontsize=10)
-    for position, row in enumerate(fragile.head(top).itertuples()):
+    for position, row in enumerate(per_sample.head(top).itertuples()):
         ax = fig.add_subplot(grid[1 + position // (top // 2), position % (top // 2)])
         ax.imshow(images[row.index])
         ax.set_xticks([])

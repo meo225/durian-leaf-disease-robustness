@@ -193,7 +193,7 @@ def flip_destinations(labels: np.ndarray, probs: Mapping[str, np.ndarray], class
     return pd.DataFrame(rows)
 
 
-def fragile_samples(labels: np.ndarray, paths: Sequence[str], probs: Mapping[str, np.ndarray], classes: Sequence[str], conditions: Sequence[str]) -> pd.DataFrame:
+def sample_flips(labels: np.ndarray, paths: Sequence[str], probs: Mapping[str, np.ndarray], classes: Sequence[str], conditions: Sequence[str]) -> pd.DataFrame:
     """Mỗi ảnh đúng ở ảnh sạch: bao nhiêu điều kiện làm nó sai và lớp sai hay gặp nhất."""
     clean_right = probs["clean"].argmax(axis=1) == labels
     wrong = np.stack([probs[name].argmax(axis=1) != labels for name in conditions], axis=1)
@@ -232,7 +232,7 @@ def family_summary(table: pd.DataFrame, cfg: Mapping[str, Any]) -> pd.DataFrame:
 
 
 def priority_for_next_task(summary: pd.DataFrame, table: pd.DataFrame, cfg: Mapping[str, Any]) -> dict[str, Any]:
-    """Danh sách đầu vào cho task 4.5: họ theo thứ tự ưu tiên, điều kiện hỏng nặng có ý nghĩa, họ không có kỹ thuật phù hợp."""
+    """Danh sách đầu vào cho task 4.5: họ theo thứ tự ưu tiên, điều kiện giảm nặng và có ý nghĩa, họ không có kỹ thuật phù hợp."""
     moderate = float(cfg["thresholds"]["moderate"])
     damaging = table[(table["degradation"] >= moderate) & table["significant"]].sort_values("degradation", ascending=False)
     return {
