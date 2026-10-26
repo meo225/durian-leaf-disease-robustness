@@ -6,11 +6,11 @@
 # Thang màu của bilateral, nlm tính theo 0 đến 255. sigma tính theo pixel.
 # Các cấu hình trong lưới xếp từ nhẹ đến mạnh, nên khi điểm ngang nhau thì cấu hình nhẹ hơn được chọn.
 #
-# version 2: lần chạy đầu (version 1) chọn đúng giá trị ở biên lưới: gaussian sigma 0.5, nlm h 5, bilateral sigma_color 30 là mức nhẹ nhất,
-# unsharp amount 2.0 và sigma 2.0 là mức mạnh nhất. Tối ưu có thể nằm ngoài lưới, nên version 2 thêm mức nhẹ hơn cho khử nhiễu
+# version 3: lần chạy đầu (version 1) chọn đúng giá trị ở biên lưới: gaussian sigma 0.5, nlm h 5, bilateral sigma_color 30 là mức nhẹ nhất,
+# unsharp amount 2.0 và sigma 2.0 là mức mạnh nhất. Tối ưu có thể nằm ngoài lưới, nên version 3 thêm mức nhẹ hơn cho khử nhiễu
 # và mức mạnh hơn cho unsharp. Median k 3 đã là cửa sổ nhỏ nhất có thể. Vẫn chỉ chọn trên validation, tập test chưa mở.
 
-version: 2
+version: 3
 corruption_config: configs/corruption.yaml
 checkpoint_name: convnext_tiny_seed42.pt
 

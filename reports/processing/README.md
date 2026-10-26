@@ -18,7 +18,7 @@ Tất cả số liệu trên **tập validation** (444 ảnh), một seed. Tập
 - `jpeg` không có kỹ thuật phù hợp, nên làm điều kiện đối chứng cho cả năm kỹ thuật. Mỗi kỹ thuật còn chạy thêm trên các họ không phù hợp với nó để thấy nó làm hại ở đâu.
 - Mỗi kỹ thuật chạy một lưới tham số (29 cấu hình tổng cộng, xem `configs/restoration.yaml`). Điểm của một cấu hình là macro F1 trung bình trên ba mức của họ. Các cấu hình trong khoảng 0,003 so với tốt nhất thì chọn cấu hình giữ F1 ảnh sạch cao hơn. Mỗi kỹ thuật có một cấu hình cho từng họ phù hợp, và một cấu hình chung dùng làm "kỹ thuật cố định".
 - Code ở `src/processing/restoration.py`, notebook `notebooks/06_restoration_benchmark.ipynb`, cùng giao diện và cùng luật chọn với task 4.3.
-- Lưới chạy hai lần. Lần đầu (version 1, 19 cấu hình) chọn đúng giá trị nhẹ nhất hoặc mạnh nhất của lưới (Gaussian σ 0.5, NLM h 5, bilateral sigma_color 30, unsharp amount 2.0), nên tối ưu có thể nằm ngoài lưới. Version 3 thêm mức nhẹ hơn cho khử nhiễu và mức mạnh hơn cho unsharp, vẫn chỉ chọn trên validation. Bảng dưới là version 2.
+- Lưới chạy hai lần. Lần đầu (version 1, 19 cấu hình) chọn đúng giá trị nhẹ nhất hoặc mạnh nhất của lưới (Gaussian σ 0.5, NLM h 5, bilateral sigma_color 30, unsharp amount 2.0), nên tối ưu có thể nằm ngoài lưới. Version 3 thêm mức nhẹ hơn cho khử nhiễu và mức mạnh hơn cho unsharp, vẫn chỉ chọn trên validation. Bảng dưới là version 3.
 
 ### Kết quả
 

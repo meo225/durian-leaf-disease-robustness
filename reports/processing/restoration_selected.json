@@ -3,7 +3,7 @@
   "split": "val",
   "reference_model": "convnext_tiny",
   "corruption_config": "configs/corruption.yaml",
-  "grid_config_version": 2,
+  "grid_config_version": 3,
   "clean_macro_f1": 0.9774605109108083,
   "selection_rule": {
     "tie_margin": 0.003,
