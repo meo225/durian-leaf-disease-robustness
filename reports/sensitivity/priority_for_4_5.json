@@ -1,0 +1,302 @@
+{
+  "ranking": [
+    {
+      "family": "lowres",
+      "category": "severe",
+      "mean_degradation": 0.2563,
+      "early_drop": true,
+      "handlers": [
+        "4.4"
+      ]
+    },
+    {
+      "family": "contrast_high",
+      "category": "severe",
+      "mean_degradation": 0.2497,
+      "early_drop": true,
+      "handlers": [
+        "4.3"
+      ]
+    },
+    {
+      "family": "blur",
+      "category": "severe",
+      "mean_degradation": 0.2181,
+      "early_drop": false,
+      "handlers": [
+        "4.4"
+      ]
+    },
+    {
+      "family": "contrast_low",
+      "category": "severe",
+      "mean_degradation": 0.2112,
+      "early_drop": false,
+      "handlers": [
+        "4.3"
+      ]
+    },
+    {
+      "family": "brightness_bright",
+      "category": "severe",
+      "mean_degradation": 0.2015,
+      "early_drop": false,
+      "handlers": [
+        "4.3"
+      ]
+    },
+    {
+      "family": "lowlight",
+      "category": "severe",
+      "mean_degradation": 0.1935,
+      "early_drop": true,
+      "handlers": [
+        "4.3",
+        "4.4"
+      ]
+    },
+    {
+      "family": "motion_blur",
+      "category": "severe",
+      "mean_degradation": 0.1903,
+      "early_drop": true,
+      "handlers": [
+        "4.4"
+      ]
+    },
+    {
+      "family": "noise",
+      "category": "severe",
+      "mean_degradation": 0.1714,
+      "early_drop": false,
+      "handlers": [
+        "4.4"
+      ]
+    },
+    {
+      "family": "brightness_dark",
+      "category": "moderate",
+      "mean_degradation": 0.1497,
+      "early_drop": false,
+      "handlers": [
+        "4.3"
+      ]
+    },
+    {
+      "family": "sensor_noise",
+      "category": "moderate",
+      "mean_degradation": 0.1462,
+      "early_drop": true,
+      "handlers": [
+        "4.4"
+      ]
+    },
+    {
+      "family": "jpeg",
+      "category": "moderate",
+      "mean_degradation": 0.1363,
+      "early_drop": false,
+      "handlers": []
+    },
+    {
+      "family": "color_cast",
+      "category": "moderate",
+      "mean_degradation": 0.1049,
+      "early_drop": false,
+      "handlers": [
+        "4.3"
+      ]
+    },
+    {
+      "family": "shadow",
+      "category": "moderate",
+      "mean_degradation": 0.0956,
+      "early_drop": false,
+      "handlers": [
+        "4.3"
+      ]
+    },
+    {
+      "family": "glare",
+      "category": "negligible",
+      "mean_degradation": 0.0188,
+      "early_drop": false,
+      "handlers": [
+        "4.3"
+      ]
+    }
+  ],
+  "damaging_conditions": [
+    {
+      "condition": "contrast_low_s3",
+      "degradation": 0.5252,
+      "p_holm": 1.21e-117
+    },
+    {
+      "condition": "contrast_high_s3",
+      "degradation": 0.4537,
+      "p_holm": 1.05e-94
+    },
+    {
+      "condition": "brightness_bright_s3",
+      "degradation": 0.4009,
+      "p_holm": 1.75e-94
+    },
+    {
+      "condition": "blur_s3",
+      "degradation": 0.384,
+      "p_holm": 1.41e-76
+    },
+    {
+      "condition": "brightness_dark_s3",
+      "degradation": 0.3473,
+      "p_holm": 1.86e-68
+    },
+    {
+      "condition": "lowlight_s3",
+      "degradation": 0.3414,
+      "p_holm": 3.18e-73
+    },
+    {
+      "condition": "noise_s3",
+      "degradation": 0.3338,
+      "p_holm": 3.49e-80
+    },
+    {
+      "condition": "lowres_s3",
+      "degradation": 0.314,
+      "p_holm": 2.13e-56
+    },
+    {
+      "condition": "motion_blur_s3",
+      "degradation": 0.3126,
+      "p_holm": 1.25e-57
+    },
+    {
+      "condition": "jpeg_s3",
+      "degradation": 0.2878,
+      "p_holm": 3.6e-60
+    },
+    {
+      "condition": "blur_s2",
+      "degradation": 0.2577,
+      "p_holm": 1.11e-45
+    },
+    {
+      "condition": "lowres_s2",
+      "degradation": 0.2563,
+      "p_holm": 1.19e-46
+    },
+    {
+      "condition": "sensor_noise_s3",
+      "degradation": 0.2314,
+      "p_holm": 5.75e-57
+    },
+    {
+      "condition": "contrast_high_s2",
+      "degradation": 0.2311,
+      "p_holm": 1.13e-42
+    },
+    {
+      "condition": "lowres_s1",
+      "degradation": 0.1987,
+      "p_holm": 3.68e-35
+    },
+    {
+      "condition": "color_cast_s3",
+      "degradation": 0.1969,
+      "p_holm": 6.37e-38
+    },
+    {
+      "condition": "motion_blur_s2",
+      "degradation": 0.192,
+      "p_holm": 1.02e-33
+    },
+    {
+      "condition": "shadow_s3",
+      "degradation": 0.1877,
+      "p_holm": 2.27e-36
+    },
+    {
+      "condition": "brightness_bright_s2",
+      "degradation": 0.173,
+      "p_holm": 1.77e-35
+    },
+    {
+      "condition": "noise_s2",
+      "degradation": 0.1668,
+      "p_holm": 2.02e-39
+    },
+    {
+      "condition": "lowlight_s2",
+      "degradation": 0.1613,
+      "p_holm": 1.85e-33
+    },
+    {
+      "condition": "sensor_noise_s2",
+      "degradation": 0.1523,
+      "p_holm": 3.93e-34
+    },
+    {
+      "condition": "color_cast_s2",
+      "degradation": 0.1022,
+      "p_holm": 2.15e-17
+    },
+    {
+      "condition": "contrast_low_s2",
+      "degradation": 0.0956,
+      "p_holm": 2.15e-17
+    },
+    {
+      "condition": "brightness_dark_s2",
+      "degradation": 0.0888,
+      "p_holm": 1.86e-14
+    },
+    {
+      "condition": "shadow_s2",
+      "degradation": 0.0823,
+      "p_holm": 1.47e-12
+    },
+    {
+      "condition": "lowlight_s1",
+      "degradation": 0.0778,
+      "p_holm": 2.15e-13
+    },
+    {
+      "condition": "jpeg_s2",
+      "degradation": 0.0722,
+      "p_holm": 1.09e-13
+    },
+    {
+      "condition": "motion_blur_s1",
+      "degradation": 0.0664,
+      "p_holm": 1.93e-12
+    },
+    {
+      "condition": "contrast_high_s1",
+      "degradation": 0.0644,
+      "p_holm": 1.97e-10
+    },
+    {
+      "condition": "sensor_noise_s1",
+      "degradation": 0.055,
+      "p_holm": 7.68e-11
+    }
+  ],
+  "without_technique": [
+    "jpeg"
+  ],
+  "negligible": [
+    "glare"
+  ],
+  "rule": {
+    "thresholds": {
+      "severe": 0.15,
+      "moderate": 0.05,
+      "mild": 0.02
+    },
+    "early_drop": 0.05,
+    "alpha": 0.05,
+    "correction": "Holm"
+  }
+}

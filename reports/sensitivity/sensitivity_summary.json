@@ -1,0 +1,44 @@
+{
+  "task": "4.2",
+  "reference_model": "convnext_tiny",
+  "corruption_config": "configs/corruption.yaml",
+  "seed": 42,
+  "samples": {
+    "val": 444,
+    "test": 888
+  },
+  "clean": {
+    "val": {
+      "clean_macro_f1": 0.9774605109108083,
+      "clean_f1_low": 0.9632015568191956,
+      "clean_f1_high": 0.9903651365967577,
+      "clean_accuracy": 0.9774774774774775,
+      "clean_balanced_accuracy": 0.9775442820388672,
+      "clean_errors": 10
+    },
+    "test": {
+      "clean_macro_f1": 0.9644795876700515,
+      "clean_f1_low": 0.9518558246992456,
+      "clean_f1_high": 0.9761530683067537,
+      "clean_accuracy": 0.963963963963964,
+      "clean_balanced_accuracy": 0.9637644887079222,
+      "clean_errors": 32
+    }
+  },
+  "split_agreement": {
+    "spearman": 0.983631796450855,
+    "p_value": 2.1590299435456664e-31,
+    "mean_abs_f1_gap": 0.01565984786394248,
+    "max_abs_f1_gap": 0.051970454243100206
+  },
+  "bootstrap": {
+    "resamples": 2000,
+    "seed": 42,
+    "confidence": 0.95
+  },
+  "alpha": 0.05,
+  "significant_conditions_test": 35,
+  "conditions": 42,
+  "external_quality": null,
+  "note": "Một model, một seed huấn luyện. Khoảng tin cậy chỉ phản ánh độ ngẫu nhiên của việc chọn mẫu test."
+}
