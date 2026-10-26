@@ -1,0 +1,62 @@
+# Lưới tham số cho nhóm kỹ thuật khử nhiễu và làm nét (task 4.4). Cùng khuôn với configs/illumination.yaml.
+# Chỉ tối ưu trên validation. Tập test chưa mở, tham số chốt xong mới sang 4.5.
+# families: họ suy giảm phù hợp với kỹ thuật, dùng để chọn tham số.
+# Các họ còn lại trong scope_families chỉ chạy một cấu hình chung làm đối chứng không phù hợp.
+# jpeg nằm trong scope nhưng không kỹ thuật nào phù hợp, nên là điều kiện đối chứng cho mọi kỹ thuật.
+# Thang màu của bilateral, nlm tính theo 0 đến 255. sigma tính theo pixel.
+
+version: 1
+corruption_config: configs/corruption.yaml
+checkpoint_name: convnext_tiny_seed42.pt
+
+scope_families:
+  - noise
+  - sensor_noise
+  - lowlight
+  - blur
+  - motion_blur
+  - lowres
+  - jpeg
+
+selection:
+  # Điểm của một cấu hình là macro F1 trung bình trên ba mức của họ suy giảm.
+  # Các cấu hình trong khoảng này so với cấu hình tốt nhất được coi là ngang nhau, chọn cấu hình giữ F1 ảnh sạch cao hơn.
+  tie_margin: 0.003
+  # Chỉ tính normalized recovery khi mức giảm của ảnh suy giảm lớn hơn ngưỡng này, tránh chia cho số quá nhỏ.
+  min_degradation: 0.02
+
+techniques:
+  gaussian:
+    families: [noise, sensor_noise, lowlight]
+    grid:
+      gauss_s0.5: {sigma: 0.5}
+      gauss_s0.8: {sigma: 0.8}
+      gauss_s1.2: {sigma: 1.2}
+      gauss_s1.8: {sigma: 1.8}
+  median:
+    families: [noise, sensor_noise, lowlight]
+    grid:
+      median_k3: {ksize: 3}
+      median_k5: {ksize: 5}
+  bilateral:
+    families: [noise, sensor_noise, lowlight]
+    grid:
+      bil_d5_c30_s3: {d: 5, sigma_color: 30, sigma_space: 3}
+      bil_d5_c60_s3: {d: 5, sigma_color: 60, sigma_space: 3}
+      bil_d7_c30_s5: {d: 7, sigma_color: 30, sigma_space: 5}
+      bil_d7_c60_s5: {d: 7, sigma_color: 60, sigma_space: 5}
+  nlm:
+    families: [noise, sensor_noise, lowlight]
+    grid:
+      nlm_h5: {h: 5}
+      nlm_h12: {h: 12}
+      nlm_h20: {h: 20}
+  unsharp:
+    families: [blur, motion_blur, lowres]
+    grid:
+      unsharp_s1.0_a0.5: {sigma: 1.0, amount: 0.5}
+      unsharp_s1.0_a1.0: {sigma: 1.0, amount: 1.0}
+      unsharp_s1.0_a2.0: {sigma: 1.0, amount: 2.0}
+      unsharp_s2.0_a0.5: {sigma: 2.0, amount: 0.5}
+      unsharp_s2.0_a1.0: {sigma: 2.0, amount: 1.0}
+      unsharp_s2.0_a2.0: {sigma: 2.0, amount: 2.0}

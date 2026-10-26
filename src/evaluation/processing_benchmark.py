@@ -8,6 +8,7 @@ Các bước: ảnh không xử lý, tối ưu tham số, chọn cấu hình, đ
 
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
@@ -23,11 +24,22 @@ from src.data.dataset import DurianDataset
 from src.data.splits import get_split
 from src.data.transforms import ConditionalResize
 from src.evaluation.metrics import classification_scores
-from src.processing.illumination import apply_processing
+from src.processing import illumination, restoration
 
 ROOT = Path(__file__).resolve().parents[2]
 SPLIT = "val"
 Processor = Callable[[torch.Tensor], torch.Tensor]
+# Mỗi nhóm kỹ thuật nằm trong một module riêng, tên kỹ thuật không trùng nhau giữa các module.
+PROCESSING_MODULES = (illumination, restoration)
+
+
+def apply_processing(image: torch.Tensor, spec: Mapping[str, Any]) -> torch.Tensor:
+    """Áp một kỹ thuật theo spec, tìm kỹ thuật trong từng module xử lý ảnh."""
+    name = str(spec["technique"])
+    for module in PROCESSING_MODULES:
+        if name in module.TECHNIQUES:
+            return module.apply_processing(image, spec)
+    raise ValueError(f"Kỹ thuật chưa hỗ trợ: {name}.")
 
 
 class ImageCache:
@@ -90,18 +102,28 @@ def predict(
     pipeline_cfg: Mapping[str, Any],
     device: torch.device,
     batch_size: int = 64,
+    workers: int = 1,
 ) -> np.ndarray:
-    """Dự đoán của model trên ảnh uint8, sau khi xử lý (nếu có) và chuẩn hóa như pipeline chuẩn."""
+    """Dự đoán của model trên ảnh uint8, sau khi xử lý (nếu có) và chuẩn hóa như pipeline chuẩn.
+
+    workers lớn hơn 1 thì xử lý các ảnh của một batch song song bằng luồng. Kết quả không đổi, chỉ nhanh hơn với bộ lọc OpenCV.
+    """
     model.eval()
     mean = torch.tensor(pipeline_cfg["mean"], device=device).view(1, 3, 1, 1)
     std = torch.tensor(pipeline_cfg["std"], device=device).view(1, 3, 1, 1)
     outputs = []
+    pool = ThreadPoolExecutor(max_workers=workers) if processor is not None and workers > 1 else None
     for start in range(0, len(images), batch_size):
         batch = images[start : start + batch_size].float() / 255.0
         if processor is not None:
-            batch = torch.stack([processor(image) for image in batch])
+            if pool is not None:
+                batch = torch.stack(list(pool.map(processor, batch)))
+            else:
+                batch = torch.stack([processor(image) for image in batch])
         logits = model(((batch.to(device) - mean) / std))
         outputs.append(logits.argmax(dim=1).cpu())
+    if pool is not None:
+        pool.shutdown()
     return torch.cat(outputs).numpy()
 
 
@@ -146,8 +168,10 @@ class Runner:
         pipeline_cfg: Mapping[str, Any],
         device: torch.device,
         progress: Callable[[str], None] = print,
+        workers: int = 1,
     ) -> None:
         self.model, self.cache, self.pipeline_cfg, self.device, self.progress = model, cache, pipeline_cfg, device, progress
+        self.workers = int(workers)
         self.rows: list[dict[str, Any]] = []
         self.predictions: dict[str, np.ndarray] = {}
         self._done: set[tuple[str, str, str]] = set()
@@ -157,7 +181,7 @@ class Runner:
         if key in self._done:
             return
         processor = None if params is None else make_processor(technique, params)
-        preds = predict(self.model, self.cache.get(condition), processor, self.pipeline_cfg, self.device)
+        preds = predict(self.model, self.cache.get(condition), processor, self.pipeline_cfg, self.device, workers=self.workers)
         self.rows.append(score_row(self.cache, preds, role, technique, config_id, condition))
         self.predictions["|".join(key)] = preds.astype(np.int8)
         self._done.add(key)
