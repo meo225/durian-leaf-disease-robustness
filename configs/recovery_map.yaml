@@ -1,0 +1,47 @@
+# Bản đồ phục hồi (task 4.5): kỹ thuật × họ suy giảm × mức trên tập test, bằng reference model đóng băng và cùng sample identity.
+# Dùng đúng các cấu hình đã khóa ở task 4.3 và 4.4 trên validation. Không chỉnh tham số xử lý hay quy tắc dưới đây theo kết quả test.
+# Test chỉ mở được khi FINAL_EVAL=1 và config suy giảm đã khóa.
+
+split: test
+corruption_config: configs/corruption.yaml
+checkpoint_name: convnext_tiny_seed42.pt
+train_config: configs/train_convnext_tiny.yaml
+
+# Cấu hình đã chọn trên validation. Tên kỹ thuật không được trùng nhau giữa các file.
+selected:
+  - reports/processing/illumination_selected.json
+  - reports/processing/restoration_selected.json
+# Config của từng task, lấy scope_families khi scope là `task`.
+task_configs:
+  - configs/illumination.yaml
+  - configs/restoration.yaml
+# all: mọi kỹ thuật chạy trên mọi họ (cần cho "kỹ thuật cố định" và oracle trên toàn bộ benchmark).
+# task: mỗi kỹ thuật chỉ chạy trên các họ trong scope_families của task đó, giống ma trận validation.
+scope: all
+
+# Dự đoán của reference model chưa xử lý ở task 4.2, dùng để kiểm tra bản đồ này tái hiện đúng và để lấy điểm validation của oracle.
+reference_predictions: reports/sensitivity/sensitivity_predictions.npz
+reference_validation_table: reports/sensitivity/sensitivity_conditions_val.csv
+# Dự đoán test của model huấn luyện lại (task 4.5, đối chứng).
+retrained:
+  predictions: reports/augmentation/augmentation_test_predictions.npz
+  prefix: retrained__convnext_tiny_aug
+
+statistics:
+  # Lấy lại mẫu theo ảnh, cùng một ma trận lấy lại mẫu cho mọi ô.
+  bootstrap: 1000
+  seed: 42
+  confidence: 0.95
+  # Chỉ tính normalized recovery khi degradation lớn hơn ngưỡng này. Khoảng tin cậy của nó chỉ báo khi degradation từ 0,05.
+  min_degradation: 0.02
+  # Mức ý nghĩa sau hiệu chỉnh Holm.
+  alpha: 0.05
+
+# Quy tắc "có bằng chứng" để một cặp (kỹ thuật, họ) vào danh sách đầu vào của Phase 5. Khóa trước khi mở test.
+evidence:
+  # Khoảng tin cậy của recovery trung bình ba mức phải nằm trên 0, và ít nhất ngần này mức có recovery dương có ý nghĩa (Holm).
+  min_significant_levels: 2
+  # Gắn nhãn "tốn kém" nếu cận trên của khoảng tin cậy thay đổi macro F1 ảnh sạch thấp hơn -ngưỡng này. Không dùng để loại.
+  costly_clean_drop: 0.02
+
+output_dir: reports/recovery_map
