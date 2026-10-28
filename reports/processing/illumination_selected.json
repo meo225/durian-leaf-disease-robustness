@@ -1,10 +1,10 @@
 {
   "task": "4.3",
   "split": "val",
-  "reference_model": "convnext_tiny",
+  "reference_model": "swin_tiny",
   "corruption_config": "configs/corruption.yaml",
   "grid_config_version": 1,
-  "clean_macro_f1": 0.9774605109108083,
+  "clean_macro_f1": 0.966393323649576,
   "selection_rule": {
     "tie_margin": 0.003,
     "min_degradation": 0.02
@@ -23,37 +23,37 @@
           "params": {
             "gamma": 0.6
           },
-          "mean_macro_f1": 0.8938786107436781
+          "mean_macro_f1": 0.9446477434253371
         },
         "lowlight": {
-          "config_id": "gamma_0.6",
+          "config_id": "gamma_0.7",
           "params": {
-            "gamma": 0.6
+            "gamma": 0.7
           },
-          "mean_macro_f1": 0.8754059893704679
+          "mean_macro_f1": 0.8664048134987349
         },
         "brightness_bright": {
-          "config_id": "gamma_0.6",
+          "config_id": "gamma_1.25",
           "params": {
-            "gamma": 0.6
+            "gamma": 1.25
           },
-          "mean_macro_f1": 0.7913081019655563
+          "mean_macro_f1": 0.8280825092030427
         },
         "glare": {
           "config_id": "gamma_1.25",
           "params": {
             "gamma": 1.25
           },
-          "mean_macro_f1": 0.9485971538313437
+          "mean_macro_f1": 0.9312304130586918
         }
       },
       "general": {
-        "config_id": "gamma_0.7",
+        "config_id": "gamma_0.85",
         "params": {
-          "gamma": 0.7
+          "gamma": 0.85
         },
-        "mean_macro_f1": 0.8656896291541485,
-        "clean_macro_f1": 0.9685300146922687
+        "mean_macro_f1": 0.8803623858221363,
+        "clean_macro_f1": 0.9595304395304396
       }
     },
     "gamma_auto": {
@@ -69,28 +69,28 @@
           "params": {
             "target": 0.4
           },
-          "mean_macro_f1": 0.9002764740160644
+          "mean_macro_f1": 0.9467581146362628
         },
         "lowlight": {
           "config_id": "auto_0.4",
           "params": {
             "target": 0.4
           },
-          "mean_macro_f1": 0.870534204334877
+          "mean_macro_f1": 0.8602805642166178
         },
         "brightness_bright": {
           "config_id": "auto_0.6",
           "params": {
             "target": 0.6
           },
-          "mean_macro_f1": 0.7098485812046383
+          "mean_macro_f1": 0.8179357585077419
         },
         "glare": {
           "config_id": "auto_0.5",
           "params": {
             "target": 0.5
           },
-          "mean_macro_f1": 0.9512849819660597
+          "mean_macro_f1": 0.937219704450786
         }
       },
       "general": {
@@ -98,8 +98,8 @@
         "params": {
           "target": 0.5
         },
-        "mean_macro_f1": 0.8476627688121477,
-        "clean_macro_f1": 0.9730271537006075
+        "mean_macro_f1": 0.8805919773194465,
+        "clean_macro_f1": 0.9616890155774932
       }
     },
     "clahe": {
@@ -116,7 +116,7 @@
             "clip": 1.0,
             "tiles": 4
           },
-          "mean_macro_f1": 0.8890999633646378
+          "mean_macro_f1": 0.9500491009333882
         },
         "shadow": {
           "config_id": "clahe_c1_t4",
@@ -124,7 +124,7 @@
             "clip": 1.0,
             "tiles": 4
           },
-          "mean_macro_f1": 0.8964168568243598
+          "mean_macro_f1": 0.8913748334711804
         },
         "lowlight": {
           "config_id": "clahe_c1_t4",
@@ -132,7 +132,7 @@
             "clip": 1.0,
             "tiles": 4
           },
-          "mean_macro_f1": 0.4701916320434347
+          "mean_macro_f1": 0.7871752007611565
         },
         "brightness_dark": {
           "config_id": "clahe_c1_t4",
@@ -140,7 +140,7 @@
             "clip": 1.0,
             "tiles": 4
           },
-          "mean_macro_f1": 0.88827605403179
+          "mean_macro_f1": 0.9296792543874769
         }
       },
       "general": {
@@ -149,8 +149,8 @@
           "clip": 1.0,
           "tiles": 4
         },
-        "mean_macro_f1": 0.7859961265660557,
-        "clean_macro_f1": 0.9592239794630301
+        "mean_macro_f1": 0.8895695973883004,
+        "clean_macro_f1": 0.9591432304609656
       }
     },
     "retinex": {
@@ -172,19 +172,19 @@
             ],
             "alpha": 0.5
           },
-          "mean_macro_f1": 0.9009690782444176
+          "mean_macro_f1": 0.8709102556019862
         },
         "glare": {
-          "config_id": "msr_large_a0.5",
+          "config_id": "msr_small_a0.5",
           "params": {
             "sigmas": [
-              15,
-              60,
-              120
+              5,
+              20,
+              60
             ],
             "alpha": 0.5
           },
-          "mean_macro_f1": 0.9347725125719117
+          "mean_macro_f1": 0.9305208298736279
         },
         "lowlight": {
           "config_id": "msr_large_a0.5",
@@ -196,19 +196,19 @@
             ],
             "alpha": 0.5
           },
-          "mean_macro_f1": 0.7552206146512307
+          "mean_macro_f1": 0.8280325397694935
         },
         "brightness_dark": {
-          "config_id": "msr_small_a0.5",
+          "config_id": "msr_large_a0.5",
           "params": {
             "sigmas": [
-              5,
-              20,
-              60
+              15,
+              60,
+              120
             ],
             "alpha": 0.5
           },
-          "mean_macro_f1": 0.9532673187914295
+          "mean_macro_f1": 0.947810484695811
         },
         "contrast_low": {
           "config_id": "msr_large_a0.5",
@@ -220,21 +220,21 @@
             ],
             "alpha": 0.5
           },
-          "mean_macro_f1": 0.9019352467148428
+          "mean_macro_f1": 0.9323934018987542
         }
       },
       "general": {
-        "config_id": "msr_large_a0.5",
+        "config_id": "msr_small_a0.5",
         "params": {
           "sigmas": [
-            15,
-            60,
-            120
+            5,
+            20,
+            60
           ],
           "alpha": 0.5
         },
-        "mean_macro_f1": 0.8866698506738513,
-        "clean_macro_f1": 0.9538020449818496
+        "mean_macro_f1": 0.8997989962646299,
+        "clean_macro_f1": 0.939962488978694
       }
     },
     "gray_world": {
@@ -247,7 +247,7 @@
           "params": {
             "strength": 0.5
           },
-          "mean_macro_f1": 0.8120925234999818
+          "mean_macro_f1": 0.9108126090210223
         }
       },
       "general": {
@@ -255,66 +255,66 @@
         "params": {
           "strength": 0.5
         },
-        "mean_macro_f1": 0.8120925234999818,
-        "clean_macro_f1": 0.8985857836509238
+        "mean_macro_f1": 0.9108126090210223,
+        "clean_macro_f1": 0.9297553072633538
       }
     }
   },
   "clean_cost": [
     {
       "technique": "gamma",
-      "config_id": "gamma_0.7",
-      "macro_f1": 0.9685300146922687,
-      "change_macro_f1": -0.008930496218539585,
-      "d_recall_ALGAL_LEAF_SPOT": 0.0,
-      "d_recall_ALLOCARIDARA_ATTACK": -0.032608695652173836,
+      "config_id": "gamma_0.85",
+      "macro_f1": 0.9595304395304396,
+      "change_macro_f1": -0.006862884119136381,
+      "d_recall_ALGAL_LEAF_SPOT": -0.013513513513513487,
+      "d_recall_ALLOCARIDARA_ATTACK": -0.010869565217391353,
       "d_recall_HEALTHY_LEAF": 0.0,
-      "d_recall_LEAF_BLIGHT": 0.010752688172043001,
-      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.022727272727272707
+      "d_recall_LEAF_BLIGHT": -0.010752688172043112,
+      "d_recall_PHOMOPSIS_LEAF_SPOT": 0.0
     },
     {
       "technique": "gamma_auto",
       "config_id": "auto_0.5",
-      "macro_f1": 0.9730271537006075,
-      "change_macro_f1": -0.004433357210200772,
-      "d_recall_ALGAL_LEAF_SPOT": 0.0,
-      "d_recall_ALLOCARIDARA_ATTACK": 0.0,
+      "macro_f1": 0.9616890155774932,
+      "change_macro_f1": -0.004704308072082775,
+      "d_recall_ALGAL_LEAF_SPOT": -0.013513513513513487,
+      "d_recall_ALLOCARIDARA_ATTACK": -0.010869565217391353,
       "d_recall_HEALTHY_LEAF": 0.0,
-      "d_recall_LEAF_BLIGHT": 0.0,
-      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.022727272727272707
+      "d_recall_LEAF_BLIGHT": -0.010752688172043112,
+      "d_recall_PHOMOPSIS_LEAF_SPOT": 0.011363636363636354
     },
     {
       "technique": "clahe",
       "config_id": "clahe_c1_t4",
-      "macro_f1": 0.9592239794630301,
-      "change_macro_f1": -0.01823653144777826,
-      "d_recall_ALGAL_LEAF_SPOT": -0.04054054054054057,
-      "d_recall_ALLOCARIDARA_ATTACK": -0.010869565217391242,
-      "d_recall_HEALTHY_LEAF": 0.0,
-      "d_recall_LEAF_BLIGHT": -0.010752688172043112,
-      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.03409090909090906
+      "macro_f1": 0.9591432304609656,
+      "change_macro_f1": -0.0072500931886103626,
+      "d_recall_ALGAL_LEAF_SPOT": 0.0,
+      "d_recall_ALLOCARIDARA_ATTACK": 0.010869565217391242,
+      "d_recall_HEALTHY_LEAF": 0.020618556701030966,
+      "d_recall_LEAF_BLIGHT": -0.06451612903225812,
+      "d_recall_PHOMOPSIS_LEAF_SPOT": 0.0
     },
     {
       "technique": "retinex",
-      "config_id": "msr_large_a0.5",
-      "macro_f1": 0.9538020449818496,
-      "change_macro_f1": -0.023658465928958705,
-      "d_recall_ALGAL_LEAF_SPOT": -0.08108108108108114,
+      "config_id": "msr_small_a0.5",
+      "macro_f1": 0.939962488978694,
+      "change_macro_f1": -0.02643083467088192,
+      "d_recall_ALGAL_LEAF_SPOT": -0.08108108108108103,
       "d_recall_ALLOCARIDARA_ATTACK": 0.0,
-      "d_recall_HEALTHY_LEAF": -0.010309278350515427,
-      "d_recall_LEAF_BLIGHT": -0.010752688172043112,
-      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.022727272727272707
+      "d_recall_HEALTHY_LEAF": 0.0,
+      "d_recall_LEAF_BLIGHT": -0.043010752688172116,
+      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.011363636363636354
     },
     {
       "technique": "gray_world",
       "config_id": "gw_0.5",
-      "macro_f1": 0.8985857836509238,
-      "change_macro_f1": -0.07887472725988454,
-      "d_recall_ALGAL_LEAF_SPOT": -0.013513513513513598,
-      "d_recall_ALLOCARIDARA_ATTACK": -0.06521739130434778,
-      "d_recall_HEALTHY_LEAF": -0.24742268041237114,
-      "d_recall_LEAF_BLIGHT": 0.043010752688172005,
-      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.11363636363636365
+      "macro_f1": 0.9297553072633538,
+      "change_macro_f1": -0.036638016386222216,
+      "d_recall_ALGAL_LEAF_SPOT": 0.0,
+      "d_recall_ALLOCARIDARA_ATTACK": 0.010869565217391242,
+      "d_recall_HEALTHY_LEAF": -0.15463917525773196,
+      "d_recall_LEAF_BLIGHT": 0.021505376344086002,
+      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.05681818181818188
     }
   ],
   "note": "Tham số chọn trên validation. Tập test chưa mở. Task 4.5 đo bản đồ phục hồi trên test với đúng các cấu hình này."

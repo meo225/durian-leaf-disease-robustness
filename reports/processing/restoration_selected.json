@@ -1,10 +1,10 @@
 {
   "task": "4.4",
   "split": "val",
-  "reference_model": "convnext_tiny",
+  "reference_model": "swin_tiny",
   "corruption_config": "configs/corruption.yaml",
   "grid_config_version": 3,
-  "clean_macro_f1": 0.9774605109108083,
+  "clean_macro_f1": 0.966393323649576,
   "selection_rule": {
     "tie_margin": 0.003,
     "min_degradation": 0.02
@@ -18,34 +18,34 @@
       ],
       "per_family": {
         "noise": {
-          "config_id": "gauss_s0.3",
+          "config_id": "gauss_s0.5",
           "params": {
-            "sigma": 0.3
+            "sigma": 0.5
           },
-          "mean_macro_f1": 0.8106565035534076
+          "mean_macro_f1": 0.8809101997115819
         },
         "sensor_noise": {
-          "config_id": "gauss_s0.3",
+          "config_id": "gauss_s0.5",
           "params": {
-            "sigma": 0.3
+            "sigma": 0.5
           },
-          "mean_macro_f1": 0.8393171040739688
+          "mean_macro_f1": 0.890743386708149
         },
         "lowlight": {
           "config_id": "gauss_s0.5",
           "params": {
             "sigma": 0.5
           },
-          "mean_macro_f1": 0.7936794228376197
+          "mean_macro_f1": 0.8377273701808409
         }
       },
       "general": {
-        "config_id": "gauss_s0.3",
+        "config_id": "gauss_s0.5",
         "params": {
-          "sigma": 0.3
+          "sigma": 0.5
         },
-        "mean_macro_f1": 0.8129414583004893,
-        "clean_macro_f1": 0.9774605109108083
+        "mean_macro_f1": 0.8697936522001907,
+        "clean_macro_f1": 0.9576541424367511
       }
     },
     "median": {
@@ -60,21 +60,21 @@
           "params": {
             "ksize": 3
           },
-          "mean_macro_f1": 0.7419436226165473
+          "mean_macro_f1": 0.830303794113202
         },
         "sensor_noise": {
           "config_id": "median_k3",
           "params": {
             "ksize": 3
           },
-          "mean_macro_f1": 0.7535538089715755
+          "mean_macro_f1": 0.8307297317813142
         },
         "lowlight": {
           "config_id": "median_k3",
           "params": {
             "ksize": 3
           },
-          "mean_macro_f1": 0.6556126092822238
+          "mean_macro_f1": 0.7829387098944034
         }
       },
       "general": {
@@ -82,8 +82,8 @@
         "params": {
           "ksize": 3
         },
-        "mean_macro_f1": 0.7170366802901156,
-        "clean_macro_f1": 0.8600499026242201
+        "mean_macro_f1": 0.8146574119296398,
+        "clean_macro_f1": 0.9013008545908706
       }
     },
     "bilateral": {
@@ -100,16 +100,16 @@
             "sigma_color": 30,
             "sigma_space": 5
           },
-          "mean_macro_f1": 0.8364533731546898
+          "mean_macro_f1": 0.8789783472578497
         },
         "sensor_noise": {
-          "config_id": "bil_d7_c30_s5",
+          "config_id": "bil_d5_c30_s3",
           "params": {
-            "d": 7,
+            "d": 5,
             "sigma_color": 30,
-            "sigma_space": 5
+            "sigma_space": 3
           },
-          "mean_macro_f1": 0.8741549945839914
+          "mean_macro_f1": 0.8967127198652886
         },
         "lowlight": {
           "config_id": "bil_d7_c10_s5",
@@ -118,18 +118,18 @@
             "sigma_color": 10,
             "sigma_space": 5
           },
-          "mean_macro_f1": 0.8112935974222809
+          "mean_macro_f1": 0.8484218373325448
         }
       },
       "general": {
-        "config_id": "bil_d7_c20_s5",
+        "config_id": "bil_d5_c30_s3",
         "params": {
-          "d": 7,
-          "sigma_color": 20,
-          "sigma_space": 5
+          "d": 5,
+          "sigma_color": 30,
+          "sigma_space": 3
         },
-        "mean_macro_f1": 0.8268254015581521,
-        "clean_macro_f1": 0.9589148268701969
+        "mean_macro_f1": 0.8662273698388357,
+        "clean_macro_f1": 0.947415169291628
       }
     },
     "nlm": {
@@ -144,21 +144,21 @@
           "params": {
             "h": 1.5
           },
-          "mean_macro_f1": 0.8100347054685754
+          "mean_macro_f1": 0.8519702031927726
         },
         "sensor_noise": {
-          "config_id": "nlm_h3",
+          "config_id": "nlm_h1.5",
           "params": {
-            "h": 3
+            "h": 1.5
           },
-          "mean_macro_f1": 0.8410273884546985
+          "mean_macro_f1": 0.8650359434569523
         },
         "lowlight": {
           "config_id": "nlm_h1.5",
           "params": {
             "h": 1.5
           },
-          "mean_macro_f1": 0.7841922010314862
+          "mean_macro_f1": 0.8226549139560358
         }
       },
       "general": {
@@ -166,8 +166,8 @@
         "params": {
           "h": 1.5
         },
-        "mean_macro_f1": 0.810627515939847,
-        "clean_macro_f1": 0.9771330433615043
+        "mean_macro_f1": 0.8465536868685869,
+        "clean_macro_f1": 0.9593091338142404
       }
     },
     "unsharp": {
@@ -178,20 +178,20 @@
       ],
       "per_family": {
         "blur": {
+          "config_id": "unsharp_s1.0_a3.0",
+          "params": {
+            "sigma": 1.0,
+            "amount": 3.0
+          },
+          "mean_macro_f1": 0.8758440691621515
+        },
+        "motion_blur": {
           "config_id": "unsharp_s2.0_a1.0",
           "params": {
             "sigma": 2.0,
             "amount": 1.0
           },
-          "mean_macro_f1": 0.8281540466862635
-        },
-        "motion_blur": {
-          "config_id": "unsharp_s1.0_a2.0",
-          "params": {
-            "sigma": 1.0,
-            "amount": 2.0
-          },
-          "mean_macro_f1": 0.9242488731434232
+          "mean_macro_f1": 0.8952598427873043
         },
         "lowres": {
           "config_id": "unsharp_s1.0_a3.0",
@@ -199,7 +199,7 @@
             "sigma": 1.0,
             "amount": 3.0
           },
-          "mean_macro_f1": 0.9338209653901322
+          "mean_macro_f1": 0.9107552832569282
         }
       },
       "general": {
@@ -208,19 +208,19 @@
           "sigma": 1.0,
           "amount": 3.0
         },
-        "mean_macro_f1": 0.8889664528919261,
-        "clean_macro_f1": 0.7428608994225059
+        "mean_macro_f1": 0.8930450488251633,
+        "clean_macro_f1": 0.9119927111805284
       }
     }
   },
   "clean_cost": [
     {
       "technique": "gaussian",
-      "config_id": "gauss_s0.3",
-      "macro_f1": 0.9774605109108083,
-      "change_macro_f1": 0.0,
+      "config_id": "gauss_s0.5",
+      "macro_f1": 0.9576541424367511,
+      "change_macro_f1": -0.008739181212824909,
       "d_recall_ALGAL_LEAF_SPOT": 0.0,
-      "d_recall_ALLOCARIDARA_ATTACK": 0.0,
+      "d_recall_ALLOCARIDARA_ATTACK": -0.04347826086956519,
       "d_recall_HEALTHY_LEAF": 0.0,
       "d_recall_LEAF_BLIGHT": 0.0,
       "d_recall_PHOMOPSIS_LEAF_SPOT": 0.0
@@ -228,46 +228,46 @@
     {
       "technique": "median",
       "config_id": "median_k3",
-      "macro_f1": 0.8600499026242201,
-      "change_macro_f1": -0.11741060828658823,
-      "d_recall_ALGAL_LEAF_SPOT": 0.013513513513513487,
-      "d_recall_ALLOCARIDARA_ATTACK": -0.46739130434782605,
-      "d_recall_HEALTHY_LEAF": -0.010309278350515427,
+      "macro_f1": 0.9013008545908706,
+      "change_macro_f1": -0.06509246905870536,
+      "d_recall_ALGAL_LEAF_SPOT": -0.027027027027026973,
+      "d_recall_ALLOCARIDARA_ATTACK": -0.2717391304347826,
+      "d_recall_HEALTHY_LEAF": 0.0,
       "d_recall_LEAF_BLIGHT": 0.0,
-      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.05681818181818177
+      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.011363636363636354
     },
     {
       "technique": "bilateral",
-      "config_id": "bil_d7_c20_s5",
-      "macro_f1": 0.9589148268701969,
-      "change_macro_f1": -0.01854568404061141,
-      "d_recall_ALGAL_LEAF_SPOT": -0.013513513513513598,
-      "d_recall_ALLOCARIDARA_ATTACK": -0.06521739130434778,
-      "d_recall_HEALTHY_LEAF": 0.020618556701030966,
+      "config_id": "bil_d5_c30_s3",
+      "macro_f1": 0.947415169291628,
+      "change_macro_f1": -0.01897815435794803,
+      "d_recall_ALGAL_LEAF_SPOT": -0.027027027027026973,
+      "d_recall_ALLOCARIDARA_ATTACK": -0.07608695652173914,
+      "d_recall_HEALTHY_LEAF": 0.0,
       "d_recall_LEAF_BLIGHT": 0.010752688172043001,
-      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.045454545454545414
+      "d_recall_PHOMOPSIS_LEAF_SPOT": 0.0
     },
     {
       "technique": "nlm",
       "config_id": "nlm_h1.5",
-      "macro_f1": 0.9771330433615043,
-      "change_macro_f1": -0.0003274675493040169,
+      "macro_f1": 0.9593091338142404,
+      "change_macro_f1": -0.0070841898353355415,
       "d_recall_ALGAL_LEAF_SPOT": 0.0,
-      "d_recall_ALLOCARIDARA_ATTACK": -0.010869565217391242,
-      "d_recall_HEALTHY_LEAF": 0.020618556701030966,
+      "d_recall_ALLOCARIDARA_ATTACK": -0.03260869565217395,
+      "d_recall_HEALTHY_LEAF": 0.0,
       "d_recall_LEAF_BLIGHT": 0.010752688172043001,
-      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.022727272727272707
+      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.011363636363636354
     },
     {
       "technique": "unsharp",
       "config_id": "unsharp_s1.0_a3.0",
-      "macro_f1": 0.7428608994225059,
-      "change_macro_f1": -0.23459961148830244,
-      "d_recall_ALGAL_LEAF_SPOT": -0.31081081081081086,
-      "d_recall_ALLOCARIDARA_ATTACK": -0.2065217391304347,
+      "macro_f1": 0.9119927111805284,
+      "change_macro_f1": -0.05440061246904759,
+      "d_recall_ALGAL_LEAF_SPOT": -0.05405405405405406,
+      "d_recall_ALLOCARIDARA_ATTACK": -0.010869565217391353,
       "d_recall_HEALTHY_LEAF": 0.020618556701030966,
-      "d_recall_LEAF_BLIGHT": -0.20430107526881724,
-      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.5113636363636364
+      "d_recall_LEAF_BLIGHT": -0.13978494623655924,
+      "d_recall_PHOMOPSIS_LEAF_SPOT": -0.09090909090909094
     }
   ],
   "note": "Tham số chọn trên validation. Tập test chưa mở. Task 4.5 đo bản đồ phục hồi trên test với đúng các cấu hình này."
