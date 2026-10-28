@@ -42,6 +42,6 @@ Danh sách khóa ở trên không đổi. Swin-Tiny được thêm sau khi refer
 
 Giao thức train giữ nguyên: `configs/train_swin_tiny.yaml`, notebook `03_train_swin_tiny.ipynb`, cùng `src/training/run.py`. Chỉ khác `backbone: swin_tiny_patch4_window7_224`, nhận ảnh 224×224 như pipeline. Learning rate 2e-4 chưa dò riêng cho Swin, nên điểm của Swin-Tiny có thể thấp hơn mức đạt được khi dò.
 
-Đo độ bền bằng `configs/reference_selection_swin.yaml` và notebook `03_compare_swin_tiny.ipynb`: cùng code `src/evaluation/reference.py`, cùng validation và năm suy giảm của task 3.3, chạy lại cả bốn model. Kết quả ghi vào `reports/baselines/reference_selection_with_swin.json`, không ghi đè `reference_selection.json`.
+Đo độ bền bằng `configs/reference_selection_swin.yaml` và mục 5 của notebook `03_select_reference_model.ipynb`: cùng code `src/evaluation/reference.py`, cùng validation và năm suy giảm của task 3.3, chạy lại cả bốn model. Kết quả ghi vào `reports/baselines/reference_selection_with_swin.json`, không ghi đè `reference_selection.json`.
 
 Reference model vẫn là ConvNeXt-Tiny, và tập test không mở ở bước này. Dòng "selection" trong file kết quả chỉ cho biết quy tắc đã khóa sẽ chọn gì nếu có thêm Swin-Tiny. Nếu Swin-Tiny tốt hơn, việc đổi reference model sẽ kéo theo chạy lại task 4.2 trở đi, nên cần nhóm quyết định riêng.

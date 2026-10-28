@@ -69,7 +69,7 @@ Lưu ý: ba checkpoint tái hiện đúng macro F1 đã ghi lúc train. Năm m�
 
 ## Swin-Tiny: model đối chiếu thêm
 
-Swin-Tiny được thêm sau khi reference model đã chọn (nhánh `baseline-Swin-Tiny`, xem `docs/phase-3-baseline-candidates.md`). Cùng giao thức train, chỉ khác backbone `swin_tiny_patch4_window7_224`. Đo lại cả bốn model trong một lần chạy bằng `configs/reference_selection_swin.yaml` và notebook `03_compare_swin_tiny.ipynb`, cùng validation và cùng năm suy giảm. Kết quả ở `reference_selection_with_swin.json`, không ghi đè `reference_selection.json`. Cả bốn checkpoint tái hiện đúng macro F1 đã ghi lúc train.
+Swin-Tiny được thêm sau khi reference model đã chọn (nhánh `baseline-Swin-Tiny`, xem `docs/phase-3-baseline-candidates.md`). Cùng giao thức train, chỉ khác backbone `swin_tiny_patch4_window7_224`. Đo lại cả bốn model trong một lần chạy bằng `configs/reference_selection_swin.yaml` và mục 5 của notebook `03_select_reference_model.ipynb`, cùng validation và cùng năm suy giảm. Kết quả ở `reference_selection_with_swin.json`, không ghi đè `reference_selection.json`. Cả bốn checkpoint tái hiện đúng macro F1 đã ghi lúc train.
 
 Macro F1 trên validation dưới suy giảm:
 
