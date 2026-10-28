@@ -98,6 +98,23 @@ Kích thước và tốc độ, đo lại trong lần chạy này (Tesla T4, fp3
 - Độ trễ batch 1 của Swin-Tiny gấp khoảng 1.8 lần ConvNeXt-Tiny, throughput batch 32 gần nhau.
 - Tập test chưa mở. Reference model vẫn là ConvNeXt-Tiny. Đưa Swin-Tiny vào task 4.2 hay đổi reference là quyết định của nhóm sau khi chạy lặp seed.
 
+## Chạy lặp seed
+
+Kết quả ở trên đều từ seed 42. Để biết các chênh lệch có ổn định không, ba model được chạy lặp với seed 43 và 44: Swin-Tiny, ResNet-50 và ConvNeXt-Tiny (danh sách seed 42, 43, 44 chốt trước khi chạy, không bỏ seed nào theo kết quả). Giao thức train và phép đo độ bền giữ nguyên. Chỉ khóa `seed` trong `configs/train_<model>_seed<N>.yaml` đổi, ghi đè seed trong `configs/pipeline.yaml`. Split và seed của suy giảm không đổi, nên mọi lần chạy được chấm trên đúng cùng ảnh. Notebook `03_repeat_seeds.ipynb`, cấu hình đo `configs/reference_selection_seed<N>.yaml`.
+
+Vì sao chọn ba model này:
+
+- **ConvNeXt-Tiny** là reference model, cần biết điểm của nó ổn định đến đâu.
+- **Swin-Tiny** là model đối chiếu thêm. Câu hỏi là nó có thật sự bền hơn ConvNeXt-Tiny không.
+- **ResNet-50** là ứng viên sát nút của ConvNeXt-Tiny khi chọn reference: F1 sạch chênh 0.0055, và quyết định dựa vào mức giảm (0.207 so với 0.265). Cả hai đều mới một seed, nên việc chọn reference cũng cần kiểm tra lại. Phase 3 ghi cần chạy lặp khi điểm gần nhau.
+
+Vì sao không chạy lặp MobileNetV3-Small:
+
+- Nó không nằm trong câu hỏi nào ở trên và đã bị loại khỏi nhóm ứng viên reference bằng quy tắc khóa ở bước F1 sạch: 0.9292, kém ConvNeXt-Tiny 0.0483, gấp khoảng năm lần ngưỡng 0.01.
+- Mức giảm dưới suy giảm của nó cũng lớn nhất trong bốn model (0.3005, so với 0.2066 của ConvNeXt-Tiny, 0.2648 của ResNet-50 và 0.1365 của Swin-Tiny).
+- Chênh lệch lớn hơn nhiều so với độ nhiễu của validation 444 ảnh (khoảng 0.01), nên một seed đủ để thấy nó kém hơn. Chạy lặp không đổi kết luận nào ở trên. Đây là đánh giá của nhóm dựa trên một seed, không phải kết quả đã đo lặp.
+- Tiết kiệm GPU: khoảng 9 phút mỗi lần chạy trên Tesla T4 (552 giây ở seed 42).
+
 ## File
 
 Mỗi model có thư mục riêng, tên file có hậu tố `_seed42`:

@@ -41,6 +41,18 @@ def load_configs(config_path: str | Path) -> tuple[dict[str, Any], dict[str, Any
     return train_cfg, pipeline_cfg
 
 
+def load_finetune_configs(config_path: str | Path) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Đọc cấu hình train và pipeline. Nếu config train có `seed` thì dùng seed đó thay cho seed trong configs/pipeline.yaml.
+
+    Cho phép chạy lại cùng cấu hình với seed khác mà không sửa file pipeline dùng chung. Split và seed của suy giảm
+    (configs/corruption.yaml) không đổi, nên mọi lần chạy được đánh giá trên đúng cùng ảnh.
+    """
+    train_cfg, pipeline_cfg = load_configs(config_path)
+    if "seed" in train_cfg:
+        pipeline_cfg = {**pipeline_cfg, "seed": int(train_cfg["seed"])}
+    return train_cfg, pipeline_cfg
+
+
 def prepare_loaders(pipeline_cfg: dict[str, Any]) -> tuple[torch.device, dict]:
     """Tạo loader train và val. Thiếu GPU thì dừng trước khi train."""
     set_seed(int(pipeline_cfg["seed"]))
@@ -168,7 +180,7 @@ def print_run_report(result: dict[str, Any], paths: dict[str, str], resource: st
 
 def main(config_path: str | Path) -> dict[str, str]:
     """Chạy fine-tune theo cấu hình. Chỉ tạo loader train và val."""
-    train_cfg, pipeline_cfg = load_configs(config_path)
+    train_cfg, pipeline_cfg = load_finetune_configs(config_path)
     device, loaders = prepare_loaders(pipeline_cfg)
     model = build_model(train_cfg, num_classes=int(pipeline_cfg["num_classes"]))
     result = fit_model(

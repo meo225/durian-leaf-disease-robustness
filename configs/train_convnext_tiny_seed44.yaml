@@ -1,0 +1,18 @@
+# Chạy lặp ConvNeXt-Tiny với seed 44. Giống hệt configs/train_convnext_tiny.yaml, chỉ thêm `seed`.
+# `seed` ghi đè seed trong configs/pipeline.yaml. Split và seed của suy giảm không đổi.
+# Checkpoint chọn theo macro F1 trên validation. Không đọc tập test.
+
+pipeline_config: configs/pipeline.yaml
+seed: 44
+model_name: convnext_tiny
+library: timm
+backbone: convnext_tiny
+pretrained: true
+epochs: 30
+patience: 7
+min_delta: 0.0
+learning_rate: 0.0002
+weight_decay: 0.01
+optimizer: adamw
+scheduler: cosine
+selection_metric: macro_f1
