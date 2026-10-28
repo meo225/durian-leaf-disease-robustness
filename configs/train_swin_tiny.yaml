@@ -1,0 +1,17 @@
+# Cấu hình train Swin-Tiny. Cùng giao thức với mọi baseline khác, chỉ khác model.
+# Thêm sau khi reference model đã chọn (xem docs/phase-3-baseline-candidates.md), nên chỉ là model đối chiếu, không đổi reference.
+# Checkpoint chọn theo macro F1 trên validation. Không đọc tập test.
+
+pipeline_config: configs/pipeline.yaml
+model_name: swin_tiny
+library: timm
+backbone: swin_tiny_patch4_window7_224
+pretrained: true
+epochs: 30
+patience: 7
+min_delta: 0.0
+learning_rate: 0.0002
+weight_decay: 0.01
+optimizer: adamw
+scheduler: cosine
+selection_metric: macro_f1
