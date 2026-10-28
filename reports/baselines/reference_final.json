@@ -1,0 +1,8 @@
+{
+  "selection": {
+    "reference": "swin_tiny",
+    "previous_reference": "convnext_tiny",
+    "basis": "Quyết định của nhóm sau khi chạy lặp seed 42, 43, 44. Trung bình ba seed: F1 sạch Swin-Tiny 0.9734 so với ConvNeXt-Tiny 0.9779 (chênh 0.0045, trong ngưỡng 0.01); mức giảm dưới suy giảm 0.1357 so với 0.2189 (ConvNeXt-Tiny) và 0.2598 (ResNet-50).",
+    "evidence": "reports/baselines/seed_repeat_summary.csv"
+  }
+}

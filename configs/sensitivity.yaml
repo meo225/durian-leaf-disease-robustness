@@ -2,7 +2,7 @@
 # Ngưỡng phân loại mức ảnh hưởng đặt trước khi xem kết quả test, không chỉnh sau đó.
 
 corruption_config: configs/corruption.yaml
-checkpoint_name: convnext_tiny_seed42.pt
+checkpoint_name: swin_tiny_seed42.pt
 splits: [val, test]
 
 bootstrap:

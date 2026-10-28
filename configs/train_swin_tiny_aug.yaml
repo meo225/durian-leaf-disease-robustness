@@ -1,0 +1,33 @@
+# Đối chứng huấn luyện lại Swin-Tiny bằng augmentation suy giảm (task 4.5).
+# Cùng giao thức với configs/train_swin_tiny.yaml: model, optimizer, scheduler, epoch, patience, seed. Chỉ khác augmentation và tập chọn checkpoint.
+# Mọi giá trị dưới đây khóa trước khi chạy. Không chỉnh theo kết quả test.
+
+pipeline_config: configs/pipeline.yaml
+model_name: swin_tiny_aug
+library: timm
+backbone: swin_tiny_patch4_window7_224
+pretrained: true
+epochs: 30
+patience: 7
+min_delta: 0.0
+learning_rate: 0.0002
+weight_decay: 0.01
+optimizer: adamw
+scheduler: cosine
+selection_metric: macro_f1
+# Suy giảm tính trên CPU trong DataLoader nên dùng vài worker. Mỗi worker có seed riêng từ seed của pipeline.
+num_workers: 2
+
+augmentation:
+  # Điều kiện lấy từ benchmark 4.1: 14 họ, ba mức mỗi họ, chọn đều trong 42 điều kiện.
+  corruption_config: configs/corruption.yaml
+  # Xác suất áp một suy giảm lên mỗi ảnh train. Phần còn lại giữ ảnh sạch (sau lật và xoay như baseline).
+  probability: 0.5
+  # Giá trị của điều kiện nhân với hệ số ngẫu nhiên trong 1 ± jitter, để không chỉ thấy đúng ba mức cố định.
+  jitter: 0.1
+  # Họ không đưa vào huấn luyện, để đo khả năng tổng quát hóa sang suy giảm lạ. Lần chính để trống (dùng cả 14 họ).
+  exclude_families: []
+
+validation:
+  # Validation hỗn hợp để chọn checkpoint: ảnh sạch cộng mỗi họ ở mức này, suy giảm cố định theo benchmark 4.1.
+  severity: 2

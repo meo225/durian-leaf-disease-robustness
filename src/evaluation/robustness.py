@@ -20,7 +20,7 @@ from src.evaluation.reference import load_trained_model
 from src.training.loop import evaluate_loader, resolve_device
 
 ROOT = Path(__file__).resolve().parents[2]
-SELECTION_PATH = ROOT / "reports" / "baselines" / "reference_selection.json"
+SELECTION_PATH = ROOT / "reports" / "baselines" / "reference_final.json"
 CALIBRATION_PATH = ROOT / "reports" / "corruptions" / "validation_calibration.json"
 
 
