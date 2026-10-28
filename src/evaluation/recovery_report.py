@@ -324,7 +324,7 @@ def build_report(config_path: str | Path, run_path: str | Path, output_dir: str 
 
     keep = family[family["evidence"]]
     document = {
-        "split": split, "reference_model": "convnext_tiny", "bootstrap": int(stats["bootstrap"]), "confidence": float(stats["confidence"]), "alpha": float(stats["alpha"]),
+        "split": split, "reference_model": Path(cfg["train_config"]).stem.removeprefix("train_"), "bootstrap": int(stats["bootstrap"]), "confidence": float(stats["confidence"]), "alpha": float(stats["alpha"]),
         "same_samples_as_task_4_2": same_samples, "mismatch_vs_task_4_2": {"total": int(sum(mismatch.values())), "max_per_condition": int(max(mismatch.values(), default=0)), "by_condition": mismatch},
         "rule": evidence, "cells": int(len(cells)), "evidence": keep[["technique", "family", "config_id", "recovery_mean", "recovery_low", "recovery_high", "levels_gain_significant", "clean_delta", "clean_delta_low", "clean_delta_high", "costly"]].round(4).to_dict(orient="records"),
         "no_evidence_suitable": family[family["suitable"] & ~family["evidence"]][["technique", "family", "recovery_mean", "recovery_low", "recovery_high", "levels_gain_significant"]].round(4).to_dict(orient="records"),

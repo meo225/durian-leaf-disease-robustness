@@ -32,10 +32,6 @@ Nhóm đã đổi reference từ ConvNeXt-Tiny sang Swin-Tiny (xem `reports/base
 
 ## Notebook 08 (bản đồ phục hồi, task 4.5)
 
-Notebook `08_recovery_map.ipynb` và code của nó chỉ có ở nhánh `recovery-map`, chưa vào `main` và không có ở nhánh này. Nó đọc đầu ra của 4.2 đến 4.5, nên chỉ chạy lại được sau bước 7 ở trên. Khi nhánh `recovery-map` được cập nhật trên nền các thay đổi này, cần sửa:
+Đã chuẩn bị: `configs/recovery_map.yaml` (checkpoint, `train_config` và tiền tố `retrained__swin_tiny_aug`), `src/evaluation/recovery_report.py` (`reference_model` lấy từ `train_config` thay vì gắn cứng `convnext_tiny`), và notebook `08_recovery_map.ipynb` (đọc `reference_final.json`, assert `swin_tiny`).
 
-- `configs/recovery_map.yaml`: `checkpoint_name: swin_tiny_seed42.pt`, `train_config: configs/train_swin_tiny.yaml`, `retrained.prefix: retrained__swin_tiny_aug`.
-- `src/evaluation/recovery_report.py` dòng 327: `"reference_model": "convnext_tiny"` đang gắn cứng, cần lấy từ cấu hình.
-- `notebooks/08_recovery_map.ipynb`: đọc `reports/baselines/reference_final.json`, assert `swin_tiny`, và sửa các dòng mô tả còn ghi ConvNeXt-Tiny.
-- `tests/test_recovery_report.py`: dữ liệu giả dùng tiền tố `retrained__convnext_tiny_aug`, cần khớp cấu hình mới.
-- `reports/recovery_map/README.md` và `reports/processing/restoration_*recovery*.png`: kết quả hiện là của ConvNeXt-Tiny, thay bằng kết quả chạy lại.
+Notebook này đọc đầu ra của 4.2 đến 4.5, nên chỉ chạy được sau bước 7 ở trên, và là bước chạy cuối. Sau khi chạy, thay `reports/recovery_map/` (README, CSV, ảnh) và ba ảnh `reports/processing/restoration_*recovery*.png`, vì kết quả hiện là của ConvNeXt-Tiny. Dữ liệu giả trong `tests/test_recovery_report.py` dùng tiền tố cũ nhưng độc lập với cấu hình nên không cần sửa.

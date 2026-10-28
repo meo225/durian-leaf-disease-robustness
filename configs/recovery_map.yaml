@@ -4,8 +4,8 @@
 
 split: test
 corruption_config: configs/corruption.yaml
-checkpoint_name: convnext_tiny_seed42.pt
-train_config: configs/train_convnext_tiny.yaml
+checkpoint_name: swin_tiny_seed42.pt
+train_config: configs/train_swin_tiny.yaml
 
 # Cấu hình đã chọn trên validation. Tên kỹ thuật không được trùng nhau giữa các file.
 selected:
@@ -25,7 +25,7 @@ reference_validation_table: reports/sensitivity/sensitivity_conditions_val.csv
 # Dự đoán test của model huấn luyện lại (task 4.5, đối chứng).
 retrained:
   predictions: reports/augmentation/augmentation_test_predictions.npz
-  prefix: retrained__convnext_tiny_aug
+  prefix: retrained__swin_tiny_aug
 
 statistics:
   # Lấy lại mẫu theo ảnh, cùng một ma trận lấy lại mẫu cho mọi ô.
