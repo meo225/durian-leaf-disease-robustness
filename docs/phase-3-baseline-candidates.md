@@ -44,4 +44,4 @@ Giao thức train giữ nguyên: `configs/train_swin_tiny.yaml`, notebook `03_tr
 
 Đo độ bền bằng `configs/reference_selection_swin.yaml` và mục 5 của notebook `03_select_reference_model.ipynb`: cùng code `src/evaluation/reference.py`, cùng validation và năm suy giảm của task 3.3, chạy lại cả bốn model. Kết quả ghi vào `reports/baselines/reference_selection_with_swin.json`, không ghi đè `reference_selection.json`.
 
-Reference model vẫn là ConvNeXt-Tiny, và tập test không mở ở bước này. Dòng "selection" trong file kết quả chỉ cho biết quy tắc đã khóa sẽ chọn gì nếu có thêm Swin-Tiny. Nếu Swin-Tiny tốt hơn, việc đổi reference model sẽ kéo theo chạy lại task 4.2 trở đi, nên cần nhóm quyết định riêng.
+Ở bước seed 42, reference model là ConvNeXt-Tiny và tập test không mở. Sau khi chạy lặp seed 43 và 44, nhóm đã quyết định đổi reference sang Swin-Tiny (xem `reports/baselines/README.md`, mục Chạy lặp seed). Dòng "selection" trong file kết quả chỉ cho biết quy tắc đã khóa sẽ chọn gì nếu có thêm Swin-Tiny. Nếu Swin-Tiny tốt hơn, việc đổi reference model sẽ kéo theo chạy lại task 4.2 trở đi, nên cần nhóm quyết định riêng.

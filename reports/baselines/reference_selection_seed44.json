@@ -1,0 +1,175 @@
+{
+  "device": "Tesla T4",
+  "close_margin": 0.01,
+  "corruptions": {
+    "brightness_dark": {
+      "type": "brightness",
+      "value": 0.5
+    },
+    "brightness_bright": {
+      "type": "brightness",
+      "value": 1.5
+    },
+    "contrast_low": {
+      "type": "contrast",
+      "value": 0.5
+    },
+    "blur": {
+      "type": "blur",
+      "value": 2.0
+    },
+    "noise": {
+      "type": "noise",
+      "value": 0.1
+    }
+  },
+  "models": {
+    "resnet50": {
+      "model": {
+        "parameters": 23518277,
+        "size_mb": 89.72,
+        "library": "timm",
+        "backbone": "resnet50"
+      },
+      "clean": {
+        "macro_f1": 0.9723636884133997,
+        "balanced_accuracy": 0.9719027295815514,
+        "per_class_recall": {
+          "ALGAL_LEAF_SPOT": 0.9594594594594594,
+          "ALLOCARIDARA_ATTACK": 0.9891304347826086,
+          "HEALTHY_LEAF": 1.0,
+          "LEAF_BLIGHT": 0.967741935483871,
+          "PHOMOPSIS_LEAF_SPOT": 0.9431818181818182
+        },
+        "recorded_macro_f1": 0.9723636884133997,
+        "matches_recorded": true
+      },
+      "corrupted": {
+        "macro_f1": {
+          "brightness_dark": 0.8875292514099595,
+          "brightness_bright": 0.8154449010740237,
+          "contrast_low": 0.887021797019614,
+          "blur": 0.2524499607605545,
+          "noise": 0.6453185114122346
+        },
+        "mean_macro_f1": 0.6975528843352773,
+        "degradation": 0.2748108040781224
+      },
+      "latency": [
+        {
+          "batch_size": 1,
+          "ms_per_batch": 6.731,
+          "ms_per_image": 6.731,
+          "images_per_second": 148.6
+        },
+        {
+          "batch_size": 32,
+          "ms_per_batch": 99.853,
+          "ms_per_image": 3.12,
+          "images_per_second": 320.5
+        }
+      ]
+    },
+    "convnext_tiny": {
+      "model": {
+        "parameters": 27823973,
+        "size_mb": 106.14,
+        "library": "timm",
+        "backbone": "convnext_tiny"
+      },
+      "clean": {
+        "macro_f1": 0.9742635314995564,
+        "balanced_accuracy": 0.9734143202235769,
+        "per_class_recall": {
+          "ALGAL_LEAF_SPOT": 0.9324324324324325,
+          "ALLOCARIDARA_ATTACK": 0.9782608695652174,
+          "HEALTHY_LEAF": 1.0,
+          "LEAF_BLIGHT": 0.967741935483871,
+          "PHOMOPSIS_LEAF_SPOT": 0.9886363636363636
+        },
+        "recorded_macro_f1": 0.9742635314995564,
+        "matches_recorded": true
+      },
+      "corrupted": {
+        "macro_f1": {
+          "brightness_dark": 0.9241413026993598,
+          "brightness_bright": 0.8615407953110434,
+          "contrast_low": 0.8903165396364017,
+          "blur": 0.5687213642741838,
+          "noise": 0.6494394561008126
+        },
+        "mean_macro_f1": 0.7788318916043602,
+        "degradation": 0.19543163989519619
+      },
+      "latency": [
+        {
+          "batch_size": 1,
+          "ms_per_batch": 6.289,
+          "ms_per_image": 6.289,
+          "images_per_second": 159.0
+        },
+        {
+          "batch_size": 32,
+          "ms_per_batch": 141.318,
+          "ms_per_image": 4.416,
+          "images_per_second": 226.4
+        }
+      ]
+    },
+    "swin_tiny": {
+      "model": {
+        "parameters": 27523199,
+        "size_mb": 104.99,
+        "library": "timm",
+        "backbone": "swin_tiny_patch4_window7_224"
+      },
+      "clean": {
+        "macro_f1": 0.9749928393371017,
+        "balanced_accuracy": 0.9748264361518219,
+        "per_class_recall": {
+          "ALGAL_LEAF_SPOT": 0.972972972972973,
+          "ALLOCARIDARA_ATTACK": 0.9782608695652174,
+          "HEALTHY_LEAF": 1.0,
+          "LEAF_BLIGHT": 0.956989247311828,
+          "PHOMOPSIS_LEAF_SPOT": 0.9659090909090909
+        },
+        "recorded_macro_f1": 0.9749928393371017,
+        "matches_recorded": true
+      },
+      "corrupted": {
+        "macro_f1": {
+          "brightness_dark": 0.9328899764442301,
+          "brightness_bright": 0.9108047601112121,
+          "contrast_low": 0.9423813415924981,
+          "blur": 0.5894986171382632,
+          "noise": 0.793792787554165
+        },
+        "mean_macro_f1": 0.8338734965680737,
+        "degradation": 0.14111934276902793
+      },
+      "latency": [
+        {
+          "batch_size": 1,
+          "ms_per_batch": 11.91,
+          "ms_per_image": 11.91,
+          "images_per_second": 84.0
+        },
+        {
+          "batch_size": 32,
+          "ms_per_batch": 158.232,
+          "ms_per_image": 4.945,
+          "images_per_second": 202.2
+        }
+      ]
+    }
+  },
+  "selection": {
+    "reference": "swin_tiny",
+    "candidates": [
+      "resnet50",
+      "convnext_tiny",
+      "swin_tiny"
+    ],
+    "reason": "macro F1 sạch ngang nhau, mức giảm dưới suy giảm thấp nhất"
+  }
+}

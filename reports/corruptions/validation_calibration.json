@@ -1,0 +1,301 @@
+{
+  "split": "val",
+  "reference_model": "swin_tiny",
+  "clean_macro_f1": 0.966393323649576,
+  "conditions": {
+    "brightness_dark_s1": {
+      "type": "brightness",
+      "value": 0.7,
+      "macro_f1": 0.9428062947012176,
+      "balanced_accuracy": 0.9428450139978313,
+      "degradation": 0.0235870289483584
+    },
+    "brightness_dark_s2": {
+      "type": "brightness",
+      "value": 0.5,
+      "macro_f1": 0.9249051283316071,
+      "balanced_accuracy": 0.925371249444065,
+      "degradation": 0.04148819531796888
+    },
+    "brightness_dark_s3": {
+      "type": "brightness",
+      "value": 0.3,
+      "macro_f1": 0.8105957145065401,
+      "balanced_accuracy": 0.8134009342063736,
+      "degradation": 0.15579760914303586
+    },
+    "brightness_bright_s1": {
+      "type": "brightness",
+      "value": 1.3,
+      "macro_f1": 0.9361252585968265,
+      "balanced_accuracy": 0.9342148359426885,
+      "degradation": 0.030268065052749482
+    },
+    "brightness_bright_s2": {
+      "type": "brightness",
+      "value": 1.6,
+      "macro_f1": 0.833158871607603,
+      "balanced_accuracy": 0.8304320924146402,
+      "degradation": 0.13323445204197293
+    },
+    "brightness_bright_s3": {
+      "type": "brightness",
+      "value": 2.0,
+      "macro_f1": 0.6905714562816427,
+      "balanced_accuracy": 0.6985113868776627,
+      "degradation": 0.27582186736793324
+    },
+    "contrast_low_s1": {
+      "type": "contrast",
+      "value": 0.7,
+      "macro_f1": 0.9618880107557899,
+      "balanced_accuracy": 0.9604207036600293,
+      "degradation": 0.004505312893786084
+    },
+    "contrast_low_s2": {
+      "type": "contrast",
+      "value": 0.5,
+      "macro_f1": 0.954208062742772,
+      "balanced_accuracy": 0.9536025218418475,
+      "degradation": 0.01218526090680394
+    },
+    "contrast_low_s3": {
+      "type": "contrast",
+      "value": 0.3,
+      "macro_f1": 0.926820730973105,
+      "balanced_accuracy": 0.9271101761381688,
+      "degradation": 0.03957259267647095
+    },
+    "blur_s1": {
+      "type": "blur",
+      "value": 0.5,
+      "macro_f1": 0.9576541424367511,
+      "balanced_accuracy": 0.9567238568706159,
+      "degradation": 0.008739181212824909
+    },
+    "blur_s2": {
+      "type": "blur",
+      "value": 1.0,
+      "macro_f1": 0.8284262522654101,
+      "balanced_accuracy": 0.8387901893291492,
+      "degradation": 0.13796707138416586
+    },
+    "blur_s3": {
+      "type": "blur",
+      "value": 2.0,
+      "macro_f1": 0.652890035302208,
+      "balanced_accuracy": 0.7031029465591574,
+      "degradation": 0.31350328834736796
+    },
+    "noise_s1": {
+      "type": "noise",
+      "value": 0.03,
+      "macro_f1": 0.9358667705380892,
+      "balanced_accuracy": 0.9343638135428307,
+      "degradation": 0.030526553111486776
+    },
+    "noise_s2": {
+      "type": "noise",
+      "value": 0.06,
+      "macro_f1": 0.8660701627896529,
+      "balanced_accuracy": 0.8625961052361047,
+      "degradation": 0.1003231608599231
+    },
+    "noise_s3": {
+      "type": "noise",
+      "value": 0.1,
+      "macro_f1": 0.7589876879520484,
+      "balanced_accuracy": 0.7513238789250558,
+      "degradation": 0.20740563569752757
+    },
+    "contrast_high_s1": {
+      "type": "contrast",
+      "value": 1.5,
+      "macro_f1": 0.9271526931130936,
+      "balanced_accuracy": 0.9245920263133722,
+      "degradation": 0.03924063053648241
+    },
+    "contrast_high_s2": {
+      "type": "contrast",
+      "value": 2.2,
+      "macro_f1": 0.8642630191805921,
+      "balanced_accuracy": 0.8600936776668042,
+      "degradation": 0.10213030446898386
+    },
+    "contrast_high_s3": {
+      "type": "contrast",
+      "value": 3.0,
+      "macro_f1": 0.7612628798377431,
+      "balanced_accuracy": 0.758036780219441,
+      "degradation": 0.20513044381183287
+    },
+    "glare_s1": {
+      "type": "glare",
+      "value": 0.4,
+      "macro_f1": 0.9597254734536701,
+      "balanced_accuracy": 0.95868689831147,
+      "degradation": 0.006667850195905878
+    },
+    "glare_s2": {
+      "type": "glare",
+      "value": 0.7,
+      "macro_f1": 0.937939261126291,
+      "balanced_accuracy": 0.9365430391792794,
+      "degradation": 0.028454062523284973
+    },
+    "glare_s3": {
+      "type": "glare",
+      "value": 1.0,
+      "macro_f1": 0.901436221010159,
+      "balanced_accuracy": 0.8991842154535001,
+      "degradation": 0.06495710263941701
+    },
+    "shadow_s1": {
+      "type": "shadow",
+      "value": 0.4,
+      "macro_f1": 0.9411620719495428,
+      "balanced_accuracy": 0.94037344742764,
+      "degradation": 0.025231251700033153
+    },
+    "shadow_s2": {
+      "type": "shadow",
+      "value": 0.7,
+      "macro_f1": 0.8952732323702651,
+      "balanced_accuracy": 0.8938405364870425,
+      "degradation": 0.07112009127931085
+    },
+    "shadow_s3": {
+      "type": "shadow",
+      "value": 1.0,
+      "macro_f1": 0.8321871252162844,
+      "balanced_accuracy": 0.8293432361487334,
+      "degradation": 0.13420619843329162
+    },
+    "lowlight_s1": {
+      "type": "lowlight",
+      "value": 0.7,
+      "macro_f1": 0.8968662998297523,
+      "balanced_accuracy": 0.8961532948657196,
+      "degradation": 0.06952702381982367
+    },
+    "lowlight_s2": {
+      "type": "lowlight",
+      "value": 0.5,
+      "macro_f1": 0.8430849639929241,
+      "balanced_accuracy": 0.846337900144236,
+      "degradation": 0.12330835965665188
+    },
+    "lowlight_s3": {
+      "type": "lowlight",
+      "value": 0.35,
+      "macro_f1": 0.7539562489285303,
+      "balanced_accuracy": 0.7636606766314984,
+      "degradation": 0.21243707472104567
+    },
+    "motion_blur_s1": {
+      "type": "motion_blur",
+      "value": 3,
+      "macro_f1": 0.9209583408851593,
+      "balanced_accuracy": 0.9216448054872167,
+      "degradation": 0.04543498276441671
+    },
+    "motion_blur_s2": {
+      "type": "motion_blur",
+      "value": 5,
+      "macro_f1": 0.8643262693892984,
+      "balanced_accuracy": 0.8700584365095434,
+      "degradation": 0.10206705426027762
+    },
+    "motion_blur_s3": {
+      "type": "motion_blur",
+      "value": 9,
+      "macro_f1": 0.7391076111368408,
+      "balanced_accuracy": 0.7516459511362708,
+      "degradation": 0.22728571251273522
+    },
+    "sensor_noise_s1": {
+      "type": "sensor_noise",
+      "value": 250,
+      "macro_f1": 0.9208098560781515,
+      "balanced_accuracy": 0.9189576864892434,
+      "degradation": 0.04558346757142451
+    },
+    "sensor_noise_s2": {
+      "type": "sensor_noise",
+      "value": 120,
+      "macro_f1": 0.8644507361688305,
+      "balanced_accuracy": 0.8614510835090353,
+      "degradation": 0.10194258748074547
+    },
+    "sensor_noise_s3": {
+      "type": "sensor_noise",
+      "value": 60,
+      "macro_f1": 0.8119870823256641,
+      "balanced_accuracy": 0.8041556538050226,
+      "degradation": 0.1544062413239119
+    },
+    "jpeg_s1": {
+      "type": "jpeg",
+      "value": 50,
+      "macro_f1": 0.9150426456948196,
+      "balanced_accuracy": 0.9126839878690631,
+      "degradation": 0.05135067795475634
+    },
+    "jpeg_s2": {
+      "type": "jpeg",
+      "value": 25,
+      "macro_f1": 0.8627740622219943,
+      "balanced_accuracy": 0.8602632738710152,
+      "degradation": 0.10361926142758171
+    },
+    "jpeg_s3": {
+      "type": "jpeg",
+      "value": 10,
+      "macro_f1": 0.5679822599435085,
+      "balanced_accuracy": 0.5896093959019596,
+      "degradation": 0.3984110637060675
+    },
+    "lowres_s1": {
+      "type": "lowres",
+      "value": 0.75,
+      "macro_f1": 0.8591652522364198,
+      "balanced_accuracy": 0.8657339858316565,
+      "degradation": 0.10722807141315616
+    },
+    "lowres_s2": {
+      "type": "lowres",
+      "value": 0.6,
+      "macro_f1": 0.8221695028670414,
+      "balanced_accuracy": 0.8343435490129437,
+      "degradation": 0.1442238207825346
+    },
+    "lowres_s3": {
+      "type": "lowres",
+      "value": 0.45,
+      "macro_f1": 0.7792627234993772,
+      "balanced_accuracy": 0.8006018352221413,
+      "degradation": 0.18713060015019878
+    },
+    "color_cast_s1": {
+      "type": "color_cast",
+      "value": 0.15,
+      "macro_f1": 0.9482038628239282,
+      "balanced_accuracy": 0.9470223871157923,
+      "degradation": 0.018189460825647763
+    },
+    "color_cast_s2": {
+      "type": "color_cast",
+      "value": 0.3,
+      "macro_f1": 0.925492204680919,
+      "balanced_accuracy": 0.923860515566824,
+      "degradation": 0.040901118968657
+    },
+    "color_cast_s3": {
+      "type": "color_cast",
+      "value": 0.45,
+      "macro_f1": 0.8506208067848504,
+      "balanced_accuracy": 0.846487021327972,
+      "degradation": 0.11577251686472556
+    }
+  }
+}

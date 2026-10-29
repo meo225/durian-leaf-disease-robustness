@@ -1,6 +1,6 @@
 {
   "task": "4.2",
-  "reference_model": "convnext_tiny",
+  "reference_model": "swin_tiny",
   "corruption_config": "configs/corruption.yaml",
   "seed": 42,
   "samples": {
@@ -9,27 +9,27 @@
   },
   "clean": {
     "val": {
-      "clean_macro_f1": 0.9774605109108083,
-      "clean_f1_low": 0.9632015568191956,
-      "clean_f1_high": 0.9903651365967577,
-      "clean_accuracy": 0.9774774774774775,
-      "clean_balanced_accuracy": 0.9775442820388672,
-      "clean_errors": 10
+      "clean_macro_f1": 0.966393323649576,
+      "clean_f1_low": 0.9488994415983538,
+      "clean_f1_high": 0.981063306873791,
+      "clean_accuracy": 0.9662162162162162,
+      "clean_balanced_accuracy": 0.965419509044529,
+      "clean_errors": 15
     },
     "test": {
-      "clean_macro_f1": 0.9644795876700515,
-      "clean_f1_low": 0.9518558246992456,
-      "clean_f1_high": 0.9761530683067537,
-      "clean_accuracy": 0.963963963963964,
-      "clean_balanced_accuracy": 0.9637644887079222,
-      "clean_errors": 32
+      "clean_macro_f1": 0.9622111608568915,
+      "clean_f1_low": 0.9489059171094878,
+      "clean_f1_high": 0.9736435887718512,
+      "clean_accuracy": 0.9628378378378378,
+      "clean_balanced_accuracy": 0.960964625014614,
+      "clean_errors": 33
     }
   },
   "split_agreement": {
-    "spearman": 0.983631796450855,
-    "p_value": 2.1590299435456664e-31,
-    "mean_abs_f1_gap": 0.01565984786394248,
-    "max_abs_f1_gap": 0.051970454243100206
+    "spearman": 0.9546228020419741,
+    "p_value": 1.189531555106687e-22,
+    "mean_abs_f1_gap": 0.016060171647639614,
+    "max_abs_f1_gap": 0.05209703439509916
   },
   "bootstrap": {
     "resamples": 2000,
@@ -37,7 +37,7 @@
     "confidence": 0.95
   },
   "alpha": 0.05,
-  "significant_conditions_test": 35,
+  "significant_conditions_test": 34,
   "conditions": 42,
   "external_quality": null,
   "note": "Một model, một seed huấn luyện. Khoảng tin cậy chỉ phản ánh độ ngẫu nhiên của việc chọn mẫu test."

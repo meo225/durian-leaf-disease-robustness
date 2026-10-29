@@ -1,6 +1,6 @@
 # Đo Swin-Tiny cạnh ba baseline bằng đúng quy trình của configs/reference_selection.yaml (task 3.3).
 # Chạy lại cả bốn model để cùng một lần đo trên cùng validation và cùng năm suy giảm. Không train lại, không mở tập test.
-# Kết quả ghi sang file riêng, không ghi đè reports/baselines/reference_selection.json. Reference model vẫn là ConvNeXt-Tiny.
+# Kết quả ghi sang file riêng, không ghi đè reports/baselines/reference_selection.json. Ở seed 42 reference model là ConvNeXt-Tiny; sau khi chạy lặp seed nhóm đã đổi sang Swin-Tiny (xem reports/baselines/README.md).
 # Phần "selection" trong file kết quả cho biết quy tắc đã khóa sẽ chọn gì khi có thêm Swin-Tiny, chỉ để tham khảo.
 
 pipeline_config: configs/pipeline.yaml

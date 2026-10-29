@@ -1,0 +1,224 @@
+{
+  "model_name": "swin_tiny",
+  "library": "timm",
+  "backbone": "swin_tiny_patch4_window7_224",
+  "train_mode": "finetune",
+  "seed": 44,
+  "best_epoch": 7,
+  "epochs_run": 14,
+  "selection_metric": "macro_f1",
+  "elapsed_seconds": 765.258,
+  "finished_at_utc": "2026-10-28T12:39:25.616931+00:00",
+  "resource": "Tesla T4",
+  "trainable_parameters": 27523199,
+  "hyperparameters": {
+    "epochs": 30,
+    "patience": 7,
+    "min_delta": 0.0,
+    "learning_rate": 0.0002,
+    "weight_decay": 0.01,
+    "optimizer": "adamw",
+    "scheduler": "cosine",
+    "dropout": null,
+    "batch_size": 32,
+    "image_size": 224,
+    "pretrained": true
+  },
+  "classes": [
+    "ALGAL_LEAF_SPOT",
+    "ALLOCARIDARA_ATTACK",
+    "HEALTHY_LEAF",
+    "LEAF_BLIGHT",
+    "PHOMOPSIS_LEAF_SPOT"
+  ],
+  "val_macro_f1": 0.9749928393371017,
+  "val_balanced_accuracy": 0.9748264361518219,
+  "val_accuracy": 0.9752252252252253,
+  "val_loss": 0.0943328556164193,
+  "per_class_recall": {
+    "ALGAL_LEAF_SPOT": 0.972972972972973,
+    "ALLOCARIDARA_ATTACK": 0.9782608695652174,
+    "HEALTHY_LEAF": 1.0,
+    "LEAF_BLIGHT": 0.956989247311828,
+    "PHOMOPSIS_LEAF_SPOT": 0.9659090909090909
+  },
+  "confusion_matrix": [
+    [
+      72,
+      1,
+      0,
+      0,
+      1
+    ],
+    [
+      1,
+      90,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      97,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      3,
+      89,
+      1
+    ],
+    [
+      1,
+      0,
+      1,
+      1,
+      85
+    ]
+  ],
+  "history": [
+    {
+      "epoch": 1,
+      "lr": 0.0002,
+      "train_loss": 0.7620822811808179,
+      "train_accuracy": 0.6995169082125604,
+      "val_loss": 0.35794540944400133,
+      "val_macro_f1": 0.851259039371221,
+      "val_balanced_accuracy": 0.8592305581981845,
+      "seconds": 54.75998399300033
+    },
+    {
+      "epoch": 2,
+      "lr": 0.00019945218953682734,
+      "train_loss": 0.2367078551615404,
+      "train_accuracy": 0.9194847020933977,
+      "val_loss": 0.19816037435252387,
+      "val_macro_f1": 0.9364297310477296,
+      "val_balanced_accuracy": 0.938243915924979,
+      "seconds": 54.572460394000245
+    },
+    {
+      "epoch": 3,
+      "lr": 0.00019781476007338058,
+      "train_loss": 0.18678900338761845,
+      "train_accuracy": 0.9400966183574879,
+      "val_loss": 0.14670581081966022,
+      "val_macro_f1": 0.9609919626561794,
+      "val_balanced_accuracy": 0.9602098320574051,
+      "seconds": 54.64421484899958
+    },
+    {
+      "epoch": 4,
+      "lr": 0.00019510565162951537,
+      "train_loss": 0.13045447602172214,
+      "train_accuracy": 0.9584541062801932,
+      "val_loss": 0.3982942734618445,
+      "val_macro_f1": 0.9005530447054495,
+      "val_balanced_accuracy": 0.9042689747140231,
+      "seconds": 54.32531756899971
+    },
+    {
+      "epoch": 5,
+      "lr": 0.00019135454576426006,
+      "train_loss": 0.13770989000580938,
+      "train_accuracy": 0.9581320450885669,
+      "val_loss": 0.2639041869976633,
+      "val_macro_f1": 0.919197469033427,
+      "val_balanced_accuracy": 0.9231277655606396,
+      "seconds": 54.82699501499974
+    },
+    {
+      "epoch": 6,
+      "lr": 0.00018660254037844388,
+      "train_loss": 0.10670540982869954,
+      "train_accuracy": 0.9623188405797102,
+      "val_loss": 0.10847675544419536,
+      "val_macro_f1": 0.9636908593987246,
+      "val_balanced_accuracy": 0.9638580567051814,
+      "seconds": 54.43379148999975
+    },
+    {
+      "epoch": 7,
+      "lr": 0.00018090169943749476,
+      "train_loss": 0.11587629127938558,
+      "train_accuracy": 0.9623188405797102,
+      "val_loss": 0.0943328556164193,
+      "val_macro_f1": 0.9749928393371017,
+      "val_balanced_accuracy": 0.9748264361518219,
+      "seconds": 54.77421602100003
+    },
+    {
+      "epoch": 8,
+      "lr": 0.00017431448254773944,
+      "train_loss": 0.07869428050450848,
+      "train_accuracy": 0.9748792270531401,
+      "val_loss": 0.2316722856951995,
+      "val_macro_f1": 0.9328447894168719,
+      "val_balanced_accuracy": 0.9306124242309377,
+      "seconds": 54.7078184359998
+    },
+    {
+      "epoch": 9,
+      "lr": 0.00016691306063588583,
+      "train_loss": 0.07987768269629907,
+      "train_accuracy": 0.9732689210950081,
+      "val_loss": 0.14468687422875617,
+      "val_macro_f1": 0.9585099506938791,
+      "val_balanced_accuracy": 0.9594480349421719,
+      "seconds": 54.58131200599928
+    },
+    {
+      "epoch": 10,
+      "lr": 0.00015877852522924732,
+      "train_loss": 0.05814461677590904,
+      "train_accuracy": 0.980354267310789,
+      "val_loss": 0.18203315094558034,
+      "val_macro_f1": 0.9484549854685127,
+      "val_balanced_accuracy": 0.9510663903182808,
+      "seconds": 54.775920664000296
+    },
+    {
+      "epoch": 11,
+      "lr": 0.00015000000000000001,
+      "train_loss": 0.07437752537673646,
+      "train_accuracy": 0.9768115942028985,
+      "val_loss": 0.1471099092641862,
+      "val_macro_f1": 0.9605552125976796,
+      "val_balanced_accuracy": 0.9603954282107431,
+      "seconds": 54.814648452000256
+    },
+    {
+      "epoch": 12,
+      "lr": 0.00014067366430758007,
+      "train_loss": 0.06038652410434971,
+      "train_accuracy": 0.9806763285024155,
+      "val_loss": 0.19698252239335864,
+      "val_macro_f1": 0.9584985579524388,
+      "val_balanced_accuracy": 0.9580005112996972,
+      "seconds": 54.55649361500036
+    },
+    {
+      "epoch": 13,
+      "lr": 0.00013090169943749476,
+      "train_loss": 0.04569598322369806,
+      "train_accuracy": 0.9838969404186796,
+      "val_loss": 0.1319795899294518,
+      "val_macro_f1": 0.9653262672359872,
+      "val_balanced_accuracy": 0.9650845477633696,
+      "seconds": 54.64254423500006
+    },
+    {
+      "epoch": 14,
+      "lr": 0.00012079116908177594,
+      "train_loss": 0.04413430248768618,
+      "train_accuracy": 0.9832528180354267,
+      "val_loss": 0.11600323125451535,
+      "val_macro_f1": 0.9745078139363853,
+      "val_balanced_accuracy": 0.9741754568542789,
+      "seconds": 54.713200561999656
+    }
+  ]
+}

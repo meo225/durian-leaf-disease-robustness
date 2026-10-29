@@ -1,8 +1,10 @@
 import pytest
 import torch
+import yaml
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 
+from src.training import run
 from src.training.loop import fit_model
 from src.evaluation.metrics import classification_scores
 
@@ -81,3 +83,35 @@ def test_cosine_scheduler_lowers_learning_rate():
     rates = [row["lr"] for row in result["history"]]
     assert rates[0] == pytest.approx(0.01)
     assert rates[0] > rates[1] > rates[2]
+
+
+def _load_cfg(name):
+    return yaml.safe_load((run.ROOT / "configs" / name).read_text(encoding="utf-8"))
+
+
+@pytest.mark.parametrize("model", ["resnet50", "convnext_tiny", "swin_tiny"])
+def test_seed_in_train_config_overrides_pipeline_seed_only(model):
+    _, default = run.load_finetune_configs(f"configs/train_{model}.yaml")
+    assert default["seed"] == 42
+    for seed in (43, 44):
+        train_cfg, pipeline_cfg = run.load_finetune_configs(f"configs/train_{model}_seed{seed}.yaml")
+        assert pipeline_cfg["seed"] == seed and train_cfg["model_name"] == model
+        assert {k: v for k, v in pipeline_cfg.items() if k != "seed"} == {k: v for k, v in default.items() if k != "seed"}
+
+
+@pytest.mark.parametrize("model", ["resnet50", "convnext_tiny", "swin_tiny"])
+def test_seed_run_configs_differ_from_base_only_by_seed(model):
+    base = _load_cfg(f"train_{model}.yaml")
+    for seed in (43, 44):
+        other = _load_cfg(f"train_{model}_seed{seed}.yaml")
+        assert other.pop("seed") == seed and other == base
+
+
+@pytest.mark.parametrize("seed", [43, 44])
+def test_seed_measurement_config_matches_original_except_models_and_paths(seed):
+    base = _load_cfg("reference_selection.yaml")
+    other = _load_cfg(f"reference_selection_seed{seed}.yaml")
+    assert other["models"] == [f"configs/train_{model}_seed{seed}.yaml" for model in ("resnet50", "convnext_tiny", "swin_tiny")]
+    assert other["checkpoint_name"] == f"{{model_name}}_seed{seed}.pt" and other["seed"] == base["seed"] == 42
+    for key in ("pipeline_config", "latency", "close_margin", "corruptions"):
+        assert other[key] == base[key]

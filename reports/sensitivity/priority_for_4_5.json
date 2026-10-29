@@ -1,64 +1,61 @@
 {
   "ranking": [
     {
-      "family": "lowres",
+      "family": "jpeg",
       "category": "severe",
-      "mean_degradation": 0.2563,
-      "early_drop": true,
-      "handlers": [
-        "4.4"
-      ]
-    },
-    {
-      "family": "contrast_high",
-      "category": "severe",
-      "mean_degradation": 0.2497,
-      "early_drop": true,
-      "handlers": [
-        "4.3"
-      ]
+      "mean_degradation": 0.1681,
+      "early_drop": false,
+      "handlers": []
     },
     {
       "family": "blur",
-      "category": "severe",
-      "mean_degradation": 0.2181,
+      "category": "moderate",
+      "mean_degradation": 0.1421,
       "early_drop": false,
       "handlers": [
         "4.4"
       ]
     },
     {
-      "family": "contrast_low",
-      "category": "severe",
-      "mean_degradation": 0.2112,
-      "early_drop": false,
+      "family": "lowres",
+      "category": "moderate",
+      "mean_degradation": 0.1356,
+      "early_drop": true,
       "handlers": [
-        "4.3"
+        "4.4"
       ]
     },
     {
       "family": "brightness_bright",
-      "category": "severe",
-      "mean_degradation": 0.2015,
+      "category": "moderate",
+      "mean_degradation": 0.1346,
       "early_drop": false,
       "handlers": [
         "4.3"
       ]
     },
     {
-      "family": "lowlight",
-      "category": "severe",
-      "mean_degradation": 0.1935,
-      "early_drop": true,
+      "family": "contrast_high",
+      "category": "moderate",
+      "mean_degradation": 0.1126,
+      "early_drop": false,
       "handlers": [
-        "4.3",
-        "4.4"
+        "4.3"
       ]
     },
     {
       "family": "motion_blur",
-      "category": "severe",
-      "mean_degradation": 0.1903,
+      "category": "moderate",
+      "mean_degradation": 0.1051,
+      "early_drop": false,
+      "handlers": [
+        "4.4"
+      ]
+    },
+    {
+      "family": "sensor_noise",
+      "category": "moderate",
+      "mean_degradation": 0.1029,
       "early_drop": true,
       "handlers": [
         "4.4"
@@ -66,51 +63,45 @@
     },
     {
       "family": "noise",
-      "category": "severe",
-      "mean_degradation": 0.1714,
+      "category": "moderate",
+      "mean_degradation": 0.1008,
       "early_drop": false,
       "handlers": [
         "4.4"
       ]
     },
     {
-      "family": "brightness_dark",
+      "family": "lowlight",
       "category": "moderate",
-      "mean_degradation": 0.1497,
+      "mean_degradation": 0.0922,
       "early_drop": false,
       "handlers": [
-        "4.3"
-      ]
-    },
-    {
-      "family": "sensor_noise",
-      "category": "moderate",
-      "mean_degradation": 0.1462,
-      "early_drop": true,
-      "handlers": [
+        "4.3",
         "4.4"
-      ]
-    },
-    {
-      "family": "jpeg",
-      "category": "moderate",
-      "mean_degradation": 0.1363,
-      "early_drop": false,
-      "handlers": []
-    },
-    {
-      "family": "color_cast",
-      "category": "moderate",
-      "mean_degradation": 0.1049,
-      "early_drop": false,
-      "handlers": [
-        "4.3"
       ]
     },
     {
       "family": "shadow",
       "category": "moderate",
-      "mean_degradation": 0.0956,
+      "mean_degradation": 0.0747,
+      "early_drop": false,
+      "handlers": [
+        "4.3"
+      ]
+    },
+    {
+      "family": "color_cast",
+      "category": "moderate",
+      "mean_degradation": 0.0697,
+      "early_drop": false,
+      "handlers": [
+        "4.3"
+      ]
+    },
+    {
+      "family": "brightness_dark",
+      "category": "mild",
+      "mean_degradation": 0.0357,
       "early_drop": false,
       "handlers": [
         "4.3"
@@ -118,8 +109,17 @@
     },
     {
       "family": "glare",
+      "category": "mild",
+      "mean_degradation": 0.0281,
+      "early_drop": false,
+      "handlers": [
+        "4.3"
+      ]
+    },
+    {
+      "family": "contrast_low",
       "category": "negligible",
-      "mean_degradation": 0.0188,
+      "mean_degradation": 0.0024,
       "early_drop": false,
       "handlers": [
         "4.3"
@@ -128,166 +128,141 @@
   ],
   "damaging_conditions": [
     {
-      "condition": "contrast_low_s3",
-      "degradation": 0.5252,
-      "p_holm": 1.21e-117
-    },
-    {
-      "condition": "contrast_high_s3",
-      "degradation": 0.4537,
-      "p_holm": 1.05e-94
-    },
-    {
-      "condition": "brightness_bright_s3",
-      "degradation": 0.4009,
-      "p_holm": 1.75e-94
+      "condition": "jpeg_s3",
+      "degradation": 0.3754,
+      "p_holm": 1.02e-90
     },
     {
       "condition": "blur_s3",
-      "degradation": 0.384,
-      "p_holm": 1.41e-76
+      "degradation": 0.3045,
+      "p_holm": 5.81e-55
     },
     {
-      "condition": "brightness_dark_s3",
-      "degradation": 0.3473,
-      "p_holm": 1.86e-68
-    },
-    {
-      "condition": "lowlight_s3",
-      "degradation": 0.3414,
-      "p_holm": 3.18e-73
-    },
-    {
-      "condition": "noise_s3",
-      "degradation": 0.3338,
-      "p_holm": 3.49e-80
-    },
-    {
-      "condition": "lowres_s3",
-      "degradation": 0.314,
-      "p_holm": 2.13e-56
+      "condition": "brightness_bright_s3",
+      "degradation": 0.2586,
+      "p_holm": 1.57e-53
     },
     {
       "condition": "motion_blur_s3",
-      "degradation": 0.3126,
-      "p_holm": 1.25e-57
+      "degradation": 0.204,
+      "p_holm": 4.92e-40
     },
     {
-      "condition": "jpeg_s3",
-      "degradation": 0.2878,
-      "p_holm": 3.6e-60
+      "condition": "noise_s3",
+      "degradation": 0.1958,
+      "p_holm": 5.73e-43
     },
     {
-      "condition": "blur_s2",
-      "degradation": 0.2577,
-      "p_holm": 1.11e-45
+      "condition": "lowres_s3",
+      "degradation": 0.1888,
+      "p_holm": 7.32e-36
     },
     {
-      "condition": "lowres_s2",
-      "degradation": 0.2563,
-      "p_holm": 1.19e-46
-    },
-    {
-      "condition": "sensor_noise_s3",
-      "degradation": 0.2314,
-      "p_holm": 5.75e-57
-    },
-    {
-      "condition": "contrast_high_s2",
-      "degradation": 0.2311,
-      "p_holm": 1.13e-42
-    },
-    {
-      "condition": "lowres_s1",
-      "degradation": 0.1987,
-      "p_holm": 3.68e-35
-    },
-    {
-      "condition": "color_cast_s3",
-      "degradation": 0.1969,
-      "p_holm": 6.37e-38
-    },
-    {
-      "condition": "motion_blur_s2",
-      "degradation": 0.192,
-      "p_holm": 1.02e-33
+      "condition": "contrast_high_s3",
+      "degradation": 0.1887,
+      "p_holm": 1.1e-38
     },
     {
       "condition": "shadow_s3",
-      "degradation": 0.1877,
-      "p_holm": 2.27e-36
+      "degradation": 0.169,
+      "p_holm": 5.48e-37
+    },
+    {
+      "condition": "sensor_noise_s3",
+      "degradation": 0.1658,
+      "p_holm": 5.87e-40
+    },
+    {
+      "condition": "lowlight_s3",
+      "degradation": 0.1562,
+      "p_holm": 2.17e-28
+    },
+    {
+      "condition": "color_cast_s3",
+      "degradation": 0.1331,
+      "p_holm": 2.31e-26
+    },
+    {
+      "condition": "contrast_high_s2",
+      "degradation": 0.1211,
+      "p_holm": 5.52e-25
+    },
+    {
+      "condition": "lowres_s2",
+      "degradation": 0.1182,
+      "p_holm": 1.08e-24
     },
     {
       "condition": "brightness_bright_s2",
-      "degradation": 0.173,
-      "p_holm": 1.77e-35
+      "degradation": 0.1146,
+      "p_holm": 4.18e-22
     },
     {
-      "condition": "noise_s2",
-      "degradation": 0.1668,
-      "p_holm": 2.02e-39
+      "condition": "brightness_dark_s3",
+      "degradation": 0.1125,
+      "p_holm": 2.95e-20
     },
     {
-      "condition": "lowlight_s2",
-      "degradation": 0.1613,
-      "p_holm": 1.85e-33
+      "condition": "blur_s2",
+      "degradation": 0.1073,
+      "p_holm": 2.36e-21
     },
     {
-      "condition": "sensor_noise_s2",
-      "degradation": 0.1523,
-      "p_holm": 3.93e-34
-    },
-    {
-      "condition": "color_cast_s2",
-      "degradation": 0.1022,
-      "p_holm": 2.15e-17
-    },
-    {
-      "condition": "contrast_low_s2",
-      "degradation": 0.0956,
-      "p_holm": 2.15e-17
-    },
-    {
-      "condition": "brightness_dark_s2",
-      "degradation": 0.0888,
-      "p_holm": 1.86e-14
-    },
-    {
-      "condition": "shadow_s2",
-      "degradation": 0.0823,
-      "p_holm": 1.47e-12
-    },
-    {
-      "condition": "lowlight_s1",
-      "degradation": 0.0778,
-      "p_holm": 2.15e-13
+      "condition": "lowres_s1",
+      "degradation": 0.0999,
+      "p_holm": 1.29e-22
     },
     {
       "condition": "jpeg_s2",
-      "degradation": 0.0722,
-      "p_holm": 1.09e-13
+      "degradation": 0.0959,
+      "p_holm": 4.37e-21
     },
     {
-      "condition": "motion_blur_s1",
-      "degradation": 0.0664,
-      "p_holm": 1.93e-12
+      "condition": "sensor_noise_s2",
+      "degradation": 0.0898,
+      "p_holm": 2.45e-19
     },
     {
-      "condition": "contrast_high_s1",
-      "degradation": 0.0644,
-      "p_holm": 1.97e-10
+      "condition": "noise_s2",
+      "degradation": 0.0843,
+      "p_holm": 5.21e-16
+    },
+    {
+      "condition": "motion_blur_s2",
+      "degradation": 0.0797,
+      "p_holm": 7.9e-16
+    },
+    {
+      "condition": "lowlight_s2",
+      "degradation": 0.0765,
+      "p_holm": 2.25e-11
+    },
+    {
+      "condition": "color_cast_s2",
+      "degradation": 0.0604,
+      "p_holm": 4.77e-10
     },
     {
       "condition": "sensor_noise_s1",
-      "degradation": 0.055,
-      "p_holm": 7.68e-11
+      "degradation": 0.053,
+      "p_holm": 1.34e-09
+    },
+    {
+      "condition": "shadow_s2",
+      "degradation": 0.0525,
+      "p_holm": 1.66e-08
+    },
+    {
+      "condition": "glare_s3",
+      "degradation": 0.0525,
+      "p_holm": 2.11e-09
     }
   ],
   "without_technique": [
     "jpeg"
   ],
   "negligible": [
-    "glare"
+    "contrast_low"
   ],
   "rule": {
     "thresholds": {

@@ -12,7 +12,7 @@
 
 version: 3
 corruption_config: configs/corruption.yaml
-checkpoint_name: convnext_tiny_seed42.pt
+checkpoint_name: swin_tiny_seed42.pt
 
 scope_families:
   - noise
