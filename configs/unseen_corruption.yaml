@@ -12,11 +12,11 @@ families:
   defocus_blur:
     group: near
     type: defocus_blur
-    levels: [1.5, 2.5, 4.0]
+    levels: [1.0, 1.8, 2.5]
   chroma_noise:
     group: near
     type: chroma_noise
-    levels: [0.04, 0.08, 0.14]
+    levels: [0.03, 0.055, 0.08]
   fog:
     group: far
     type: fog
@@ -28,8 +28,8 @@ families:
   rain_streak:
     group: far
     type: rain_streak
-    levels: [0.002, 0.005, 0.010]
+    levels: [0.001, 0.003, 0.005]
   saturate:
     group: far
     type: saturate
-    levels: [1.8, 3.0, 5.0]
+    levels: [1.4, 2.0, 3.0]
