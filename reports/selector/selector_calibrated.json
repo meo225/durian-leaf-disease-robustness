@@ -1,0 +1,60 @@
+{
+  "task": "5.3",
+  "split": "val",
+  "locked": true,
+  "seed": 42,
+  "selector": {
+    "default": "keep",
+    "rules": [
+      {
+        "name": "noise",
+        "action": "bilateral_wide",
+        "clauses": [
+          {
+            "feature": "noise_sigma",
+            "op": ">=",
+            "threshold": 0.010618187487125397
+          },
+          {
+            "feature": "luma_mean",
+            "op": ">=",
+            "threshold": 0.3077601194381714
+          }
+        ]
+      },
+      {
+        "name": "blur",
+        "action": "unsharp_strong",
+        "clauses": [
+          {
+            "feature": "mscn_var",
+            "op": "<=",
+            "threshold": 0.18000589311122894
+          },
+          {
+            "feature": "noise_sigma",
+            "op": "<=",
+            "threshold": 0.0033913529478013515
+          }
+        ]
+      }
+    ]
+  },
+  "selector_sha256": "d72fb6a63d1ccde8b4edc2ec146722d648acaba916f5175b959cbf1f1ffa9898",
+  "context": {
+    "reference": "swin_tiny",
+    "checkpoint": "swin_tiny_seed42.pt",
+    "corruption_config": "configs/corruption.yaml",
+    "images": 444,
+    "conditions": 42,
+    "actions": [
+      "keep",
+      "unsharp_strong",
+      "unsharp_mild",
+      "bilateral_wide",
+      "bilateral_narrow"
+    ],
+    "config_file": "configs/selector.yaml",
+    "commit": "bb7cd5e"
+  }
+}

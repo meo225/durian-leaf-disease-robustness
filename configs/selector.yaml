@@ -1,0 +1,79 @@
+# Bộ chọn xử lý ảnh thích ứng dạng luật (task 5.1 đến 5.3).
+# Đặc tả: docs/task-5.1-selector-design.md. Mặc định giữ nguyên ảnh; chỉ xử lý khi đặc trưng chất lượng vượt ngưỡng.
+# Ngưỡng hiệu chỉnh chỉ trên validation (task 5.3). Tập test không được mở ở đây.
+
+version: 1
+seed: 42
+split: val
+
+corruption_config: configs/corruption.yaml
+train_config: configs/train_swin_tiny.yaml
+checkpoint_name: swin_tiny_seed42.pt
+
+# Hành động là các cấu hình đã khóa ở task 4.3 và 4.4, và chỉ gồm các cặp (kỹ thuật, họ) có bằng chứng ở bản đồ phục hồi (task 4.5).
+# `config_id` và `params` phải khớp reports/processing/restoration_selected.json (tests/test_selector.py kiểm tra).
+# `evidence` là các họ suy giảm mà cấu hình này có bằng chứng phục hồi trên test ở task 4.5.
+actions:
+  keep: null
+  unsharp_strong:
+    technique: unsharp
+    config_id: unsharp_s1.0_a3.0
+    params: {sigma: 1.0, amount: 3.0}
+    evidence: [blur, lowres]
+  unsharp_mild:
+    technique: unsharp
+    config_id: unsharp_s2.0_a1.0
+    params: {sigma: 2.0, amount: 1.0}
+    evidence: [motion_blur]
+  bilateral_wide:
+    technique: bilateral
+    config_id: bil_d7_c30_s5
+    params: {d: 7, sigma_color: 30, sigma_space: 5}
+    evidence: [noise]
+  bilateral_narrow:
+    technique: bilateral
+    config_id: bil_d5_c30_s3
+    params: {d: 5, sigma_color: 30, sigma_space: 3}
+    evidence: [sensor_noise]
+
+# Luật xét theo thứ tự, luật đầu tiên khớp thì thắng, không khớp luật nào thì `keep`.
+# Nhiễu đứng trước mờ vì làm nét trên ảnh nhiễu gây hại nặng (task 4.5, unsharp trên nhiễu: giảm 0,38 F1).
+# Mỗi luật có một mệnh đề chính (chọn một đặc trưng trong `candidates`) và một mệnh đề chặn tùy chọn `guard`.
+# Hiệu chỉnh chọn hành động, đặc trưng và ngưỡng của mỗi luật trên validation (task 5.3).
+rules:
+  - name: noise
+    actions: [bilateral_wide, bilateral_narrow]
+    candidates:
+      - {feature: noise_sigma, op: ">="}
+      - {feature: noise_ratio, op: ">="}
+      - {feature: mscn_var, op: ">="}
+    guard:
+      - {feature: luma_mean, op: ">="}
+  - name: blur
+    actions: [unsharp_strong, unsharp_mild]
+    candidates:
+      - {feature: sharpness, op: "<="}
+      - {feature: mscn_var, op: "<="}
+    guard:
+      - {feature: luma_mean, op: ">="}
+      - {feature: noise_sigma, op: "<="}
+    # Thêm sau lần chạy 1 (reports/selector/README.md): luật mờ làm nét nhầm ảnh bóng đổ và tương phản thấp, vì chúng cũng có mscn_var thấp.
+    # Hiệu chỉnh thử thêm một mệnh đề chặn thứ hai từ danh sách này và chỉ giữ nếu mục tiêu tăng thêm ít nhất min_gain.
+    # Kết quả lần chạy 2: mệnh đề tốt nhất chỉ tăng 0.0006, bị bỏ, bộ chọn không đổi.
+    extra_guard:
+      - {feature: luma_std, op: ">="}
+      - {feature: dark_fraction, op: "<="}
+
+calibration:
+  # Số điểm lưới ngưỡng theo phân vị của đặc trưng, và số điểm lưới cho mệnh đề chặn.
+  threshold_points: 41
+  guard_points: 9
+  # Một luật chỉ được giữ nếu làm tăng điểm mục tiêu (macro F1 trung bình 42 điều kiện) ít nhất ngần này. Không thì luật bị bỏ.
+  min_gain: 0.002
+  # Ràng buộc trên ảnh sạch của validation: không giảm macro F1 quá ngưỡng này so với không xử lý, và không kích hoạt quá tỉ lệ này.
+  max_clean_f1_drop: 0.005
+  max_clean_trigger_rate: 0.02
+  # Kiểm tra độ ổn định: chia ảnh validation theo lớp thành ngần này phần, hiệu chỉnh trên phần còn lại và chấm trên phần giữ lại.
+  cv_folds: 5
+
+output_dir: reports/selector

@@ -18,6 +18,7 @@ Không có một bài báo nào trùng câu hỏi nghiên cứu của đồ án.
 - [Task 1.3. Nhận diện bệnh lá sầu riêng](task-1.3-durian-literature.md)
 - [Task 1.4. Experimental protocol](task-1.4-experimental-protocol.md)
 - [Phase 3. Baseline candidates](phase-3-baseline-candidates.md)
+- [Task 5.1. Thiết kế bộ chọn xử lý ảnh thích ứng](task-5.1-selector-design.md)
 
 ## Từng nguồn đã đọc
 
