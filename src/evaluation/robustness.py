@@ -64,6 +64,7 @@ def run_calibration(config_path: str | Path, checkpoint_dir: str | Path, output_
                 "value": conditions[name]["value"],
                 "macro_f1": entry["macro_f1"],
                 "balanced_accuracy": entry["balanced_accuracy"],
+                "per_class_recall": entry["per_class_recall"],
                 "degradation": entry["degradation"],
             }
             for name, entry in result["conditions"].items()

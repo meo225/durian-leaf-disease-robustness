@@ -23,7 +23,7 @@ Cài đặt thuần torch trong `src/corruption/unseen.py`, không phụ thuộc
 
 1. Ba mức mỗi họ, tên `<họ>_s<mức>`, 18 điều kiện, cấu hình ở `configs/unseen_corruption.yaml` (`group` là nhóm gần hoặc xa).
 2. Hiệu chỉnh bằng `notebooks/10_unseen_corruption_calibration.ipynb`, giống 4.1: xem ảnh mẫu, đo reference model (Swin-Tiny) trên **validation**. Mức hợp lý làm macro F1 giảm dần theo mức và không về mức đoán bừa ngay từ mức 1.
-3. Ghi `reports/unseen/validation_calibration.json` và `severity_examples.png`, chỉnh mức nếu cần, rồi đặt `locked: true` **trước** khi mở test ở 6.1. `load_conditions` từ chối tập test khi `locked: false`.
+3. Ghi `reports/unseen/validation_calibration.json` , các biểu đồ (`severity_examples_<lớp>.png`, `severity_curves.png`, `level3_vs_seen.png`, `per_class_recall_s3.png`) và bảng kiểm tra mức, chỉnh mức nếu cần, rồi đặt `locked: true` **trước** khi mở test ở 6.1. `load_conditions` từ chối tập test khi `locked: false`.
 4. Sau khi khóa, không chỉnh mức theo kết quả test. Lần mở test phải ghi vào `manifests/SPLIT_PROTOCOL.md` mục 3.4.
 
 ## Giới hạn
