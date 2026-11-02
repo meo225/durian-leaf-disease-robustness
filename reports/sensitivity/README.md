@@ -1,10 +1,12 @@
 # Phân tích độ nhạy của reference model với suy giảm ảnh (task 4.2)
 
-ConvNeXt-Tiny (reference model, seed 42) đo trên ảnh sạch và 42 điều kiện của benchmark 4.1, ở validation và test. Notebook: `notebooks/06_degradation_sensitivity.ipynb`. Code: `src/evaluation/sensitivity.py`. Ngưỡng phân loại đặt trước trong `configs/sensitivity.yaml`.
+> **Lưu ý:** văn bản và các con số trong README này là của lần chạy đầu với ConvNeXt-Tiny (2026-10-26). Reference model đã đổi sang Swin-Tiny và các file csv, json, `figures/` trong thư mục đã được ghi đè bằng kết quả Swin-Tiny (2026-10-29). Số liệu hiện hành xem `reports/phase4_summary.md` và các file csv.
+
+ConvNeXt-Tiny (reference model lúc đó, seed 42) đo trên ảnh sạch và 42 điều kiện của benchmark 4.1, ở validation và test. Notebook: `notebooks/06_degradation_sensitivity.ipynb`. Code: `src/evaluation/sensitivity.py`. Ngưỡng phân loại đặt trước trong `configs/sensitivity.yaml`.
 
 ## Thiết lập
 
-- Test mở một lần với `FINAL_EVAL=1`, mức suy giảm đã khóa ở 4.1 và không chỉnh theo kết quả.
+- Test mở với `FINAL_EVAL=1`: lần đầu với ConvNeXt-Tiny (README này), lần hai với Swin-Tiny sau khi đổi reference (xem `manifests/SPLIT_PROTOCOL.md`, mục 3.4). Mức suy giảm đã khóa ở 4.1 và không chỉnh theo kết quả.
 - Mọi so sánh là ghép cặp trên cùng mẫu. Khoảng tin cậy 95% bằng bootstrap 2000 lần lấy lại mẫu theo cặp. Kiểm định McNemar chính xác hai phía trên các ảnh đổi từ đúng sang sai và ngược lại, hiệu chỉnh Holm trên 42 phép thử.
 - Chạy lại validation khớp bảng hiệu chỉnh 4.1: lệch lớn nhất 0,0005 (`shadow_s1`).
 - Degradation là macro F1 sạch trừ macro F1 suy giảm.

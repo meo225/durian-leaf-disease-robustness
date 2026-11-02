@@ -1,6 +1,6 @@
 # Tổng hợp Phase 4: benchmark suy giảm và xử lý ảnh
 
-Reference model: Swin-Tiny (seed 42), macro F1 sạch trên test 0,9622. Test chỉ mở một lần cho mỗi bước 4.2 và 4.5 với Swin-Tiny (lần đầu với ConvNeXt-Tiny). Báo cáo chi tiết từng task nằm trong thư mục tương ứng.
+Reference model: Swin-Tiny (seed 42), macro F1 sạch trên test 0,9622. Test mở ở bước 4.2 và 4.5, mỗi bước hai lần: ConvNeXt-Tiny rồi Swin-Tiny (nhật ký ở `manifests/SPLIT_PROTOCOL.md`, mục 3.4). Báo cáo chi tiết từng task nằm trong thư mục tương ứng.
 
 | Task | Nội dung | Tập đo | Báo cáo |
 |---|---|---|---|
@@ -59,4 +59,4 @@ Reference model: Swin-Tiny (seed 42), macro F1 sạch trên test 0,9622. Test ch
 - Một seed cho reference và cho model huấn luyện lại (seed 43, 44 chưa chạy). Khoảng tin cậy bootstrap không phản ánh dao động do huấn luyện.
 - Độ bền sau huấn luyện lại chỉ đo trong phân phối augmentation. F1 sạch test tăng +0,025 nhưng validation sạch chỉ tăng +0,005, nên chưa kết luận augmentation tăng độ chính xác ảnh sạch.
 - Kết luận về từng kỹ thuật phụ thuộc vào reference model, không chuyển nguyên từ ConvNeXt-Tiny sang Swin-Tiny.
-- Test đã mở hai lần (ConvNeXt-Tiny rồi Swin-Tiny), tham số giữ nguyên từ validation.
+- Test đã mở ở 4.2 và 4.5, mỗi bước hai lần (ConvNeXt-Tiny rồi Swin-Tiny), tham số giữ nguyên từ validation. Việc đổi reference sang Swin-Tiny được quyết định sau khi đã thấy kết quả test của ConvNeXt-Tiny ở 4.2. Tiêu chí đổi chỉ dùng validation, nhưng không loại trừ được hoàn toàn ảnh hưởng của việc đã biết kết quả test.

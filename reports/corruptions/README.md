@@ -29,4 +29,4 @@ Các nhận xét sau là của hai vòng hiệu chỉnh bằng ConvNeXt-Tiny, kh
 
 ## Khóa
 
-`locked: true` từ commit này. Mức không được chỉnh theo kết quả test. Test chỉ mở ở task 4.2 với `FINAL_EVAL=1`.
+`locked: true` từ commit này. Mức không được chỉnh theo kết quả test. Test chỉ mở ở task 4.2 và 4.5 với `FINAL_EVAL=1`, mỗi bước hai lần (ConvNeXt-Tiny rồi Swin-Tiny), xem `manifests/SPLIT_PROTOCOL.md` mục 3.4.

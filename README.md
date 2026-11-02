@@ -167,7 +167,7 @@ Lưu version: Save Version, chọn Save & Run All, đặt tên version. Phiên c
 | Bảng và hình cho báo cáo | tab Output | `reports/`, rồi commit |
 | Checkpoint | tab Output | dataset Kaggle riêng, chia sẻ trên trang dataset |
 
-Model đưa lên Hugging Face khi đã chọn bản phát hành. Ảnh suy giảm và ảnh sau xử lý sinh lúc chạy. Tập test chỉ mở ở lần đánh giá cuối, với `FINAL_EVAL=1`. Chọn model trên train và val.
+Model đưa lên Hugging Face khi đã chọn bản phát hành. Ảnh suy giảm và ảnh sau xử lý sinh lúc chạy. Tập test chỉ mở khi cấu hình đã khóa, với `FINAL_EVAL=1`, và mỗi lần mở được ghi trong `manifests/SPLIT_PROTOCOL.md` (mục 3.4). Chọn model trên train và val.
 
 ## Cấu hình
 
