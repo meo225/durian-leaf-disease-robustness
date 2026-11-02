@@ -44,8 +44,8 @@ def evaluate_conditions(
     return {"clean": clean, "conditions": results}
 
 
-def run_calibration(config_path: str | Path, checkpoint_dir: str | Path) -> dict[str, Any]:
-    """Đo reference model trên validation qua mọi điều kiện, để kiểm tra các mức trước khi khóa."""
+def run_calibration(config_path: str | Path, checkpoint_dir: str | Path, output_path: str | Path | None = None) -> dict[str, Any]:
+    """Đo reference model trên validation qua mọi điều kiện, để kiểm tra các mức trước khi khóa. Kết quả ghi ra `output_path`, mặc định là `CALIBRATION_PATH` của benchmark 4.1."""
     reference = json.loads(SELECTION_PATH.read_text(encoding="utf-8"))["selection"]["reference"]
     pipeline_cfg = yaml.safe_load((ROOT / "configs" / "pipeline.yaml").read_text(encoding="utf-8"))
     train_cfg = yaml.safe_load((ROOT / "configs" / f"train_{reference}.yaml").read_text(encoding="utf-8"))
@@ -69,8 +69,9 @@ def run_calibration(config_path: str | Path, checkpoint_dir: str | Path) -> dict
             for name, entry in result["conditions"].items()
         },
     }
-    CALIBRATION_PATH.parent.mkdir(parents=True, exist_ok=True)
-    CALIBRATION_PATH.write_text(json.dumps(record, indent=2, ensure_ascii=False), encoding="utf-8")
+    output = Path(CALIBRATION_PATH if output_path is None else output_path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(record, indent=2, ensure_ascii=False), encoding="utf-8")
     for name, entry in record["conditions"].items():
         print(f"{name:20s} giá trị {entry['value']:<5}  macro F1 {entry['macro_f1']:.4f}  giảm {entry['degradation']:.4f}", flush=True)
     return record

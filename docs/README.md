@@ -19,6 +19,8 @@ Không có một bài báo nào trùng câu hỏi nghiên cứu của đồ án.
 - [Task 1.4. Experimental protocol](task-1.4-experimental-protocol.md)
 - [Phase 3. Baseline candidates](phase-3-baseline-candidates.md)
 
+- [Task 5.5. Bộ họ suy giảm chưa thấy](task-5.5-unseen-families.md)
+
 ## Từng nguồn đã đọc
 
 - [DG-PLDR 2025](sources/dg-pldr-2025.md)

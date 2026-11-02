@@ -1,0 +1,99 @@
+"""Năm họ suy giảm chưa thấy (task 5.5), chỉ dùng để đánh giá, không bao giờ đưa vào augmentation.
+
+Hai nhóm theo khoảng cách tới 14 họ của benchmark 4.1:
+- gần (near): cùng cơ chế với một họ đã thấy nhưng khác dạng toán, nên bộ chọn chưa từng được hiệu chỉnh trên chúng.
+  `defocus_blur` là mờ theo đĩa (họ đã thấy: mờ Gauss), `speckle_noise` là nhiễu nhân (họ đã thấy: nhiễu cộng).
+- xa (far): cơ chế mới hoàn toàn. `fog` theo mô hình tán xạ khí quyển, `spatter` là giọt nước bám lên ống kính, `saturate` là màu bị đẩy quá bão hòa.
+
+Các hàm nhận tensor RGB trong khoảng 0 đến 1, dạng C×H×W, giống `src.corruption.basic`. Họ ngẫu nhiên nhận generator để lặp lại được.
+Registry nằm tách khỏi `basic.CORRUPTIONS`, nên `RandomCorruption` (augmentation) không gọi được các họ này: nó báo lỗi kiểu chưa hỗ trợ.
+"""
+
+from __future__ import annotations
+
+import math
+from typing import Callable, Mapping
+
+import torch
+import torch.nn.functional as F
+from torchvision.transforms import functional as TF
+
+LUMA_WEIGHTS = (0.299, 0.587, 0.114)
+# Ánh sáng khí quyển của sương mù: xám sáng, hơi dưới trắng để không cháy sáng cả ảnh.
+FOG_AIRLIGHT = 0.85
+# Cạnh lưới thô của trường độ sâu giả. Lưới nhỏ cho vùng sương liền khối, không thành nhiễu hạt.
+DEPTH_GRID = 4
+# Độ mờ (sigma, pixel) của lớp nền dưới giọt nước và độ trong của giọt.
+SPATTER_MIX_BLUR = 3.0
+SPATTER_GAIN = 1.08
+
+
+def defocus_blur(image: torch.Tensor, radius: float) -> torch.Tensor:
+    """Mất nét theo khẩu độ tròn: tích chập với một đĩa phẳng bán kính `radius` pixel (khác mờ Gauss, mép đĩa sắc)."""
+    half = math.ceil(radius)
+    coords = torch.arange(-half, half + 1, dtype=image.dtype)
+    distance = torch.sqrt(coords.view(-1, 1) ** 2 + coords.view(1, -1) ** 2)
+    kernel = (radius + 0.5 - distance).clamp(0.0, 1.0)  # mép đĩa chuyển mượt trong một pixel
+    kernel = (kernel / kernel.sum()).expand(image.shape[0], 1, 2 * half + 1, 2 * half + 1)
+    padded = F.pad(image[None], [half] * 4, mode="reflect")
+    return F.conv2d(padded, kernel, groups=image.shape[0])[0].clamp(0.0, 1.0)
+
+
+def speckle_noise(image: torch.Tensor, std: float, generator: torch.Generator | None = None) -> torch.Tensor:
+    """Nhiễu nhân: độ lệch của mỗi pixel tỉ lệ với cường độ của chính nó (khác nhiễu cộng, vùng tối gần như sạch)."""
+    return (image + image * torch.randn(image.shape, generator=generator) * std).clamp(0.0, 1.0)
+
+
+def fog(image: torch.Tensor, density: float, generator: torch.Generator | None = None) -> torch.Tensor:
+    """Sương mù theo mô hình tán xạ khí quyển: I = J·t + A·(1 − t), với t = exp(−density·độ sâu).
+
+    Độ sâu là trường ngẫu nhiên mượt, chuẩn hóa vào [0.5, 1.5], nên sương dày mỏng không đều trên ảnh. Ảnh bị mất tương phản và nhạt màu
+    theo vùng, khác giảm tương phản đồng đều của họ `contrast_low`.
+    """
+    _, height, width = image.shape
+    field = F.interpolate(torch.randn((1, 1, DEPTH_GRID, DEPTH_GRID), generator=generator), size=(height, width), mode="bicubic", align_corners=False)[0]
+    span = (field.max() - field.min()).clamp_min(1e-6)
+    depth = 0.5 + (field - field.min()) / span
+    transmission = torch.exp(-density * depth)
+    return (image * transmission + FOG_AIRLIGHT * (1.0 - transmission)).clamp(0.0, 1.0)
+
+
+def spatter(image: torch.Tensor, coverage: float, generator: torch.Generator | None = None) -> torch.Tensor:
+    """Giọt nước bám ống kính: các đốm tròn che khoảng `coverage` diện tích ảnh, bên trong đốm ảnh bị nhòe và sáng nhẹ."""
+    _, height, width = image.shape
+    seeds = torch.randn((1, height, width), generator=generator)
+    smooth = TF.gaussian_blur(seeds, [9, 9], [2.5, 2.5])[0]
+    threshold = torch.quantile(smooth.flatten(), 1.0 - coverage)
+    scale = smooth.std().clamp_min(1e-6)
+    mask = torch.sigmoid((smooth - threshold) / (0.15 * scale))  # mép mềm
+    droplet = (TF.gaussian_blur(image, [19, 19], [SPATTER_MIX_BLUR] * 2) * SPATTER_GAIN).clamp(0.0, 1.0)
+    return image * (1.0 - mask) + droplet * mask
+
+
+def saturate(image: torch.Tensor, factor: float) -> torch.Tensor:
+    """Đẩy màu ra xa mức xám của pixel: gray + factor·(ảnh − gray). factor trên 1 là bão hòa quá mức, màu lá và vết bệnh bị bệt."""
+    weights = torch.tensor(LUMA_WEIGHTS, dtype=image.dtype).view(3, 1, 1)
+    gray = (image * weights).sum(dim=0, keepdim=True)
+    return (gray + factor * (image - gray)).clamp(0.0, 1.0)
+
+
+UNSEEN_CORRUPTIONS: dict[str, Callable[..., torch.Tensor]] = {
+    "defocus_blur": defocus_blur,
+    "speckle_noise": speckle_noise,
+    "fog": fog,
+    "spatter": spatter,
+    "saturate": saturate,
+}
+
+# Họ cần generator để lặp lại được.
+UNSEEN_RANDOM_TYPES = frozenset({"speckle_noise", "fog", "spatter"})
+
+
+def apply_unseen(image: torch.Tensor, spec: Mapping[str, object], generator: torch.Generator | None = None) -> torch.Tensor:
+    """Áp một họ chưa thấy theo spec, ví dụ {"type": "fog", "value": 1.6}. Generator chỉ dùng cho họ ngẫu nhiên."""
+    kind = str(spec["type"])
+    if kind not in UNSEEN_CORRUPTIONS:
+        raise ValueError(f"Họ suy giảm chưa thấy không hỗ trợ: {kind}.")
+    if kind in UNSEEN_RANDOM_TYPES:
+        return UNSEEN_CORRUPTIONS[kind](image, float(spec["value"]), generator)
+    return UNSEEN_CORRUPTIONS[kind](image, float(spec["value"]))
