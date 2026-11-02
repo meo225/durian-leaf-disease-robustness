@@ -1,12 +1,14 @@
 # Kết quả xử lý ảnh (Phase 4)
 
-Thư mục này gom kết quả các kỹ thuật xử lý ảnh trên benchmark suy giảm của task 4.1. Mỗi kỹ thuật được đo bằng cùng reference model, ConvNeXt-Tiny đóng băng và train trên ảnh sạch, trên cùng mẫu và nhãn. Tiêu chí là macro F1 của bài toán nhận diện bệnh, không phải ảnh nhìn đẹp hơn.
+> **Lưu ý:** văn bản và số liệu trong README này là của lần chạy đầu với ConvNeXt-Tiny (reference model lúc đó). Reference đã đổi sang Swin-Tiny và 4.3, 4.4 đã chạy lại trên validation. Số liệu hiện hành xem `reports/phase4_summary.md` (mục 4.3, 4.4) và các file `illumination_selected.json`, `restoration_selected.json`. Kết luận về từng kỹ thuật phụ thuộc reference, không chuyển nguyên từ ConvNeXt-Tiny sang Swin-Tiny.
+
+Thư mục này gom kết quả các kỹ thuật xử lý ảnh trên benchmark suy giảm của task 4.1. Mỗi kỹ thuật được đo bằng cùng reference model (lúc đó là ConvNeXt-Tiny) đóng băng và train trên ảnh sạch, trên cùng mẫu và nhãn. Tiêu chí là macro F1 của bài toán nhận diện bệnh, không phải ảnh nhìn đẹp hơn.
 
 Mục dưới đây là task 4.4 (khử nhiễu và làm nét). Cấu hình đã chọn của task 4.3 (ánh sáng, tương phản, màu) nằm ở `illumination_selected.json`.
 
 ## Task 4.4. Khử nhiễu và làm nét
 
-Tất cả số liệu trên **tập validation** (444 ảnh), một seed. Tập test chưa mở. Tham số được chọn và khóa ở đây, task 4.5 đo lại trên test với đúng các cấu hình này. F1 sạch của reference model là 0.9775.
+Tất cả số liệu trên **tập validation** (444 ảnh), một seed. Tại thời điểm viết, tập test chưa mở. Tham số được chọn và khóa ở đây, task 4.5 đo lại trên test với đúng các cấu hình này (test sau đó đã mở ở 4.5, xem `manifests/SPLIT_PROTOCOL.md` mục 3.4). F1 sạch của ConvNeXt-Tiny trên validation là 0.9775.
 
 ### Cách làm
 
