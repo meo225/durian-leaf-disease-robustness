@@ -62,7 +62,7 @@ def test_fog_follows_scattering_model(image):
     out = fog(image, 0.30, torch.Generator().manual_seed(0))
     assert out.std() < image.std()  # mất tương phản
     assert out.mean() > image.mean()  # kéo về ánh sáng khí quyển
-    denser = fog(image, 0.70, torch.Generator().manual_seed(0))
+    denser = fog(image, 0.85, torch.Generator().manual_seed(0))
     assert denser.std() < out.std()
 
 
