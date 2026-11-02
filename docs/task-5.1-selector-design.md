@@ -127,3 +127,7 @@ Ablation theo nhóm đặc trưng (task 5.4) dùng `fit(..., dropped_groups=[...
 - Gao và cộng sự (2025), *QuARF*, AAAI-25. Ý tưởng thích ứng theo chất lượng ảnh.
 - Mittal, Moorthy, Bovik (2012), *No-Reference Image Quality Assessment in the Spatial Domain*, IEEE TIP. MSCN và BRISQUE.
 - Immerkaer (1996), *Fast Noise Variance Estimation*, Computer Vision and Image Understanding.
+
+## Kết quả
+
+Kết quả hiệu chỉnh lần chạy đầu trên validation nằm ở `reports/selector/README.md`.
