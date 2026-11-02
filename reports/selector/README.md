@@ -1,10 +1,21 @@
-# Kết quả hiệu chỉnh bộ chọn xử lý ảnh (task 5.3)
+# Kết quả hiệu chỉnh bộ chọn xử lý ảnh, task 5.3
 
-Bộ chọn nhìn một ảnh rồi quyết định giữ nguyên hay xử lý bằng unsharp hoặc bilateral. Thiết kế nằm ở `docs/task-5.1-selector-design.md`. Thư mục này ghi kết quả lần chạy đầu của notebook 09.
+Bộ chọn nhìn một ảnh rồi quyết định giữ nguyên hay xử lý bằng unsharp hoặc bilateral. Thiết kế nằm ở `docs/task-5.1-selector-design.md`. Thư mục này ghi kết quả hiệu chỉnh trên validation và quyết định khóa bộ chọn.
 
-Mọi số liệu dưới đây đo trên **tập validation**, 444 ảnh, với Swin-Tiny đóng băng. Tập test chưa mở. Lần chạy này ở commit `bb7cd5e` và `locked` còn là `false`.
+**Kết luận ngắn.** Bộ chọn được khóa là bộ của lần chạy 1 gồm hai luật. Lần chạy 2 thử sửa một lỗi đã biết của luật mờ nhưng không đạt ngưỡng đã đặt trước, nên bộ chọn không đổi. File khóa là `selector_calibrated.json` ở thư mục này.
 
-## Kết quả chính
+Mọi số liệu đo trên **tập validation**, 444 ảnh, với Swin-Tiny đóng băng. Tập test chưa mở.
+
+## Hai lần chạy
+
+| | Notebook trên Kaggle | Commit | Thư mục |
+|---|---|---|---|
+| Lần 1 | https://www.kaggle.com/code/vtnmai/09-selector-calibration?scriptVersionId=364940521 | `bb7cd5e` | `run1/` |
+| Lần 2 | https://www.kaggle.com/code/vtnmai/09-selector-calibration/output?scriptVersionId=364969899 | `368c71e` | `run2/` và `notebooks/09_selector_calibration.ipynb` |
+
+Bản notebook đã chạy của lần 1 nằm ở `run1/09_selector_calibration_run1.ipynb`. Bản đã chạy của lần 2 nằm ở `notebooks/09_selector_calibration.ipynb`.
+
+## Kết quả lần 1
 
 | Chỉ số | Không xử lý | Bộ chọn |
 |---|---|---|
@@ -17,12 +28,12 @@ Cận trên theo từng ảnh, tức nếu biết nhãn để chọn hành độ
 
 Cố định một hành động cho mọi ảnh đều tệ hơn không xử lý: unsharp_strong 0.747, unsharp_mild 0.839, bilateral_wide 0.828, bilateral_narrow 0.840. Giá trị của bộ chọn nằm ở việc biết khi nào nên xử lý, không phải ở một kỹ thuật tốt hơn.
 
-## Hai luật tìm được
+### Hai luật tìm được
 
 1. **Luật nhiễu.** Nếu `noise_sigma` từ 0.0106 trở lên và `luma_mean` từ 0.31 trở lên thì dùng bilateral_wide. Đóng góp 0.0052.
 2. **Luật mờ.** Nếu `mscn_var` từ 0.18 trở xuống và `noise_sigma` từ 0.0034 trở xuống thì dùng unsharp_strong. Đóng góp 0.0143, tức khoảng ba phần tư tổng mức tăng.
 
-## Tăng ở đâu
+### Tăng ở đâu
 
 | Họ | Mức tăng F1 ở các mức 1, 2, 3 |
 |---|---|
@@ -34,9 +45,18 @@ Cố định một hành động cho mọi ảnh đều tệ hơn không xử l�
 
 Hai luật tìm lại đúng bản đồ của task 4.5: unsharp cho mờ và độ phân giải thấp, bilateral cho nhiễu. Đây chưa phải bằng chứng độc lập, vì chính 4.5 đã chọn tập hành động.
 
-Bộ chọn đứng yên, không xử lý, ở glare, color_cast và phần lớn shadow, jpeg, lowlight. Với lowlight là do luật nhiễu bị chặn khi ảnh quá tối.
+Bộ chọn đứng yên ở glare, color_cast và phần lớn shadow, jpeg, lowlight. Với lowlight là do luật nhiễu bị chặn khi ảnh quá tối.
 
-## Kém hơn ở đâu
+### Độ ổn định
+
+Hiệu chỉnh trên bốn phần ảnh và chấm trên một phần giữ lại, lặp 5 lần. Mức tăng giữ lại là 0.0181 với độ lệch 0.0044 và dương ở cả 5 phần. Ngưỡng gần như không đổi giữa các phần. Hai điểm cần lưu ý:
+
+- Ở phần 2 điều kiện phụ của luật mờ đổi từ `noise_sigma` sang `luma_mean`, nên cấu trúc luật chưa hoàn toàn cố định.
+- Tỉ lệ ảnh sạch bị xử lý ở phần giữ lại là 0.022 ở phần 0 và phần 2, hơi vượt trần 0.02. Mỗi phần chỉ có khoảng 89 ảnh sạch nên số này dao động mạnh.
+
+## Vấn đề gặp phải ở lần 1
+
+Có 7 điều kiện kém hơn không xử lý:
 
 | Điều kiện | Mức đổi | Tỉ lệ ảnh bị xử lý |
 |---|---|---|
@@ -48,14 +68,32 @@ Bộ chọn đứng yên, không xử lý, ở glare, color_cast và phần lớ
 | blur_s1 | giảm 0.003 | 4 phần trăm |
 | noise_s1 | giảm 0.0002 | 98 phần trăm |
 
-Lỗi thật chỉ là shadow_s3 và contrast_low. Ảnh có bóng đổ hoặc tương phản thấp cũng có `mscn_var` thấp nên luật mờ tưởng là ảnh mờ rồi làm nét nhầm. Điều này cũng giải thích vì sao brightness_dark_s3 tăng 0.050. Unsharp vô tình kéo giãn tương phản ảnh tối, chứ ảnh đó không mờ. Mức tăng này là may mắn, không nên tính là bằng chứng bộ chọn nhận ra ảnh tối.
+Lỗi thật chỉ là shadow_s3 và contrast_low. Ảnh có bóng đổ hoặc tương phản thấp cũng có `mscn_var` thấp nên luật mờ tưởng là ảnh mờ rồi làm nét nhầm.
 
-## Độ ổn định
+Điều này cũng giải thích vì sao brightness_dark_s3 tăng 0.050. Unsharp vô tình kéo giãn tương phản ảnh tối, chứ ảnh đó không mờ. Mức tăng này là may mắn, không nên tính là bằng chứng bộ chọn nhận ra ảnh tối.
 
-Hiệu chỉnh trên bốn phần ảnh và chấm trên một phần giữ lại, lặp 5 lần. Mức tăng giữ lại là 0.0181 với độ lệch 0.0044 và dương ở cả 5 phần. Ngưỡng gần như không đổi giữa các phần. Hai điểm cần lưu ý:
+## Thử nghiệm lần 2
 
-- Ở phần 2 điều kiện phụ của luật mờ đổi từ `noise_sigma` sang `luma_mean`, nên cấu trúc luật chưa hoàn toàn cố định.
-- Tỉ lệ ảnh sạch bị xử lý ở phần giữ lại là 0.022 ở phần 0 và phần 2, hơi vượt trần 0.02. Mỗi phần chỉ có khoảng 89 ảnh sạch nên số này dao động mạnh.
+Nhóm thử thêm một mệnh đề chặn thứ hai cho luật mờ, chọn một trong hai ứng viên là `luma_std` từ ngưỡng trở lên hoặc `dark_fraction` từ ngưỡng trở xuống. Quy tắc đặt trước: mệnh đề chỉ được giữ nếu mục tiêu tăng thêm ít nhất `min_gain` là 0.002. Đây là chỉnh sau khi đã thấy kết quả validation, và tập test chưa mở.
+
+Kết quả: mệnh đề tốt nhất chỉ làm mục tiêu tăng thêm **0.0006**, dưới 0.002, nên bị bỏ. Hai luật, mục tiêu 0.8802, 25 điều kiện tốt hơn và 7 kém hơn, và kết quả kiểm tra chéo đều giống hệt lần 1. Chi tiết nằm ở `run2/calibration_log.json`, mục `extra_guard` của luật `blur`.
+
+Lý do mệnh đề không giúp được: chặn ảnh bóng đổ và tương phản thấp có cứu được shadow_s3 và contrast_low, nhưng cùng mệnh đề cũng chặn luật mờ trên ảnh tối, nơi luật đang thắng nhờ may. Hai bên gần triệt tiêu nhau.
+
+## Vì sao giữ bộ chọn của lần 1
+
+1. Mệnh đề thêm không đạt ngưỡng đã đặt trước. Hạ `min_gain` để cho nó lọt là chỉnh ngưỡng sau khi thấy kết quả.
+2. Hai lần chạy cho cùng một bộ chọn, nên giữ bản đơn giản hơn với hai mệnh đề mỗi luật.
+3. Lần 1 là bản đã được kiểm tra chéo và đã có đầy đủ kết quả theo từng điều kiện.
+
+Lỗi shadow_s3 và contrast_low được ghi như một giới hạn đã biết, không giấu đi.
+
+## Kết luận
+
+- Bộ chọn hai luật tăng macro F1 trung bình 0.0195 trên validation, không làm hại ảnh sạch, và mọi kỹ thuật cố định đều thua không xử lý. Giá trị nằm ở việc chọn đúng lúc.
+- Mức tăng ổn định qua kiểm tra chéo, nhưng chỉ lấy được khoảng một phần ba dư địa theo cận trên.
+- Luật mờ có lỗi đã biết với ảnh bóng đổ và tương phản thấp. Một mệnh đề chặn đơn giản không sửa được mà không mất chỗ khác. Muốn sửa cần đặc trưng tách được ảnh tối và tương phản thấp khỏi ảnh mờ, nên để làm hướng phát triển.
+- Chưa có bằng chứng ngoài mẫu. Bước kiểm chứng thật nằm ở task 5.5 với 6 họ chưa thấy và task 6.1 trên test.
 
 ## Đối chiếu giả thuyết đã đăng ký
 
@@ -68,18 +106,17 @@ Hiệu chỉnh trên bốn phần ảnh và chấm trên một phần giữ lạ
 
 ## Giới hạn
 
-- Số liệu trên validation, nơi chính ngưỡng được tìm ra. Chưa có bằng chứng ngoài mẫu.
-- Mười bốn họ suy giảm đều là họ đã thấy lúc hiệu chỉnh. Khái quát sang họ chưa thấy đo ở task 5.5 và 6.1.
+- Số liệu trên validation, nơi chính ngưỡng được tìm ra.
+- Mười bốn họ suy giảm đều là họ đã thấy lúc hiệu chỉnh.
 - Tập hành động đã được chọn từ kết quả test ở 4.5 và cấu hình xử lý được chọn trên validation. Doc 5.1 đã ghi rõ.
-- Luật mờ có lỗi đã biết với ảnh bóng đổ và tương phản thấp.
+- Mức 3 của một số họ trong 14 họ khá nặng, nên số liệu mức 3 là kết quả với ảnh xấu thật.
 
-## Quyết định đã chọn
+## Khóa
 
-Nhóm chọn hướng B. Luật mờ được thử thêm một mệnh đề chặn thứ hai về tương phản hoặc vùng tối, rồi notebook 09 chạy lại trên validation. Đây là chỉnh sau khi đã thấy kết quả validation nên phải ghi rõ trong báo cáo cuối. Tập test chưa mở. Bộ chọn phải khóa bằng `locked: true` trước khi mở test ở task 6.1.
-
-Số liệu trong README này là của lần chạy 1. Lần chạy 2 sẽ được ghi thêm vào đây sau khi có kết quả.
+`selector_calibrated.json` ở thư mục này có `locked: true`. Không đổi luật hay ngưỡng sau khi mở test ở task 6.1.
 
 ## File trong thư mục
 
-- `run1/`: toàn bộ kết quả lần chạy 1 gồm bộ chọn, nhật ký tìm ngưỡng, điểm từng điều kiện, biểu đồ theo họ và notebook đã chạy.
-- Các file cùng tên ở thư mục này sẽ là của lần chạy 2 sau khi chạy lại notebook 09.
+- `selector_calibrated.json`: bộ chọn đã khóa, lấy từ lần 1.
+- `run1/`: kết quả đầy đủ lần 1 gồm bộ chọn, nhật ký tìm ngưỡng, điểm từng điều kiện, biểu đồ theo họ và notebook đã chạy.
+- `run2/calibration_log.json`: nhật ký lần 2, có mục thử mệnh đề chặn thêm.

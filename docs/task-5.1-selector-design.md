@@ -134,6 +134,8 @@ Lần chạy 1 trên validation cho thấy luật mờ làm nét nhầm ảnh b�
 
 Đây là chỉnh sau khi đã thấy kết quả validation, không phải đăng ký trước. Chỉ validation được dùng và tập test chưa mở. Kết quả lần 1 giữ nguyên ở `reports/selector/run1/` để đối chiếu.
 
+Kết quả lần chạy 2: mệnh đề tốt nhất chỉ tăng mục tiêu 0.0006, dưới `min_gain` 0.002, nên bị bỏ và bộ chọn không đổi. Bộ chọn của lần 1 được khóa. Chi tiết ở `reports/selector/README.md`.
+
 ## Kết quả
 
 Kết quả hiệu chỉnh lần chạy đầu trên validation nằm ở `reports/selector/README.md`.

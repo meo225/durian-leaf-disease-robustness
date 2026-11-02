@@ -59,6 +59,7 @@ rules:
       - {feature: noise_sigma, op: "<="}
     # Thêm sau lần chạy 1 (reports/selector/README.md): luật mờ làm nét nhầm ảnh bóng đổ và tương phản thấp, vì chúng cũng có mscn_var thấp.
     # Hiệu chỉnh thử thêm một mệnh đề chặn thứ hai từ danh sách này và chỉ giữ nếu mục tiêu tăng thêm ít nhất min_gain.
+    # Kết quả lần chạy 2: mệnh đề tốt nhất chỉ tăng 0.0006, bị bỏ, bộ chọn không đổi.
     extra_guard:
       - {feature: luma_std, op: ">="}
       - {feature: dark_fraction, op: "<="}
