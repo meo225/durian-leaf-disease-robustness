@@ -195,3 +195,37 @@ def test_collect_builds_a_consistent_table_and_saves_artifacts(tmp_path):
     assert (tmp_path / "out/calibration_log.json").is_file() and (tmp_path / "out/calibration_conditions_val.csv").is_file()
     plot_by_family(frame, tmp_path / "by_family.png")
     assert (tmp_path / "by_family.png").stat().st_size > 0
+
+
+def _table_with_low_contrast_lookalikes() -> CalibrationTable:
+    """Trong điều kiện `blur_s1`, 40 ảnh đầu không mờ thật mà chỉ có tương phản thấp. Độ nét thấp giống ảnh mờ, nhưng làm nét sẽ làm hỏng chúng."""
+    table = _synthetic_table(images=100, seed=3)
+    index = {name: FEATURES.index(name) for name in FEATURES}
+    lookalike = np.arange(100) < 40
+    table.features[1, lookalike, index["luma_std"]] = 0.02
+    table.features[1, ~lookalike, index["luma_std"]] = 0.2
+    table.features[[0, 2], :, index["luma_std"]] = 0.2
+    strong = ACTIONS.index("unsharp_strong")
+    table.predictions[0, 1, lookalike] = table.labels[lookalike]
+    table.predictions[strong, 1, lookalike] = (table.labels[lookalike] + 1) % 5
+    return table
+
+
+def test_extra_guard_is_added_only_when_it_stops_a_harmful_trigger():
+    table = _table_with_low_contrast_lookalikes()
+    blur_rule = next(spec for spec in CONFIG["rules"] if spec["name"] == "blur")
+    plain = {key: value for key, value in blur_rule.items() if key != "extra_guard"}
+    without, _ = fit(table, [plain], SETTINGS)
+    with_guard, log = fit(table, [blur_rule], SETTINGS)
+    features = [clause.feature for clause in with_guard.rules[0].clauses]
+    assert "luma_std" in features
+    assert report(table, with_guard)[1]["gain"] > report(table, without)[1]["gain"]
+    assert log["rules"][0]["extra_guard"]["feature"] == "luma_std" and log["rules"][0]["extra_guard_gain"] >= SETTINGS.min_gain
+
+
+def test_extra_guard_is_dropped_when_it_does_not_help():
+    table = _synthetic_table()
+    blur_rule = next(spec for spec in CONFIG["rules"] if spec["name"] == "blur")
+    selector, log = fit(table, [blur_rule], SETTINGS)
+    assert log["rules"][0]["extra_guard"] is None
+    assert all(clause.feature not in {"luma_std", "dark_fraction"} for clause in selector.rules[0].clauses)

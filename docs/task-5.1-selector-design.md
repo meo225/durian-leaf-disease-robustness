@@ -64,7 +64,7 @@ Tính không cần ảnh sạch tương ứng, trên độ sáng Y = 0,299 R + 0
 Luật xét theo thứ tự, luật đầu tiên khớp thì thắng, không luật nào khớp thì `keep`.
 
 1. `noise`: nếu một đặc trưng nhiễu vượt ngưỡng (và độ sáng trên một ngưỡng, nếu mệnh đề chặn được chọn) thì dùng `bilateral_wide` hoặc `bilateral_narrow`.
-2. `blur`: nếu độ nét dưới ngưỡng (và độ sáng, nhiễu đủ thấp, nếu mệnh đề chặn được chọn) thì dùng `unsharp_strong` hoặc `unsharp_mild`.
+2. `blur`: nếu độ nét dưới ngưỡng (và độ sáng, nhiễu đủ thấp, nếu mệnh đề chặn được chọn) thì dùng `unsharp_strong` hoặc `unsharp_mild`. Sau lần chạy 1, luật này được thử thêm một mệnh đề chặn thứ hai về tương phản hoặc vùng tối, xem mục Chỉnh sau lần chạy 1.
 
 Task 5.3 chọn hành động, đặc trưng và ngưỡng của từng luật (`src/selector/calibrate.py`):
 
@@ -127,6 +127,12 @@ Ablation theo nhóm đặc trưng (task 5.4) dùng `fit(..., dropped_groups=[...
 - Gao và cộng sự (2025), *QuARF*, AAAI-25. Ý tưởng thích ứng theo chất lượng ảnh.
 - Mittal, Moorthy, Bovik (2012), *No-Reference Image Quality Assessment in the Spatial Domain*, IEEE TIP. MSCN và BRISQUE.
 - Immerkaer (1996), *Fast Noise Variance Estimation*, Computer Vision and Image Understanding.
+
+## Chỉnh sau lần chạy 1
+
+Lần chạy 1 trên validation cho thấy luật mờ làm nét nhầm ảnh bóng đổ và tương phản thấp, vì chúng cũng có `mscn_var` thấp. Nhóm chọn hướng thêm một mệnh đề chặn thứ hai cho luật mờ. Ứng viên là `luma_std` từ ngưỡng trở lên hoặc `dark_fraction` từ ngưỡng trở xuống. Mệnh đề chỉ được giữ nếu mục tiêu tăng thêm ít nhất `min_gain`.
+
+Đây là chỉnh sau khi đã thấy kết quả validation, không phải đăng ký trước. Chỉ validation được dùng và tập test chưa mở. Kết quả lần 1 giữ nguyên ở `reports/selector/run1/` để đối chiếu.
 
 ## Kết quả
 

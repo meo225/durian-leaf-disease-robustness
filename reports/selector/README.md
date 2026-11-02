@@ -73,18 +73,13 @@ Hiệu chỉnh trên bốn phần ảnh và chấm trên một phần giữ lạ
 - Tập hành động đã được chọn từ kết quả test ở 4.5 và cấu hình xử lý được chọn trên validation. Doc 5.1 đã ghi rõ.
 - Luật mờ có lỗi đã biết với ảnh bóng đổ và tương phản thấp.
 
-## Quyết định còn mở
+## Quyết định đã chọn
 
-Trước khi khóa bộ chọn cần chọn một trong hai hướng:
+Nhóm chọn hướng B. Luật mờ được thử thêm một mệnh đề chặn thứ hai về tương phản hoặc vùng tối, rồi notebook 09 chạy lại trên validation. Đây là chỉnh sau khi đã thấy kết quả validation nên phải ghi rõ trong báo cáo cuối. Tập test chưa mở. Bộ chọn phải khóa bằng `locked: true` trước khi mở test ở task 6.1.
 
-- **A.** Khóa nguyên trạng và ghi lỗi trên vào báo cáo cuối.
-- **B.** Thêm một điều kiện phụ về tương phản hoặc phơi sáng cho luật mờ, chạy lại notebook, rồi ghi rõ đây là chỉnh sau khi thấy kết quả validation. Lần chạy này được giữ lại để đối chiếu.
-
-Dù chọn hướng nào, bộ chọn phải khóa bằng `locked: true` trước khi mở test ở task 6.1.
+Số liệu trong README này là của lần chạy 1. Lần chạy 2 sẽ được ghi thêm vào đây sau khi có kết quả.
 
 ## File trong thư mục
 
-- `selector_calibrated.json`: bộ chọn đã hiệu chỉnh, `locked: false`.
-- `calibration_log.json`: nhật ký tìm ngưỡng, kết quả tóm tắt và độ ổn định.
-- `calibration_conditions_val.csv`: điểm từng điều kiện và tỉ lệ ảnh bị xử lý.
-- `selector_by_family.png`: biểu đồ theo họ.
+- `run1/`: toàn bộ kết quả lần chạy 1 gồm bộ chọn, nhật ký tìm ngưỡng, điểm từng điều kiện, biểu đồ theo họ và notebook đã chạy.
+- Các file cùng tên ở thư mục này sẽ là của lần chạy 2 sau khi chạy lại notebook 09.

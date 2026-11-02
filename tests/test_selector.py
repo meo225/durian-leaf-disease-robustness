@@ -138,7 +138,7 @@ def test_actions_are_the_locked_configs_with_evidence_from_the_recovery_map():
 def test_rules_only_use_known_features_and_declared_actions():
     for rule in CONFIG["rules"]:
         assert set(rule["actions"]) <= set(CONFIG["actions"]) - {"keep"}
-        for clause in [*rule["candidates"], *rule.get("guard", [])]:
+        for clause in [*rule["candidates"], *rule.get("guard", []), *rule.get("extra_guard", [])]:
             assert clause["feature"] in FEATURES and clause["op"] in (">=", "<=")
     assert list(CONFIG["actions"]) == ACTIONS
 

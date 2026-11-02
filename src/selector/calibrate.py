@@ -267,6 +267,10 @@ def fit(
         if best is None:
             entry["reason"] = "không bộ ngưỡng nào thỏa ràng buộc trên ảnh sạch"
             continue
+        extras = drop_groups(spec.get("extra_guard", []), dropped_groups)
+        if extras:
+            entry["objective_before_extra_guard"] = best["value"]
+            best = _add_extra_guard(table, best, extras, action_index, assignment, clean_floor, settings, entry)
         gain = best["value"] - objective
         entry.update({"best_objective": best["value"], "gain": gain, "action": best["action"], "feature": best["candidate"]["feature"],
                       "op": best["candidate"]["op"], "threshold": best["threshold"], "guard": best["guard"]})
@@ -276,6 +280,8 @@ def fit(
         clauses = [Clause(best["candidate"]["feature"], best["candidate"]["op"], best["threshold"])]
         if best["guard"] is not None:
             clauses.append(Clause(best["guard"]["feature"], best["guard"]["op"], best["guard"]["threshold"]))
+        if best.get("extra_guard") is not None:
+            clauses.append(Clause(best["extra_guard"]["feature"], best["extra_guard"]["op"], best["extra_guard"]["threshold"]))
         chosen.append(Rule(str(spec["name"]), tuple(clauses), best["action"]))
         assignment = np.where(best["fired"], action_index[best["action"]], assignment)
         open_mask &= ~best["fired"]
@@ -283,6 +289,43 @@ def fit(
         entry.update({"accepted": True, "clean_f1": best["clean_f1"], "clean_trigger_rate": best["clean_trigger_rate"], "triggered_images": int(best["fired"].sum())})
     log["objective"] = objective
     return RuleSelector(chosen), log
+
+
+def _add_extra_guard(
+    table: CalibrationTable,
+    best: dict[str, Any],
+    extras: Sequence[Mapping[str, str]],
+    action_index: Mapping[str, int],
+    assignment: np.ndarray,
+    clean_floor: float,
+    settings: Settings,
+    entry: dict[str, Any],
+) -> dict[str, Any]:
+    """Thử thêm một mệnh đề chặn thứ hai vào luật vừa tìm được. Chỉ giữ nếu mục tiêu tăng thêm ít nhất `min_gain`.
+
+    Đây là bước chỉnh sau khi lần chạy đầu cho thấy luật mờ làm nét nhầm ảnh bóng đổ và tương phản thấp. Chọn một mệnh đề duy nhất
+    từ `extra_guard` của luật, trên cùng ràng buộc ảnh sạch. Kết quả ghi vào nhật ký của luật.
+    """
+    runner: dict[str, Any] | None = None
+    for clause, mask in _guard_options(table, extras, settings.guard_points):
+        if clause is None:
+            continue
+        fired = best["fired"] & mask
+        scores = score(table, np.where(fired, action_index[best["action"]], assignment))
+        entry["evaluated"] += 1
+        if scores[0] < clean_floor:
+            continue
+        value = float(scores[1:].mean())
+        if runner is None or (value, -int(fired.sum())) > (runner["value"], -int(runner["fired"].sum())):
+            runner = {"value": value, "clause": clause, "fired": fired, "clean_f1": float(scores[0]), "clean_trigger_rate": float(fired[0].mean())}
+    if runner is None or runner["value"] < best["value"] + settings.min_gain:
+        entry["extra_guard"] = None
+        entry["extra_guard_gain"] = None if runner is None else runner["value"] - best["value"]
+        return best
+    entry["extra_guard"] = runner["clause"]
+    entry["extra_guard_gain"] = runner["value"] - best["value"]
+    return {**best, "value": runner["value"], "fired": runner["fired"], "clean_f1": runner["clean_f1"],
+            "clean_trigger_rate": runner["clean_trigger_rate"], "extra_guard": runner["clause"]}
 
 
 def _guard_options(table: CalibrationTable, guards: Sequence[Mapping[str, str]], points: int) -> list[tuple[dict[str, Any] | None, np.ndarray | None]]:
