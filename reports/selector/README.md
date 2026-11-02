@@ -10,10 +10,10 @@ Mọi số liệu đo trên **tập validation**, 444 ảnh, với Swin-Tiny đ�
 
 | | Notebook trên Kaggle | Commit | Thư mục |
 |---|---|---|---|
-| Lần 1 | https://www.kaggle.com/code/vtnmai/09-selector-calibration?scriptVersionId=364940521 | `bb7cd5e` | `run1/` |
-| Lần 2 | https://www.kaggle.com/code/vtnmai/09-selector-calibration/output?scriptVersionId=364969899 | `368c71e` | `run2/` và `notebooks/09_selector_calibration.ipynb` |
+| Lần 1 | https://www.kaggle.com/code/vtnmai/09-selector-calibration?scriptVersionId=364940521 | `bb7cd5e` | `run1/` và `notebooks/09_selector_calibration.ipynb` |
+| Lần 2 | https://www.kaggle.com/code/vtnmai/09-selector-calibration/output?scriptVersionId=364969899 | `368c71e` | `run2/` và `notebooks/09_selector_calibration_run2.ipynb` |
 
-Bản notebook đã chạy của lần 1 nằm ở `run1/09_selector_calibration_run1.ipynb`. Bản đã chạy của lần 2 nằm ở `notebooks/09_selector_calibration.ipynb`.
+Notebook đã chạy của lần 1 là `notebooks/09_selector_calibration.ipynb` và của lần 2 là `notebooks/09_selector_calibration_run2.ipynb`.
 
 ## Kết quả lần 1
 
@@ -118,5 +118,5 @@ Lỗi shadow_s3 và contrast_low được ghi như một giới hạn đã biế
 ## File trong thư mục
 
 - `selector_calibrated.json`: bộ chọn đã khóa, lấy từ lần 1.
-- `run1/`: kết quả đầy đủ lần 1 gồm bộ chọn, nhật ký tìm ngưỡng, điểm từng điều kiện, biểu đồ theo họ và notebook đã chạy.
+- `run1/`: kết quả đầy đủ lần 1 gồm bộ chọn, nhật ký tìm ngưỡng, điểm từng điều kiện và biểu đồ theo họ.
 - `run2/calibration_log.json`: nhật ký lần 2, có mục thử mệnh đề chặn thêm.

@@ -108,7 +108,7 @@ Nếu H1 hoặc H2 không đạt thì báo bộ chọn không có giá trị tr�
 pytest tests/test_selector.py
 ```
 
-Hiệu chỉnh chạy trên Kaggle bằng `notebooks/09_selector_calibration.ipynb`, ghi `reports/selector/selector_calibrated.json` (`locked: false`), `calibration_log.json`, `calibration_conditions_val.csv` và `selector_by_family.png`.
+Hiệu chỉnh chạy trên Kaggle bằng `notebooks/09_selector_calibration.ipynb`. Mỗi lần chạy ghi bộ chọn, `calibration_log.json`, `calibration_conditions_val.csv` và `selector_by_family.png`, hiện nằm ở `reports/selector/run1/`. Bộ chọn đã khóa là `reports/selector/selector_calibrated.json`.
 
 ```python
 from src.selector.pipeline import AdaptivePipeline
