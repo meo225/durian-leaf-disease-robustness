@@ -4,10 +4,10 @@ import yaml
 
 from src.corruption import CORRUPTIONS, UNSEEN_CORRUPTIONS, apply_unseen, corrupt_tensor, load_conditions
 from src.corruption.augment import RandomCorruption
-from src.corruption.unseen import LUMA_WEIGHTS, UNSEEN_RANDOM_TYPES, chroma_noise, defocus_blur, fog, saturate, spatter
+from src.corruption.unseen import LUMA_WEIGHTS, UNSEEN_RANDOM_TYPES, chroma_noise, defocus_blur, fog, rain_streak, saturate, spatter
 
 CONFIG = "configs/unseen_corruption.yaml"
-VALUES = {"defocus_blur": 3.0, "chroma_noise": 0.08, "fog": 1.6, "spatter": 0.25, "saturate": 3.0}
+VALUES = {"defocus_blur": 3.0, "chroma_noise": 0.08, "fog": 1.6, "spatter": 0.25, "rain_streak": 0.005, "saturate": 3.0}
 
 
 @pytest.fixture
@@ -73,6 +73,15 @@ def test_spatter_covers_roughly_the_requested_area():
     assert 0.1 < covered < 0.4
 
 
+def test_rain_streak_adds_thin_bright_streaks_and_scales_with_density():
+    flat = torch.full((3, 128, 128), 0.3)
+    light = rain_streak(flat, 0.004, torch.Generator().manual_seed(0))
+    heavy = rain_streak(flat, 0.02, torch.Generator().manual_seed(0))
+    assert light.min() >= 0.3 - 1e-6  # chỉ làm sáng, không làm tối
+    covered = lambda x: float(((x - flat).abs().mean(dim=0) > 0.02).float().mean())
+    assert 0.01 < covered(light) < covered(heavy) < 0.7
+
+
 def test_saturate_identity_gray_and_boost(image):
     assert torch.allclose(saturate(image, 1.0), image, atol=1e-6)
     assert saturate(image, 0.0).std(dim=0).max() < 1e-5  # mọi kênh bằng nhau
@@ -103,4 +112,4 @@ def test_augmentation_cannot_use_unseen_families(image):
 def test_unlocked_config_refuses_test_split():
     with pytest.raises(PermissionError):
         load_conditions(CONFIG, "test")
-    assert len(load_conditions(CONFIG, "val")) == 15
+    assert len(load_conditions(CONFIG, "val")) == 18

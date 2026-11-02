@@ -25,6 +25,10 @@ families:
     group: far
     type: spatter
     levels: [0.10, 0.25, 0.40]
+  rain_streak:
+    group: far
+    type: rain_streak
+    levels: [0.002, 0.005, 0.010]
   saturate:
     group: far
     type: saturate

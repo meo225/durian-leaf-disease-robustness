@@ -1,9 +1,9 @@
-"""Năm họ suy giảm chưa thấy (task 5.5), chỉ dùng để đánh giá, không bao giờ đưa vào augmentation.
+"""Sáu họ suy giảm chưa thấy (task 5.5), chỉ dùng để đánh giá, không bao giờ đưa vào augmentation.
 
 Hai nhóm theo khoảng cách tới 14 họ của benchmark 4.1:
 - gần (near): cùng cơ chế với một họ đã thấy nhưng khác dạng toán, nên bộ chọn chưa từng được hiệu chỉnh trên chúng.
   `defocus_blur` là mờ theo đĩa (họ đã thấy: mờ Gauss), `chroma_noise` là nhiễu màu loang, chỉ nằm ở kênh màu (họ đã thấy: nhiễu cộng lên cả ba kênh).
-- xa (far): cơ chế mới hoàn toàn. `fog` theo mô hình tán xạ khí quyển, `spatter` là giọt nước bám lên ống kính, `saturate` là màu bị đẩy quá bão hòa.
+- xa (far): cơ chế mới hoàn toàn. `fog` theo mô hình tán xạ khí quyển, `spatter` là giọt nước bám lên ống kính, `rain_streak` là vệt mưa rơi chắn ngang ảnh, `saturate` là màu bị đẩy quá bão hòa.
 
 Các hàm nhận tensor RGB trong khoảng 0 đến 1, dạng C×H×W, giống `src.corruption.basic`. Họ ngẫu nhiên nhận generator để lặp lại được.
 Registry nằm tách khỏi `basic.CORRUPTIONS`, nên `RandomCorruption` (augmentation) không gọi được các họ này: nó báo lỗi kiểu chưa hỗ trợ.
@@ -23,6 +23,11 @@ LUMA_WEIGHTS = (0.299, 0.587, 0.114)
 FOG_AIRLIGHT = 0.85
 # Cạnh lưới thô của trường độ sâu giả. Lưới nhỏ cho vùng sương liền khối, không thành nhiễu hạt.
 DEPTH_GRID = 4
+# Vệt mưa: độ dài (pixel), độ nghiêng tối đa so với phương thẳng đứng (độ), độ đục và màu của vệt.
+RAIN_LENGTH = 15
+RAIN_MAX_TILT_DEGREES = 20.0
+RAIN_OPACITY = 0.6
+RAIN_COLOR = 0.9
 # Độ mượt (sigma, pixel) của nhiễu màu, để thành đốm nhỏ.
 CHROMA_BLUR_SIGMA = 1.0
 # Độ mờ (sigma, pixel) của lớp nền dưới giọt nước và độ trong của giọt.
@@ -83,6 +88,24 @@ def spatter(image: torch.Tensor, coverage: float, generator: torch.Generator | N
     return image * (1.0 - mask) + droplet * mask
 
 
+def rain_streak(image: torch.Tensor, density: float, generator: torch.Generator | None = None) -> torch.Tensor:
+    """Mưa rơi: các vệt sáng mảnh gần thẳng đứng, nghiêng nhẹ theo gió, che một phần ảnh.
+
+    `density` là xác suất một pixel là điểm đầu của một vệt dài `RAIN_LENGTH` pixel, nên tỉ lệ phủ xấp xỉ density · RAIN_LENGTH.
+    Khác `spatter` (đốm tròn nhòe bám ống kính), đây là cấu trúc đường mảnh có hướng, ảnh bên dưới vẫn nét giữa các vệt.
+    """
+    _, height, width = image.shape
+    tilt = math.radians((2.0 * float(torch.rand(1, generator=generator)) - 1.0) * RAIN_MAX_TILT_DEGREES)
+    kernel = torch.zeros(RAIN_LENGTH, RAIN_LENGTH)
+    center = (RAIN_LENGTH - 1) / 2
+    for t in torch.linspace(-center, center, 4 * RAIN_LENGTH):
+        kernel[int(round(center + float(t) * math.cos(tilt))), int(round(center + float(t) * math.sin(tilt)))] = 1.0
+    drops = (torch.rand((1, 1, height, width), generator=generator) < density).float()
+    mask = F.conv2d(F.pad(drops, [RAIN_LENGTH // 2] * 4), kernel.view(1, 1, RAIN_LENGTH, RAIN_LENGTH))[0].clamp(0.0, 1.0)
+    alpha = RAIN_OPACITY * TF.gaussian_blur(mask, [3, 3], [0.7, 0.7])
+    return image * (1.0 - alpha) + RAIN_COLOR * alpha
+
+
 def saturate(image: torch.Tensor, factor: float) -> torch.Tensor:
     """Đẩy màu ra xa mức xám của pixel: gray + factor·(ảnh − gray). factor trên 1 là bão hòa quá mức, màu lá và vết bệnh bị bệt."""
     weights = torch.tensor(LUMA_WEIGHTS, dtype=image.dtype).view(3, 1, 1)
@@ -95,11 +118,12 @@ UNSEEN_CORRUPTIONS: dict[str, Callable[..., torch.Tensor]] = {
     "chroma_noise": chroma_noise,
     "fog": fog,
     "spatter": spatter,
+    "rain_streak": rain_streak,
     "saturate": saturate,
 }
 
 # Họ cần generator để lặp lại được.
-UNSEEN_RANDOM_TYPES = frozenset({"chroma_noise", "fog", "spatter"})
+UNSEEN_RANDOM_TYPES = frozenset({"chroma_noise", "fog", "spatter", "rain_streak"})
 
 
 def apply_unseen(image: torch.Tensor, spec: Mapping[str, object], generator: torch.Generator | None = None) -> torch.Tensor:
