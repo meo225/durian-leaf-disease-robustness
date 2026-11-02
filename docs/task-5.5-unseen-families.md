@@ -7,12 +7,12 @@ Mục đích: kiểm tra bộ chọn xử lý thích ứng (5.1 đến 5.3) và 
 | Họ | Nhóm | Cơ chế | Tham số `value` | Họ đã thấy gần nhất |
 |---|---|---|---|---|
 | `defocus_blur` | gần | Tích chập với đĩa phẳng (khẩu độ tròn) | bán kính, pixel | `blur` (Gauss) |
-| `speckle_noise` | gần | Nhiễu nhân, độ lệch tỉ lệ với cường độ pixel | độ lệch chuẩn tương đối | `noise` (cộng) |
+| `chroma_noise` | gần | Nhiễu màu loang chỉ ở kênh Cb, Cr, độ sáng giữ nguyên | độ lệch chuẩn của nhiễu màu | `noise`, `sensor_noise` (nhiễu cộng lên cả ba kênh) |
 | `fog` | xa | Mô hình tán xạ khí quyển `I = J·t + A·(1 − t)`, `t = exp(−β·d)`, độ sâu `d` là trường ngẫu nhiên mượt | β | `contrast_low` (chỉ gần về hiệu ứng) |
 | `spatter` | xa | Giọt nước bám ống kính: đốm tròn mép mềm, bên trong nhòe và sáng nhẹ | tỉ lệ diện tích phủ | không có |
 | `saturate` | xa | `gray + f·(ảnh − gray)`, f > 1 là quá bão hòa | f | `color_cast` (khác cơ chế) |
 
-Nhóm gần cho biết bộ chọn có chỉ khớp tham số hay hiểu được cơ chế (mờ, nhiễu). Nhóm xa cho biết hành vi khi gặp suy giảm mà không quy tắc nào được thiết kế cho. Nếu thiếu thời gian, bỏ `saturate` và giữ 4 họ.
+Nhóm gần cho biết bộ chọn có chỉ khớp tham số hay hiểu được cơ chế (mờ, nhiễu). `chroma_noise` còn kiểm tra riêng quy tắc nhiễu của bộ chọn, vì đặc trưng nhiễu đo trên độ sáng nên khó thấy nhiễu màu. Nhóm xa cho biết hành vi khi gặp suy giảm mà không quy tắc nào được thiết kế cho. Nếu thiếu thời gian, bỏ `saturate` và giữ 4 họ.
 
 Cài đặt thuần torch trong `src/corruption/unseen.py`, không phụ thuộc gói ngoài. Registry tách khỏi `basic.CORRUPTIONS`, nên `RandomCorruption` không gọi được các họ này (có test). `corrupt_tensor` nhận cả hai registry, nên `build_loader`, `evaluate_conditions` và `ImageCache` dùng được ngay mà không sửa.
 

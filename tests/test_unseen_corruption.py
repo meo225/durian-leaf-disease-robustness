@@ -4,10 +4,10 @@ import yaml
 
 from src.corruption import CORRUPTIONS, UNSEEN_CORRUPTIONS, apply_unseen, corrupt_tensor, load_conditions
 from src.corruption.augment import RandomCorruption
-from src.corruption.unseen import UNSEEN_RANDOM_TYPES, defocus_blur, fog, saturate, spatter, speckle_noise
+from src.corruption.unseen import LUMA_WEIGHTS, UNSEEN_RANDOM_TYPES, chroma_noise, defocus_blur, fog, saturate, spatter
 
 CONFIG = "configs/unseen_corruption.yaml"
-VALUES = {"defocus_blur": 3.0, "speckle_noise": 0.2, "fog": 1.6, "spatter": 0.25, "saturate": 3.0}
+VALUES = {"defocus_blur": 3.0, "chroma_noise": 0.08, "fog": 1.6, "spatter": 0.25, "saturate": 3.0}
 
 
 @pytest.fixture
@@ -47,10 +47,15 @@ def test_defocus_blur_preserves_mean_and_smooths(image):
     assert out.std() < image.std()
 
 
-def test_speckle_noise_scales_with_intensity():
-    dark, bright = torch.full((3, 64, 64), 0.05), torch.full((3, 64, 64), 0.8)
-    spread = lambda base: (speckle_noise(base, 0.2, torch.Generator().manual_seed(0)) - base).std()
-    assert spread(bright) > 5 * spread(dark)
+def test_chroma_noise_leaves_luma_untouched():
+    image = 0.4 + 0.2 * torch.rand(3, 64, 64, generator=torch.Generator().manual_seed(0))  # xa 0 và 1 nên không bị cắt
+    out = chroma_noise(image, 0.04, torch.Generator().manual_seed(0))
+    weights = torch.tensor(LUMA_WEIGHTS).view(3, 1, 1)
+    luma = lambda x: (x * weights).sum(dim=0)
+    assert torch.allclose(luma(out), luma(image), atol=1e-5)
+    chroma = lambda x: (x[0] - luma(x)).std()
+    assert (out - image).abs().mean() > 0.01
+    assert chroma(out) > chroma(image)
 
 
 def test_fog_follows_scattering_model(image):

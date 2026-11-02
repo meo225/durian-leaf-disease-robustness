@@ -2,7 +2,7 @@
 
 Hai nhóm theo khoảng cách tới 14 họ của benchmark 4.1:
 - gần (near): cùng cơ chế với một họ đã thấy nhưng khác dạng toán, nên bộ chọn chưa từng được hiệu chỉnh trên chúng.
-  `defocus_blur` là mờ theo đĩa (họ đã thấy: mờ Gauss), `speckle_noise` là nhiễu nhân (họ đã thấy: nhiễu cộng).
+  `defocus_blur` là mờ theo đĩa (họ đã thấy: mờ Gauss), `chroma_noise` là nhiễu màu loang, chỉ nằm ở kênh màu (họ đã thấy: nhiễu cộng lên cả ba kênh).
 - xa (far): cơ chế mới hoàn toàn. `fog` theo mô hình tán xạ khí quyển, `spatter` là giọt nước bám lên ống kính, `saturate` là màu bị đẩy quá bão hòa.
 
 Các hàm nhận tensor RGB trong khoảng 0 đến 1, dạng C×H×W, giống `src.corruption.basic`. Họ ngẫu nhiên nhận generator để lặp lại được.
@@ -23,6 +23,8 @@ LUMA_WEIGHTS = (0.299, 0.587, 0.114)
 FOG_AIRLIGHT = 0.85
 # Cạnh lưới thô của trường độ sâu giả. Lưới nhỏ cho vùng sương liền khối, không thành nhiễu hạt.
 DEPTH_GRID = 4
+# Độ mượt (sigma, pixel) của nhiễu màu, để thành đốm nhỏ.
+CHROMA_BLUR_SIGMA = 1.0
 # Độ mờ (sigma, pixel) của lớp nền dưới giọt nước và độ trong của giọt.
 SPATTER_MIX_BLUR = 3.0
 SPATTER_GAIN = 1.08
@@ -39,9 +41,20 @@ def defocus_blur(image: torch.Tensor, radius: float) -> torch.Tensor:
     return F.conv2d(padded, kernel, groups=image.shape[0])[0].clamp(0.0, 1.0)
 
 
-def speckle_noise(image: torch.Tensor, std: float, generator: torch.Generator | None = None) -> torch.Tensor:
-    """Nhiễu nhân: độ lệch của mỗi pixel tỉ lệ với cường độ của chính nó (khác nhiễu cộng, vùng tối gần như sạch)."""
-    return (image + image * torch.randn(image.shape, generator=generator) * std).clamp(0.0, 1.0)
+def chroma_noise(image: torch.Tensor, std: float, generator: torch.Generator | None = None) -> torch.Tensor:
+    """Nhiễu màu loang như camera điện thoại thiếu sáng sau khi khử nhiễu: chỉ nhiễu ở hai kênh màu Cb, Cr, độ sáng giữ nguyên.
+
+    Nhiễu được làm mượt nhẹ nên thành các đốm màu nhỏ thay vì hạt từng pixel. Khác `noise` và `sensor_noise`, đặc trưng nhiễu đo trên độ sáng gần như không thấy nó.
+    """
+    weights = torch.tensor(LUMA_WEIGHTS, dtype=image.dtype).view(3, 1, 1)
+    luma = (image * weights).sum(dim=0, keepdim=True)
+    field = TF.gaussian_blur(torch.randn((2, *image.shape[1:]), generator=generator), [5, 5], [CHROMA_BLUR_SIGMA] * 2)
+    field = field / field.flatten(1).std(dim=1).clamp_min(1e-6).view(2, 1, 1) * std
+    cb, cr = (image[2:3] - luma) / 1.772 + field[0:1], (image[0:1] - luma) / 1.402 + field[1:2]
+    red = luma + 1.402 * cr
+    blue = luma + 1.772 * cb
+    green = (luma - LUMA_WEIGHTS[0] * red - LUMA_WEIGHTS[2] * blue) / LUMA_WEIGHTS[1]
+    return torch.cat([red, green, blue]).clamp(0.0, 1.0)
 
 
 def fog(image: torch.Tensor, density: float, generator: torch.Generator | None = None) -> torch.Tensor:
@@ -79,14 +92,14 @@ def saturate(image: torch.Tensor, factor: float) -> torch.Tensor:
 
 UNSEEN_CORRUPTIONS: dict[str, Callable[..., torch.Tensor]] = {
     "defocus_blur": defocus_blur,
-    "speckle_noise": speckle_noise,
+    "chroma_noise": chroma_noise,
     "fog": fog,
     "spatter": spatter,
     "saturate": saturate,
 }
 
 # Họ cần generator để lặp lại được.
-UNSEEN_RANDOM_TYPES = frozenset({"speckle_noise", "fog", "spatter"})
+UNSEEN_RANDOM_TYPES = frozenset({"chroma_noise", "fog", "spatter"})
 
 
 def apply_unseen(image: torch.Tensor, spec: Mapping[str, object], generator: torch.Generator | None = None) -> torch.Tensor:
