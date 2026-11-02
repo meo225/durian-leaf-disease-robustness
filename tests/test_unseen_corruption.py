@@ -7,7 +7,7 @@ from src.corruption.augment import RandomCorruption
 from src.corruption.unseen import LUMA_WEIGHTS, UNSEEN_RANDOM_TYPES, chroma_noise, defocus_blur, fog, rain_streak, saturate, spatter
 
 CONFIG = "configs/unseen_corruption.yaml"
-VALUES = {"defocus_blur": 3.0, "chroma_noise": 0.08, "fog": 1.6, "spatter": 0.25, "rain_streak": 0.005, "saturate": 3.0}
+VALUES = {"defocus_blur": 3.0, "chroma_noise": 0.08, "fog": 0.30, "spatter": 0.25, "rain_streak": 0.005, "saturate": 3.0}
 
 
 @pytest.fixture
@@ -59,10 +59,10 @@ def test_chroma_noise_leaves_luma_untouched():
 
 
 def test_fog_follows_scattering_model(image):
-    out = fog(image, 1.6, torch.Generator().manual_seed(0))
+    out = fog(image, 0.30, torch.Generator().manual_seed(0))
     assert out.std() < image.std()  # mất tương phản
     assert out.mean() > image.mean()  # kéo về ánh sáng khí quyển
-    denser = fog(image, 2.6, torch.Generator().manual_seed(0))
+    denser = fog(image, 0.70, torch.Generator().manual_seed(0))
     assert denser.std() < out.std()
 
 
@@ -90,7 +90,7 @@ def test_saturate_identity_gray_and_boost(image):
 
 
 def test_corrupt_tensor_is_deterministic_and_8bit(image):
-    spec = {"type": "fog", "value": 1.6}
+    spec = {"type": "fog", "value": 0.30}
     first = corrupt_tensor(image, "fog_s2", spec, 42)
     assert torch.equal(first, corrupt_tensor(image, "fog_s2", spec, 42))
     assert not torch.equal(first, corrupt_tensor(image, "fog_s2", spec, 43))

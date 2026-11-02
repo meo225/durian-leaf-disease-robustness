@@ -20,7 +20,7 @@ families:
   fog:
     group: far
     type: fog
-    levels: [0.8, 1.6, 2.6]
+    levels: [0.20, 0.40, 0.70]
   spatter:
     group: far
     type: spatter
