@@ -1,7 +1,7 @@
 # Bộ họ suy giảm chưa thấy (task 5.5). Chỉ dùng để đánh giá, không đưa vào augmentation hay hiệu chỉnh bộ chọn.
 # group near: cùng cơ chế với một họ của benchmark 4.1 nhưng khác dạng toán. group far: cơ chế mới hoàn toàn.
 # Ba mức mỗi họ, tăng dần từ nhẹ đến mạnh, đặt tên <họ>_s<mức> như configs/corruption.yaml.
-# Mức chọn theo ảnh mẫu và điểm reference model trên validation (notebooks/10_unseen_corruption_calibration.ipynb), khóa trước khi mở test ở 6.1.
+# Mức chọn theo ảnh mẫu và điểm reference model trên validation (notebooks/11_unseen_corruption_calibration.ipynb), khóa trước khi mở test ở 6.1.
 # locked: false cho tới khi hiệu chỉnh xong. Code từ chối mở tập test khi chưa khóa.
 
 version: 1
