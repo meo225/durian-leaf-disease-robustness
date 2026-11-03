@@ -1,0 +1,31 @@
+# Đối chứng augmentation tổng quát cho Swin-Tiny (task 5.6).
+# Cùng giao thức với configs/train_swin_tiny_aug.yaml của task 4.5: model, optimizer, scheduler, epoch, patience, seed và tập chọn checkpoint.
+# Chỉ khác một điểm: thay augmentation suy giảm bằng TrivialAugment, không có phép làm hỏng nhắm vào 14 họ của benchmark 4.1.
+# Mọi giá trị dưới đây khóa trước khi chạy.
+
+pipeline_config: configs/pipeline.yaml
+model_name: swin_tiny_trivialaugment
+library: timm
+backbone: swin_tiny_patch4_window7_224
+pretrained: true
+epochs: 30
+patience: 7
+min_delta: 0.0
+learning_rate: 0.0002
+weight_decay: 0.01
+optimizer: adamw
+scheduler: cosine
+selection_metric: macro_f1
+num_workers: 2
+
+augmentation:
+  # TrivialAugment bản wide (Müller và Hutter, 2021): mỗi ảnh áp đúng một phép với cường độ lấy ngẫu nhiên, không có siêu tham số cần chỉnh.
+  # Đặt sau lật và xoay của baseline, trước ToTensor. Giữ nguyên các phép hình học của baseline để chỉ khác ở phần augmentation thêm vào.
+  method: trivialaugment_wide
+  num_magnitude_bins: 31
+
+validation:
+  # Cùng quy tắc chọn checkpoint với task 4.5: validation hỗn hợp gồm ảnh sạch và mỗi họ của benchmark 4.1 ở mức này.
+  # Dùng chung quy tắc để khác biệt còn lại chỉ nằm ở augmentation lúc train.
+  corruption_config: configs/corruption.yaml
+  severity: 2
