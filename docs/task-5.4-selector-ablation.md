@@ -47,7 +47,7 @@ Các dự đoán dưới đây viết từ kết quả 5.3 và cấu hình luậ
 2. **Nhóm độ tự nhiên là nhóm có mức mất lớn nhất.** Luật mờ chọn `mscn_var`. Bỏ nhóm này thì luật mờ phải dùng `sharpness`, và dự đoán mức mất tối thiểu 0.005.
 3. **Bỏ unsharp mất nhiều hơn bỏ bilateral.** Ở 5.3 luật mờ đóng góp 0.0143 và luật nhiễu 0.0052. Mức mất khi bỏ unsharp dự đoán gần 0.014.
 4. **Bỏ mệnh đề chặn làm giảm mục tiêu hoặc tăng rủi ro trên ảnh sạch.** Mệnh đề `luma_mean` được chọn vì nó chặn bớt ảnh tối bị bắt nhầm.
-5. **Cận theo ảnh thổi phồng khoảng cách.** Ở 5.3 bộ chọn lấy được khoảng 32 phần trăm khoảng cách tới cận theo ảnh. Cận đó chọn hành động đúng cho từng ảnh trong 5 lựa chọn nên được nâng lên bởi may rủi của dự đoán. Dự đoán là phần bộ chọn lấy được sẽ cao hơn rõ rệt khi so với cận theo họ hoặc theo điều kiện. Ablation không làm con số tuyệt đối tốt hơn, chỉ cho biết thành phần nào đáng cải thiện.
+5. **Cận theo ảnh thổi phồng khoảng cách.** Ở 5.3 bộ chọn lấy được khoảng 32 phần trăm khoảng cách tới cận theo ảnh. Cận đó chọn hành động đúng cho từng ảnh trong 5 lựa chọn nên được nâng lên bởi may rủi của dự đoán. Dự đoán phần bộ chọn lấy được sẽ cao hơn rõ rệt khi so với cận theo họ hoặc theo điều kiện. Ablation không làm con số tuyệt đối tốt hơn, chỉ cho biết thành phần nào đáng cải thiện.
 
 Dự đoán nào sai cũng được ghi lại như kết quả, không sửa dự đoán sau khi xem.
 

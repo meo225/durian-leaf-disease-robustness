@@ -18,7 +18,7 @@ KIND_COLORS = {
 }
 KIND_NAMES = {
     "reference": "Tham chiếu", "full": "Bộ chọn đầy đủ", "feature_group": "Bỏ nhóm đặc trưng", "action": "Bỏ hành động",
-    "technique": "Bỏ kỹ thuật", "rule": "Chỉ một luật", "guard": "Bỏ mệnh đề chặn", "oracle": "Cận trên",
+    "technique": "Bỏ kỹ thuật", "rule": "Bỏ một luật", "guard": "Bỏ mệnh đề chặn", "oracle": "Cận trên",
 }
 
 
@@ -38,9 +38,9 @@ def plot_variants(summary: pd.DataFrame, path: str | Path) -> None:
     for line, name, style in ((summary.loc[summary["variant"] == "none", "objective"].iloc[0], "không xử lý", ":"),
                               (summary.loc[summary["variant"] == "full", "objective"].iloc[0], "đầy đủ", "--")):
         axis.axvline(line, color="#222222", linestyle=style, linewidth=1)
-        axis.text(line, len(frame) - 0.35, f" {name}", fontsize=8, va="bottom")
-    for position, value in zip(positions, frame["objective"]):
-        axis.text(value + 0.0035, position, f"{value:.4f}", va="center", fontsize=8)
+        axis.text(line, len(frame) - 0.35, f"{name} " if style == ":" else f" {name}", fontsize=8, va="bottom", ha="right" if style == ":" else "left")
+    for position, value, high in zip(positions, frame["objective"], frame["objective_ci_high"]):
+        axis.text(high + 0.002, position, f"{value:.4f}", va="center", fontsize=8)
     axis.set_yticks(positions)
     axis.set_yticklabels(frame["label"])
     axis.set_xlim(max(0.0, frame["objective_ci_low"].min() - 0.02), min(1.0, frame["objective_ci_high"].max() + 0.04))
@@ -70,8 +70,9 @@ def plot_contribution(summary: pd.DataFrame, kinds: Sequence[str], title: str, p
     axis.errorbar(frame["loss"], positions, xerr=[frame["loss"] - frame["loss_low"], frame["loss_high"] - frame["loss"]],
                   fmt="none", ecolor="#222222", elinewidth=1, capsize=2)
     axis.axvline(0, color="#222222", linewidth=1)
-    for position, value in zip(positions, frame["loss"]):
-        axis.text(value + (0.0008 if value >= 0 else -0.0008), position, f"{value:+.4f}", va="center", ha="left" if value >= 0 else "right", fontsize=8)
+    pad = 0.015 * max(float(frame["loss_high"].max() - frame["loss_low"].min()), 1e-4)
+    for position, value, high in zip(positions, frame["loss"], frame["loss_high"]):
+        axis.text(max(high, value) + pad, position, f"{value:+.4f}", va="center", ha="left", fontsize=8)
     axis.set_yticks(positions)
     axis.set_yticklabels(frame["label"])
     axis.set_xlabel("Mục tiêu của bộ chọn đầy đủ trừ mục tiêu của biến thể (dương: thành phần có ích)")

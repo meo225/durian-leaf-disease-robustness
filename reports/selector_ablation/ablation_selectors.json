@@ -1,0 +1,568 @@
+{
+  "task": "5.4",
+  "split": "val",
+  "context": {
+    "reference": "swin_tiny",
+    "checkpoint": "swin_tiny_seed42.pt",
+    "images": 444,
+    "conditions": 42,
+    "bootstrap_resamples": 1000,
+    "cv_folds": 5,
+    "seed": 42,
+    "config_file": "configs/selector.yaml",
+    "commit": "3ce874c",
+    "recomputed_selector_equals_locked": true
+  },
+  "selectors": {
+    "full": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_wide",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.010618187487125397
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        },
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.18000589311122894
+            },
+            {
+              "feature": "noise_sigma",
+              "op": "<=",
+              "threshold": 0.0033913529478013515
+            }
+          ]
+        }
+      ]
+    },
+    "locked": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_wide",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.010618187487125397
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        },
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.18000589311122894
+            },
+            {
+              "feature": "noise_sigma",
+              "op": "<=",
+              "threshold": 0.0033913529478013515
+            }
+          ]
+        }
+      ]
+    },
+    "drop_group:exposure": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_narrow",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.023543106392025948
+            }
+          ]
+        },
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.18000589311122894
+            },
+            {
+              "feature": "noise_sigma",
+              "op": "<=",
+              "threshold": 0.0033913529478013515
+            }
+          ]
+        }
+      ]
+    },
+    "drop_group:contrast": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_wide",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.010618187487125397
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        },
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.18000589311122894
+            },
+            {
+              "feature": "noise_sigma",
+              "op": "<=",
+              "threshold": 0.0033913529478013515
+            }
+          ]
+        }
+      ]
+    },
+    "drop_group:sharpness": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_wide",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.010618187487125397
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        },
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.18000589311122894
+            },
+            {
+              "feature": "noise_sigma",
+              "op": "<=",
+              "threshold": 0.0033913529478013515
+            }
+          ]
+        }
+      ]
+    },
+    "drop_group:noise": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_narrow",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": ">=",
+              "threshold": 0.3161347508430481
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        },
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.18000589311122894
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        }
+      ]
+    },
+    "drop_group:color": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_wide",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.010618187487125397
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        },
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.18000589311122894
+            },
+            {
+              "feature": "noise_sigma",
+              "op": "<=",
+              "threshold": 0.0033913529478013515
+            }
+          ]
+        }
+      ]
+    },
+    "drop_group:naturalness": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_wide",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.010618187487125397
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        },
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "sharpness",
+              "op": "<=",
+              "threshold": 0.49038949608802795
+            },
+            {
+              "feature": "noise_sigma",
+              "op": "<=",
+              "threshold": 0.002206547884270549
+            }
+          ]
+        }
+      ]
+    },
+    "drop_action:unsharp_strong": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_wide",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.010618187487125397
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        },
+        {
+          "name": "blur",
+          "action": "unsharp_mild",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.19743916392326355
+            },
+            {
+              "feature": "noise_sigma",
+              "op": "<=",
+              "threshold": 0.0033913529478013515
+            }
+          ]
+        }
+      ]
+    },
+    "drop_action:unsharp_mild": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_wide",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.010618187487125397
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        },
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.18000589311122894
+            },
+            {
+              "feature": "noise_sigma",
+              "op": "<=",
+              "threshold": 0.0033913529478013515
+            }
+          ]
+        }
+      ]
+    },
+    "drop_action:bilateral_wide": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_narrow",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.010618187487125397
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        },
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.18000589311122894
+            },
+            {
+              "feature": "noise_sigma",
+              "op": "<=",
+              "threshold": 0.0033913529478013515
+            }
+          ]
+        }
+      ]
+    },
+    "drop_action:bilateral_narrow": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_wide",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.010618187487125397
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        },
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.18000589311122894
+            },
+            {
+              "feature": "noise_sigma",
+              "op": "<=",
+              "threshold": 0.0033913529478013515
+            }
+          ]
+        }
+      ]
+    },
+    "drop_technique:bilateral": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.18000589311122894
+            },
+            {
+              "feature": "noise_sigma",
+              "op": "<=",
+              "threshold": 0.0033913529478013515
+            }
+          ]
+        }
+      ]
+    },
+    "drop_technique:unsharp": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_wide",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.010618187487125397
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        }
+      ]
+    },
+    "only_rule:noise": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_wide",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.010618187487125397
+            },
+            {
+              "feature": "luma_mean",
+              "op": ">=",
+              "threshold": 0.3077601194381714
+            }
+          ]
+        }
+      ]
+    },
+    "only_rule:blur": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.18000589311122894
+            },
+            {
+              "feature": "noise_sigma",
+              "op": "<=",
+              "threshold": 0.0033913529478013515
+            }
+          ]
+        }
+      ]
+    },
+    "no_guards": {
+      "default": "keep",
+      "rules": [
+        {
+          "name": "noise",
+          "action": "bilateral_wide",
+          "clauses": [
+            {
+              "feature": "noise_sigma",
+              "op": ">=",
+              "threshold": 0.010618187487125397
+            }
+          ]
+        },
+        {
+          "name": "blur",
+          "action": "unsharp_strong",
+          "clauses": [
+            {
+              "feature": "mscn_var",
+              "op": "<=",
+              "threshold": 0.18000589311122894
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

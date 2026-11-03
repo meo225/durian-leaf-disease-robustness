@@ -135,8 +135,9 @@ def build_variants(
         variants.append(_selector_variant(table, f"drop_technique:{technique}", "technique", f"Bỏ kỹ thuật {technique}", selector, log))
 
     for rule in full.rules:
-        selector = RuleSelector([rule], full.default)
-        variants.append(_selector_variant(table, f"only_rule:{rule.name}", "rule", f"Chỉ luật {rule.name}", selector))
+        others = [other.name for other in full.rules if other.name != rule.name]
+        label = f"Bỏ luật {', '.join(others)}" if others else f"Chỉ luật {rule.name}"
+        variants.append(_selector_variant(table, f"only_rule:{rule.name}", "rule", label, RuleSelector([rule], full.default)))
     if any(len(rule.clauses) > 1 for rule in full.rules):
         variants.append(_selector_variant(table, "no_guards", "guard", "Bỏ mệnh đề chặn", strip_guards(full)))
 
