@@ -21,6 +21,8 @@ Không có một bài báo nào trùng câu hỏi nghiên cứu của đồ án.
 - [Task 5.1. Thiết kế bộ chọn xử lý ảnh thích ứng](task-5.1-selector-design.md)
 - [Task 5.4. Ablation của bộ chọn](task-5.4-selector-ablation.md)
 
+- [Task 5.5. Bộ họ suy giảm chưa thấy](task-5.5-unseen-families.md)
+
 ## Từng nguồn đã đọc
 
 - [DG-PLDR 2025](sources/dg-pldr-2025.md)

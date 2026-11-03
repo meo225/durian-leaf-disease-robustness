@@ -12,6 +12,7 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 
 from src.corruption.basic import RANDOM_TYPES, apply_corruption
+from src.corruption.unseen import UNSEEN_CORRUPTIONS, UNSEEN_RANDOM_TYPES, apply_unseen
 from src.data.dataset import DurianDataset
 from src.data.splits import get_split
 from src.data.transforms import ConditionalResize
@@ -41,16 +42,18 @@ def load_seed(config_path: str | Path) -> int:
 
 
 def corrupt_tensor(image: torch.Tensor, name: str, spec: Mapping[str, Any], seed: int) -> torch.Tensor:
-    """Áp một điều kiện lên ảnh 0 đến 1 rồi làm tròn về 8 bit, như khi lưu ảnh.
+    """Áp một điều kiện lên ảnh 0 đến 1 rồi làm tròn về 8 bit, như khi lưu ảnh. Nhận cả họ của benchmark 4.1 lẫn họ chưa thấy của 5.5.
 
     Yếu tố ngẫu nhiên (nhiễu, hướng mờ, vị trí chói, hình bóng) lấy seed từ nội dung ảnh, tên điều kiện và seed chung. Một ảnh luôn nhận cùng một suy giảm,
     không phụ thuộc thứ tự batch hay số worker.
     """
+    unseen = spec["type"] in UNSEEN_CORRUPTIONS
     generator = None
-    if spec["type"] in RANDOM_TYPES:
+    if spec["type"] in RANDOM_TYPES | UNSEEN_RANDOM_TYPES:
         digest = hashlib.sha256(image.numpy().tobytes() + f"{seed}:{name}".encode()).digest()
         generator = torch.Generator().manual_seed(int.from_bytes(digest[:8], "big") & 0x7FFFFFFFFFFFFFFF)
-    return torch.round(apply_corruption(image, spec, generator) * 255) / 255
+    apply = apply_unseen if unseen else apply_corruption
+    return torch.round(apply(image, spec, generator) * 255) / 255
 
 
 def build_loader(

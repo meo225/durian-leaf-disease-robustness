@@ -1,0 +1,35 @@
+# Bộ họ suy giảm chưa thấy (task 5.5). Chỉ dùng để đánh giá, không đưa vào augmentation hay hiệu chỉnh bộ chọn.
+# group near: cùng cơ chế với một họ của benchmark 4.1 nhưng khác dạng toán. group far: cơ chế mới hoàn toàn.
+# Ba mức mỗi họ, tăng dần từ nhẹ đến mạnh, đặt tên <họ>_s<mức> như configs/corruption.yaml.
+# Mức chọn theo ảnh mẫu và điểm reference model trên validation (notebooks/11_unseen_corruption_calibration.ipynb), khóa trước khi mở test ở 6.1.
+# Đã khóa sau hiệu chỉnh trên validation (reports/unseen/README.md). Code từ chối mở tập test khi chưa khóa.
+
+version: 1
+locked: true
+seed: 42
+
+families:
+  defocus_blur:
+    group: near
+    type: defocus_blur
+    levels: [1.0, 1.8, 2.5]
+  chroma_noise:
+    group: near
+    type: chroma_noise
+    levels: [0.03, 0.05, 0.07]
+  fog:
+    group: far
+    type: fog
+    levels: [0.30, 0.55, 0.85]
+  spatter:
+    group: far
+    type: spatter
+    levels: [0.10, 0.25, 0.40]
+  rain_streak:
+    group: far
+    type: rain_streak
+    levels: [0.001, 0.003, 0.005]
+  saturate:
+    group: far
+    type: saturate
+    levels: [1.4, 2.0, 3.0]
