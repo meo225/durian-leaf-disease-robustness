@@ -77,3 +77,9 @@ calibration:
   cv_folds: 5
 
 output_dir: reports/selector
+
+# Ablation (task 5.4): chạy trên bảng của task 5.3, chỉ validation.
+ablation:
+  # Số mẫu bootstrap theo ảnh cho khoảng tin cậy 95%.
+  bootstrap_resamples: 1000
+  output_dir: reports/selector_ablation
