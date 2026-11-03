@@ -109,7 +109,16 @@ def test_augmentation_cannot_use_unseen_families(image):
         augment(image)
 
 
-def test_unlocked_config_refuses_test_split():
+def test_unlocked_config_refuses_test_split(tmp_path):
+    record = yaml.safe_load(open(CONFIG, encoding="utf-8"))
+    record["locked"] = False
+    unlocked = tmp_path / "unseen_unlocked.yaml"
+    unlocked.write_text(yaml.safe_dump(record), encoding="utf-8")
     with pytest.raises(PermissionError):
-        load_conditions(CONFIG, "test")
+        load_conditions(unlocked, "test")
+    assert len(load_conditions(unlocked, "val")) == 18
+
+
+def test_committed_config_is_locked():
+    assert yaml.safe_load(open(CONFIG, encoding="utf-8"))["locked"] is True
     assert len(load_conditions(CONFIG, "val")) == 18

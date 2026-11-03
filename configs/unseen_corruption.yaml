@@ -2,10 +2,10 @@
 # group near: cùng cơ chế với một họ của benchmark 4.1 nhưng khác dạng toán. group far: cơ chế mới hoàn toàn.
 # Ba mức mỗi họ, tăng dần từ nhẹ đến mạnh, đặt tên <họ>_s<mức> như configs/corruption.yaml.
 # Mức chọn theo ảnh mẫu và điểm reference model trên validation (notebooks/11_unseen_corruption_calibration.ipynb), khóa trước khi mở test ở 6.1.
-# locked: false cho tới khi hiệu chỉnh xong. Code từ chối mở tập test khi chưa khóa.
+# Đã khóa sau hiệu chỉnh trên validation (reports/unseen/README.md). Code từ chối mở tập test khi chưa khóa.
 
 version: 1
-locked: false
+locked: true
 seed: 42
 
 families:
