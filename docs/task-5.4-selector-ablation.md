@@ -24,7 +24,8 @@ Bộ chọn đã khóa ở task 5.3 tăng mục tiêu từ 0.8607 lên 0.8802 tr
 
 | Nhóm | Biến thể | Cách dựng |
 |---|---|---|
-| Tham chiếu | Không xử lý, bốn hành động cố định, cận trên theo ảnh | Tra bảng. Cận trên dùng nhãn nên không triển khai được. |
+| Tham chiếu | Không xử lý, bốn hành động cố định | Tra bảng. |
+| Cận trên | Theo họ, theo điều kiện, theo ảnh | Dùng nhãn nên không triển khai được. Hai cận đầu chọn một hành động cố định cho cả họ hoặc cả điều kiện. Cận theo ảnh chọn hành động đúng cho từng ảnh. |
 | Đầy đủ | `full`, `locked` | Hiệu chỉnh lại và bộ đã khóa. |
 | Bỏ nhóm đặc trưng | Sáu biến thể, mỗi nhóm một | Nhóm bị loại khỏi ứng viên và mệnh đề chặn của mọi luật, rồi hiệu chỉnh lại. |
 | Bỏ hành động | Bốn biến thể | Hành động bị loại khỏi danh sách của luật, rồi hiệu chỉnh lại. |
@@ -46,7 +47,7 @@ Các dự đoán dưới đây viết từ kết quả 5.3 và cấu hình luậ
 2. **Nhóm độ tự nhiên là nhóm có mức mất lớn nhất.** Luật mờ chọn `mscn_var`. Bỏ nhóm này thì luật mờ phải dùng `sharpness`, và dự đoán mức mất tối thiểu 0.005.
 3. **Bỏ unsharp mất nhiều hơn bỏ bilateral.** Ở 5.3 luật mờ đóng góp 0.0143 và luật nhiễu 0.0052. Mức mất khi bỏ unsharp dự đoán gần 0.014.
 4. **Bỏ mệnh đề chặn làm giảm mục tiêu hoặc tăng rủi ro trên ảnh sạch.** Mệnh đề `luma_mean` được chọn vì nó chặn bớt ảnh tối bị bắt nhầm.
-5. **Khoảng cách tới cận trên vẫn lớn.** Ở 5.3 bộ chọn lấy được khoảng 32 phần trăm khoảng cách. Ablation không làm con số này tốt hơn, chỉ cho biết thành phần nào đáng cải thiện.
+5. **Cận theo ảnh thổi phồng khoảng cách.** Ở 5.3 bộ chọn lấy được khoảng 32 phần trăm khoảng cách tới cận theo ảnh. Cận đó chọn hành động đúng cho từng ảnh trong 5 lựa chọn nên được nâng lên bởi may rủi của dự đoán. Dự đoán là phần bộ chọn lấy được sẽ cao hơn rõ rệt khi so với cận theo họ hoặc theo điều kiện. Ablation không làm con số tuyệt đối tốt hơn, chỉ cho biết thành phần nào đáng cải thiện.
 
 Dự đoán nào sai cũng được ghi lại như kết quả, không sửa dự đoán sau khi xem.
 

@@ -4,7 +4,8 @@ Câu hỏi: mức tăng của bộ chọn (task 5.3) đến từ đâu? Mỗi bi
 hiệu chỉnh lại trên cùng bảng đặc trưng và dự đoán (`CalibrationTable`), nên không chạy lại model.
 
 Các nhóm biến thể (cột `kind`):
-- reference: không xử lý, từng hành động cố định, cận trên theo ảnh (oracle, dùng nhãn nên không triển khai được).
+- reference: không xử lý, từng hành động cố định.
+- oracle: ba cận trên dùng nhãn nên không triển khai được: theo họ, theo điều kiện (mỗi cái một hành động cố định tốt nhất) và theo ảnh (lỏng nhất).
 - full: bộ chọn đầy đủ hiệu chỉnh lại, và bộ chọn đã khóa ở 5.3 để đối chiếu.
 - feature_group: bỏ một nhóm đặc trưng khỏi mọi luật (ứng viên và mệnh đề chặn), rồi hiệu chỉnh lại.
 - action: bỏ một hành động xử lý, rồi hiệu chỉnh lại.
@@ -87,6 +88,22 @@ def oracle_predictions(table: CalibrationTable) -> np.ndarray:
     return np.where(correct.any(axis=0), table.labels[None, :], table.predictions[0])
 
 
+def condition_oracle_predictions(table: CalibrationTable, by_family: bool = False) -> np.ndarray:
+    """Cận trên không theo ảnh: mỗi điều kiện (hoặc mỗi họ) dùng một hành động cố định tốt nhất, chọn bằng nhãn.
+
+    Không bị thổi phồng bởi may rủi của dự đoán từng ảnh như `oracle_predictions`, nên là cận trên thực tế hơn cho bộ chọn dựa trên chất lượng ảnh.
+    """
+    count = len(table.conditions)
+    scores = np.stack([macro_f1_rows(table.labels, table.predictions[a], table.num_classes) for a in range(len(table.actions))])  # A × C
+    best = scores.argmax(axis=0)
+    if by_family:
+        families = np.array(table.families)
+        for family in dict.fromkeys(table.families):
+            members = np.flatnonzero(families == family)
+            best[members] = scores[:, members].mean(axis=1).argmax()
+    return table.predictions[best, np.arange(count), :]
+
+
 def build_variants(
     table: CalibrationTable,
     rules: Sequence[Mapping[str, Any]],
@@ -123,6 +140,8 @@ def build_variants(
     if any(len(rule.clauses) > 1 for rule in full.rules):
         variants.append(_selector_variant(table, "no_guards", "guard", "Bỏ mệnh đề chặn", strip_guards(full)))
 
+    variants.append(Variant("oracle_family", "oracle", "Cận trên theo họ", condition_oracle_predictions(table, by_family=True)))
+    variants.append(Variant("oracle_condition", "oracle", "Cận trên theo điều kiện", condition_oracle_predictions(table)))
     variants.append(Variant("oracle", "oracle", "Cận trên theo ảnh", oracle_predictions(table)))
     return variants
 

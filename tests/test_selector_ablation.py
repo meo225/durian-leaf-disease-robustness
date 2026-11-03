@@ -9,6 +9,7 @@ from src.selector.ablation import (
     add_cross_validation,
     bootstrap_indices,
     build_variants,
+    condition_oracle_predictions,
     condition_table,
     family_gain,
     objective_of,
@@ -84,6 +85,16 @@ def test_oracle_is_an_upper_bound_of_every_variant(built):
     any_correct = (table.predictions == table.labels[None, None, :]).any(axis=0)
     assert (oracle[any_correct] == labels[any_correct]).all()
     np.testing.assert_array_equal(oracle[~any_correct], table.predictions[0][~any_correct])
+
+
+def test_oracle_bounds_are_ordered_from_family_to_image(built):
+    table, variants = built
+    summary = summarize(table, variants, resamples=10).set_index("variant")
+    family, condition, image = (summary.loc[n, "objective"] for n in ("oracle_family", "oracle_condition", "oracle"))
+    assert family <= condition + 1e-9 <= image + 2e-9
+    assert condition >= summary.loc[[v for v in summary.index if v.startswith("fixed:")], "objective"].max() - 1e-9
+    chosen = condition_oracle_predictions(table)
+    assert any(np.array_equal(chosen[c], table.predictions[a, c]) for a in range(len(table.actions)) for c in range(1, len(table.conditions)))
 
 
 def test_full_selector_improves_on_no_processing_when_actions_help(built):
