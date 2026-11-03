@@ -1,0 +1,4 @@
+method,clean_macro_f1,ảnh sạch đổi dự đoán so với reference,đúng→sai,sai→đúng
+reference,0.966393323649576,0,0,0
+trivialaugment,0.9787871761038067,16,4,10
+degradation_aug,0.9714815697424394,15,5,8
