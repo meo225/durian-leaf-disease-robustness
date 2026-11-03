@@ -61,4 +61,4 @@ Dự đoán nào sai cũng được ghi lại như kết quả, không sửa d�
 
 ## 5. Chạy
 
-Notebook `notebooks/11_selector_ablation.ipynb` trên Kaggle, GPU T4, khoảng 15 đến 25 phút gồm thu lại bảng. Code ở `src/selector/ablation.py` và `src/selector/ablation_plots.py`, test ở `tests/test_selector_ablation.py`.
+Notebook `notebooks/10_selector_ablation.ipynb` trên Kaggle, GPU T4, khoảng 15 đến 25 phút gồm thu lại bảng. Code ở `src/selector/ablation.py` và `src/selector/ablation_plots.py`, test ở `tests/test_selector_ablation.py`.
