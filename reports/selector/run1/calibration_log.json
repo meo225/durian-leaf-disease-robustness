@@ -1,0 +1,293 @@
+{
+  "settings": {
+    "threshold_points": 41,
+    "guard_points": 9,
+    "min_gain": 0.002,
+    "max_clean_f1_drop": 0.005,
+    "max_clean_trigger_rate": 0.02,
+    "cv_folds": 5
+  },
+  "search": {
+    "none_objective": 0.8606580306315934,
+    "none_clean_f1": 0.966393323649576,
+    "clean_f1_floor": 0.961393323649576,
+    "rules": [
+      {
+        "name": "noise",
+        "evaluated": 1020,
+        "accepted": true,
+        "best_objective": 0.8658277298866298,
+        "gain": 0.0051696992550364085,
+        "action": "bilateral_wide",
+        "feature": "noise_sigma",
+        "op": ">=",
+        "threshold": 0.010618187487125397,
+        "guard": {
+          "feature": "luma_mean",
+          "op": ">=",
+          "threshold": 0.3077601194381714
+        },
+        "clean_f1": 0.966393323649576,
+        "clean_trigger_rate": 0.01126126126126126,
+        "triggered_images": 4342
+      },
+      {
+        "name": "blur",
+        "evaluated": 1430,
+        "accepted": true,
+        "best_objective": 0.8801720557639544,
+        "gain": 0.014344325877324593,
+        "action": "unsharp_strong",
+        "feature": "mscn_var",
+        "op": "<=",
+        "threshold": 0.18000589311122894,
+        "guard": {
+          "feature": "noise_sigma",
+          "op": "<=",
+          "threshold": 0.0033913529478013515
+        },
+        "clean_f1": 0.966393323649576,
+        "clean_trigger_rate": 0.0,
+        "triggered_images": 4026
+      }
+    ],
+    "objective": 0.8801720557639544
+  },
+  "summary": {
+    "objective_none": 0.8606580306315934,
+    "objective_selector": 0.8801720557639544,
+    "gain": 0.019514025132360998,
+    "clean_f1_none": 0.966393323649576,
+    "clean_f1_selector": 0.966393323649576,
+    "clean_trigger_rate": 0.01126126126126126,
+    "conditions_better": 25,
+    "conditions_worse": 7,
+    "fixed_action_objective": {
+      "keep": 0.8606580306315934,
+      "unsharp_strong": 0.747060584216696,
+      "unsharp_mild": 0.839253830753231,
+      "bilateral_wide": 0.8284687939201926,
+      "bilateral_narrow": 0.8402287559273832
+    },
+    "fixed_action_clean_f1": {
+      "keep": 0.966393323649576,
+      "unsharp_strong": 0.9119927111805284,
+      "unsharp_mild": 0.943250180996135,
+      "bilateral_wide": 0.9429366884059862,
+      "bilateral_narrow": 0.947415169291628
+    },
+    "image_level_upper_bound": 0.9209040412688048
+  },
+  "stability": {
+    "folds": [
+      {
+        "fold": 0,
+        "rules": [
+          {
+            "name": "noise",
+            "action": "bilateral_wide",
+            "clauses": [
+              {
+                "feature": "noise_sigma",
+                "op": ">=",
+                "threshold": 0.010430295020341873
+              },
+              {
+                "feature": "luma_mean",
+                "op": ">=",
+                "threshold": 0.3060140311717987
+              }
+            ]
+          },
+          {
+            "name": "blur",
+            "action": "unsharp_strong",
+            "clauses": [
+              {
+                "feature": "mscn_var",
+                "op": "<=",
+                "threshold": 0.18046532571315765
+              },
+              {
+                "feature": "noise_sigma",
+                "op": "<=",
+                "threshold": 0.002206208882853389
+              }
+            ]
+          }
+        ],
+        "calibration_objective": 0.8880756937506075,
+        "heldout_gain": 0.02399590572834718,
+        "heldout_clean_f1_change": 0.0,
+        "heldout_trigger_rate_clean": 0.02247191011235955
+      },
+      {
+        "fold": 1,
+        "rules": [
+          {
+            "name": "noise",
+            "action": "bilateral_wide",
+            "clauses": [
+              {
+                "feature": "noise_sigma",
+                "op": ">=",
+                "threshold": 0.010889736004173756
+              },
+              {
+                "feature": "luma_mean",
+                "op": ">=",
+                "threshold": 0.30863216519355774
+              }
+            ]
+          },
+          {
+            "name": "blur",
+            "action": "unsharp_strong",
+            "clauses": [
+              {
+                "feature": "mscn_var",
+                "op": "<=",
+                "threshold": 0.18032801151275635
+              },
+              {
+                "feature": "noise_sigma",
+                "op": "<=",
+                "threshold": 0.0034029099624603987
+              }
+            ]
+          }
+        ],
+        "calibration_objective": 0.8747098010598415,
+        "heldout_gain": 0.012372219670292537,
+        "heldout_clean_f1_change": 0.0,
+        "heldout_trigger_rate_clean": 0.0
+      },
+      {
+        "fold": 2,
+        "rules": [
+          {
+            "name": "noise",
+            "action": "bilateral_wide",
+            "clauses": [
+              {
+                "feature": "noise_sigma",
+                "op": ">=",
+                "threshold": 0.01049459632486105
+              },
+              {
+                "feature": "luma_mean",
+                "op": ">=",
+                "threshold": 0.31003689765930176
+              }
+            ]
+          },
+          {
+            "name": "blur",
+            "action": "unsharp_strong",
+            "clauses": [
+              {
+                "feature": "mscn_var",
+                "op": "<=",
+                "threshold": 0.17985674738883972
+              },
+              {
+                "feature": "luma_mean",
+                "op": ">=",
+                "threshold": 0.31003689765930176
+              }
+            ]
+          }
+        ],
+        "calibration_objective": 0.8754551394293469,
+        "heldout_gain": 0.018227528766672933,
+        "heldout_clean_f1_change": 0.0,
+        "heldout_trigger_rate_clean": 0.02247191011235955
+      },
+      {
+        "fold": 3,
+        "rules": [
+          {
+            "name": "noise",
+            "action": "bilateral_wide",
+            "clauses": [
+              {
+                "feature": "noise_sigma",
+                "op": ">=",
+                "threshold": 0.01097758486866951
+              },
+              {
+                "feature": "luma_mean",
+                "op": ">=",
+                "threshold": 0.30636993050575256
+              }
+            ]
+          },
+          {
+            "name": "blur",
+            "action": "unsharp_strong",
+            "clauses": [
+              {
+                "feature": "mscn_var",
+                "op": "<=",
+                "threshold": 0.180314838886261
+              },
+              {
+                "feature": "noise_sigma",
+                "op": "<=",
+                "threshold": 0.0034011085517704487
+              }
+            ]
+          }
+        ],
+        "calibration_objective": 0.8789360751215748,
+        "heldout_gain": 0.020250078431581362,
+        "heldout_clean_f1_change": 0.0,
+        "heldout_trigger_rate_clean": 0.0
+      },
+      {
+        "fold": 4,
+        "rules": [
+          {
+            "name": "noise",
+            "action": "bilateral_wide",
+            "clauses": [
+              {
+                "feature": "noise_sigma",
+                "op": ">=",
+                "threshold": 0.010601413436233997
+              },
+              {
+                "feature": "luma_mean",
+                "op": ">=",
+                "threshold": 0.3081209063529968
+              }
+            ]
+          },
+          {
+            "name": "blur",
+            "action": "unsharp_strong",
+            "clauses": [
+              {
+                "feature": "mscn_var",
+                "op": "<=",
+                "threshold": 0.1793856918811798
+              },
+              {
+                "feature": "noise_sigma",
+                "op": "<=",
+                "threshold": 0.0021979722660034895
+              }
+            ]
+          }
+        ],
+        "calibration_objective": 0.8836702320414941,
+        "heldout_gain": 0.0156453269603733,
+        "heldout_clean_f1_change": 0.0,
+        "heldout_trigger_rate_clean": 0.011363636363636364
+      }
+    ],
+    "heldout_gain_mean": 0.018098211911453464,
+    "heldout_gain_std": 0.004422490148558509,
+    "folds_with_positive_gain": 5
+  }
+}

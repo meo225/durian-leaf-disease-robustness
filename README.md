@@ -50,6 +50,7 @@ durian-leaf-disease-robustness/
 │   ├── training/
 │   ├── corruption/       # suy giảm ảnh có kiểm soát
 │   ├── processing/       # kỹ thuật xử lý để so sánh
+│   ├── selector/         # bộ chọn xử lý ảnh thích ứng (Phase 5)
 │   └── evaluation/
 ├── tests/
 ├── reports/              # kết quả đã chốt, commit cùng code
