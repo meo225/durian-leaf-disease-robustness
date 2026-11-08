@@ -149,10 +149,11 @@ kaggle kernels push --no-run -p <thư-mục-tạm>
 | `notebooks/03_select_reference_model.ipynb` | `03_select_reference_model` | `TEN_KAGGLE/03-select-reference-model` |
 | `notebooks/04_corruption_benchmark.ipynb` | `04_corruption_benchmark` | `TEN_KAGGLE/04-corruption-benchmark` |
 | `notebooks/11_unseen_corruption_calibration.ipynb` | `11_unseen_corruption_calibration` | `TEN_KAGGLE/11-unseen-corruption-calibration` |
+| `notebooks/12_generic_augmentation_control.ipynb` | `12_generic_augmentation_control` | `TEN_KAGGLE/12-generic-augmentation-control` |
 | `notebooks/06_restoration_benchmark.ipynb` | `06_restoration_benchmark` | `TEN_KAGGLE/06-restoration-benchmark` |
 | `notebooks/07_augmentation_control.ipynb` | `07_augmentation_control` | `TEN_KAGGLE/07-augmentation-control` |
 
-Ba notebook kiểm tra dữ liệu và `03_train_hog_svm` dùng Accelerator None. `03_train_resnet50`, `03_train_mobilenetv3_small`, `03_train_convnext_tiny`, `03_select_reference_model`, `04_corruption_benchmark`, `06_restoration_benchmark`, `07_augmentation_control` và `11_unseen_corruption_calibration` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
+Ba notebook kiểm tra dữ liệu và `03_train_hog_svm` dùng Accelerator None. `03_train_resnet50`, `03_train_mobilenetv3_small`, `03_train_convnext_tiny`, `03_select_reference_model`, `04_corruption_benchmark`, `06_restoration_benchmark`, `07_augmentation_control`, `11_unseen_corruption_calibration` và `12_generic_augmentation_control` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
 
 ### Phiên chạy
 
