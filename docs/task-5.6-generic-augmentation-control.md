@@ -57,3 +57,18 @@ Biến thể áp cùng kỹ thuật xử lý cho cả ảnh train và ảnh test
 - Một seed cho cả ba cách. Chênh lệch nhỏ giữa các cách có thể nằm trong dao động giữa các lần train, mà khoảng tin cậy bootstrap không phản ánh được (bootstrap chỉ đo dao động do chọn ảnh, không do seed).
 - TrivialAugment là một đại diện của augmentation tổng quát. RandAugment, AugMix hay cutout có thể cho kết quả khác.
 - Validation 444 ảnh, khoảng tin cậy rộng hơn ở từng điều kiện riêng lẻ.
+
+## Cập nhật sau rà soát độ chặt (task 5.6 sửa)
+
+Kết quả một seed ở trên giữ làm tham khảo (v1), không dùng làm kết luận. Rà soát tìm ra các chỗ làm so sánh chưa khách quan, nên phần so sánh chính chuyển sang tasks 5.9 và 5.10:
+
+- **Một seed mỗi nhánh.** Chênh 0,011 (họ chưa thấy) và 0,026 (suy giảm so với TrivialAugment) nằm sát mức dao động giữa các lần train. Sửa ở 5.9: ba seed, kết luận theo 2,5 lần SD seed.
+- **Ngân sách epoch lệch.** Baseline dừng ở epoch 12 (tốt nhất epoch 5), hai nhánh augmentation chạy 30 epoch. Sửa ở 5.9: cả ba chạy đủ 30 epoch, không dừng sớm.
+- **Quy tắc chọn checkpoint lệch.** Reference chọn trên validation sạch, hai nhánh augmentation chọn trên validation hỗn hợp chứa chính các họ đang đo. Sửa ở 5.9: cả ba chọn trên cùng validation hỗn hợp.
+- **TrivialAugment không phải đối chứng "tổng quát" sạch.** Brightness, Color, Contrast, Sharpness trùng họ brightness, contrast, color_cast. Kiểm ở 5.10 bằng nhánh TrivialAugment chỉ phép hình học.
+- **Tỉ lệ tách 73/27 phụ thuộc thứ tự tách.** Không còn báo tỉ lệ này làm kết luận.
+- **Câu kết "không nhờ học trước đúng loại hỏng" mâu thuẫn với khoảng tin cậy của phần 27%** (0,017 đến 0,036, loại trừ 0). Không dùng câu đó. Xem lại sau 5.9 và 5.10.
+
+Phần họ chưa thấy ở v1 (6 họ do nhóm cài, mức chọn tay) được thay bằng bộ họ mới của task 5.8. Đo lại ở 5.11.
+
+Thiết kế mới: `docs/task-5.9-retrain-controls.md`, `docs/task-5.10-ta-geometric-and-leave-group.md`.
