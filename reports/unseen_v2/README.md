@@ -1,6 +1,6 @@
 # Kết quả bộ họ chưa thấy v2, task 5.7 và 5.8
 
-**Chưa có số liệu.** Nhánh `unseen-families-v2-5.5-5.7-5.8` chứa mã, test và quy tắc đăng ký trước. Số liệu thật cần chạy hai notebook trên Kaggle.
+**Chưa có số liệu cuối.** Lượt hiệu chỉnh đầu theo quy tắc v2.0 giữ 2 trên 20 họ nên quy tắc được sửa thành v2.1 (thêm mức nhẹ cho ImageNet-C, seed theo họ và giá trị). Xem `docs/task-5.8-unseen-families-v2.md`, mục "Bản sửa v2.1". File lượt đầu để ở `pass1_v2.0/` để truy vết. Lượt v2.1 và notebook 14 cần chạy trên Kaggle.
 
 | Bước | Notebook | File ghi vào thư mục này |
 |---|---|---|

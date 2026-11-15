@@ -4,7 +4,7 @@ import pytest
 import yaml
 
 from src.corruption import load_conditions
-from src.corruption.external import IMAGENET_C_BAR_GRID, IMAGENET_C_SEVERITIES, SOURCE_IMAGENET_C, SOURCE_IMAGENET_C_BAR, candidate_values
+from src.corruption.external import IMAGENET_C_BAR_GRID, IMAGENET_C_GRID, SOURCE_IMAGENET_C, SOURCE_IMAGENET_C_BAR, candidate_values
 from src.corruption.family_lock import FINAL_EVAL_ENV, PROTOCOL, compute_lock, guard_split, is_v2, verify_lock
 from src.evaluation import unseen_families_v2 as U
 
@@ -31,7 +31,7 @@ def locked_path(tmp_path, locked_cfg):
 
 
 def test_registration_is_consistent_with_code_constants():
-    assert tuple(float(v) for v in REGISTRATION["candidates"]["imagenet_c_severities"]) == tuple(float(v) for v in IMAGENET_C_SEVERITIES)
+    assert tuple(float(v) for v in REGISTRATION["candidates"]["imagenet_c_severities"]) == IMAGENET_C_GRID
     assert U.candidate_grid(REGISTRATION, SOURCE_IMAGENET_C_BAR) == IMAGENET_C_BAR_GRID
     assert U.candidate_grid(REGISTRATION, SOURCE_IMAGENET_C) == candidate_values(SOURCE_IMAGENET_C)
     assert REGISTRATION["difficulty"]["quantiles"] == sorted(REGISTRATION["difficulty"]["quantiles"])
@@ -77,10 +77,10 @@ def test_eligible_candidates_apply_cost_rule_and_report_reasons():
 
 def test_candidate_conditions_cover_the_registered_grid():
     conditions = U.candidate_conditions(["cbar_sparkles", "inc_gaussian_noise"], REGISTRATION)
-    assert len(conditions) == len(IMAGENET_C_BAR_GRID) + len(IMAGENET_C_SEVERITIES)
+    assert len(conditions) == len(IMAGENET_C_BAR_GRID) + len(IMAGENET_C_GRID)
     spec = conditions["cbar_sparkles_c7"]
     assert (spec["type"], spec["source"], spec["corruption"], spec["value"], spec["family"]) == ("external", SOURCE_IMAGENET_C_BAR, "sparkles", 7.0, "cbar_sparkles")
-    assert "inc_gaussian_noise_c5" in conditions
+    assert "inc_gaussian_noise_c5" in conditions and "inc_gaussian_noise_c0.1" in conditions
 
 
 def test_matched_conditions_use_locked_names_and_values():
@@ -96,7 +96,9 @@ def test_delta_f1_table_groups_by_family_and_value():
     conditions = U.candidate_conditions(["inc_gaussian_noise"], REGISTRATION)
     results = {name: {"degradation": 0.05 * i} for i, name in enumerate(conditions)}
     table = U.delta_f1_table(results, conditions)
-    assert list(table) == ["inc_gaussian_noise"] and table["inc_gaussian_noise"][3.0] == pytest.approx(0.10)
+    position = IMAGENET_C_GRID.index(3.0)
+    assert list(table) == ["inc_gaussian_noise"] and table["inc_gaussian_noise"][3.0] == pytest.approx(0.05 * position)
+    assert set(table["inc_gaussian_noise"]) == set(IMAGENET_C_GRID)
 
 
 def test_assembled_config_has_levels_roles_and_valid_lock(locked_cfg, locked_path):
@@ -173,3 +175,12 @@ def test_other_protocols_are_not_affected_by_the_v2_guard(monkeypatch):
     monkeypatch.delenv(FINAL_EVAL_ENV, raising=False)
     assert len(load_conditions("configs/unseen_corruption.yaml", "test")) == 18
     assert len(load_conditions("configs/corruption.yaml", "test")) == 42
+
+
+def test_registration_records_the_v2_1_amendment_and_keeps_the_matching_rule():
+    amendment, = REGISTRATION["amendments"]
+    assert amendment["id"] == "v2.1" and "reports/unseen_v2/pass1_v2.0" in amendment["disclosure"]
+    # Quy tắc khớp độ khó giữ nguyên như bản đăng ký đầu: phân vị, dung sai, lưới ImageNet-C-bar.
+    assert REGISTRATION["difficulty"]["quantiles"] == [0.2, 0.5, 0.8] and REGISTRATION["difficulty"]["tolerance"] == 0.05
+    assert REGISTRATION["candidates"]["max_seconds_per_image"] == 0.5
+    assert REGISTRATION["candidates"]["imagenet_c_bar_severities"] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]

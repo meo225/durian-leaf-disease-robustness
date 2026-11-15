@@ -3,7 +3,8 @@
 Mục đích: bộ họ chưa thấy v1 (`unseen.py`) do chính nhóm cài, cùng codebase với augmentation. Để họ dùng làm tập test không phụ thuộc vào cách nhóm hiểu
 một phép suy giảm, các họ vai trò test chỉ lấy từ hai nguồn này (xem `src.corruption.family_roles`).
 
-- `imagenet_c`: gói `imagecorruptions` 1.1.2 (Apache 2.0), mức nghiêm trọng là số nguyên 1 đến 5.
+- `imagenet_c`: gói `imagecorruptions` 1.1.2 (Apache 2.0), mức nghiêm trọng là số nguyên 1 đến 5. Mức nhẹ hơn mức 1 (giá trị trong khoảng 0 đến 1) là phần mở rộng
+  của task 5.8 bản v2.1: trộn alpha ảnh gốc với kết quả của mức 1, xem `IMAGENET_C_MILD_WEIGHTS`.
 - `imagenet_c_bar`: mã vendored trong `third_party/imagenet_c_bar` (MIT), mức nghiêm trọng liên tục trên thang 0 đến 10.
 
 Mọi hàm nhận ảnh uint8 H×W×3 và dùng bộ sinh số toàn cục của numpy. Ở đây seed được đặt tạm quanh mỗi lời gọi rồi khôi phục trạng thái cũ, nên cùng ảnh
@@ -38,6 +39,13 @@ IMAGENET_C_CORRUPTIONS = (
     "brightness", "contrast", "elastic_transform", "pixelate", "jpeg_compression", "speckle_noise", "gaussian_blur", "spatter", "saturate",
 )
 IMAGENET_C_SEVERITIES = (1, 2, 3, 4, 5)
+# Mức nhẹ hơn mức 1 của ImageNet-C: giá trị a trong (0, 1) nghĩa là (1 - a) · ảnh gốc + a · (ImageNet-C mức 1), làm tròn về 8 bit. Mức 1 của ImageNet-C đã quá mạnh với nhiều họ
+# (ΔF1 từ 0.09 đến 0.44 ở ConvNeXt-Tiny), nên lưới gốc không với tới mục tiêu ΔF1 nhẹ. Trộn alpha là thang cường độ một chiều áp cho mọi họ cùng một cách. Với nhiễu, độ tương phản,
+# độ sáng, độ bão hòa và lớp phủ (tuyết, sương giá, vết bắn) nó tương đương giảm cường độ, với mờ nó là nhân mờ pha loãng.
+IMAGENET_C_MILD_WEIGHTS = (0.1, 0.2, 0.35, 0.5, 0.7)
+IMAGENET_C_GRID = (*(float(v) for v in IMAGENET_C_MILD_WEIGHTS), *(float(v) for v in IMAGENET_C_SEVERITIES))
+# Seed của họ ngoài lấy từ (họ, giá trị), không từ tên điều kiện, để ảnh suy giảm lúc hiệu chỉnh (`_c`) và lúc đánh giá (`_s`) giống hệt nhau.
+SEED_RULE = "family@value"
 # Lưới mức của ImageNet-C-bar: thang 0 đến 10, bước 1. Bản gốc chọn năm mức rời rạc từ thang liên tục này (imagenet_c_bar.csv). Bước 1 thay vì 0.5 để hiệu chỉnh độ khó
 # (mỗi ứng viên là một lượt chạy suy luận trên cả validation) không vượt quá vài giờ trên Kaggle.
 IMAGENET_C_BAR_GRID = tuple(float(k) for k in range(1, 11))
@@ -53,7 +61,7 @@ def family_name(source: str, corruption: str) -> str:
 def candidate_values(source: str) -> tuple[float, ...]:
     """Các mức nghiêm trọng được xét khi hiệu chỉnh độ khó (task 5.8)."""
     if source == SOURCE_IMAGENET_C:
-        return tuple(float(v) for v in IMAGENET_C_SEVERITIES)
+        return IMAGENET_C_GRID
     if source == SOURCE_IMAGENET_C_BAR:
         return IMAGENET_C_BAR_GRID
     raise ValueError(f"Nguồn họ ngoài chưa hỗ trợ: {source}.")
@@ -104,6 +112,18 @@ def _seeded_numpy(seed: int) -> Iterator[None]:
         np.random.set_state(state)
 
 
+def _imagenet_c_at(image: np.ndarray, corruption: str, value: float) -> np.ndarray:
+    """ImageNet-C ở mức nguyên 1 đến 5, hoặc mức nhẹ a trong (0, 1) bằng trộn alpha với mức 1."""
+    module = _imagenet_c_module()
+    if 0.0 < value < 1.0:
+        full = np.asarray(module.corrupt(image, severity=1, corruption_name=corruption), dtype=np.float64)
+        return np.rint((1.0 - value) * image.astype(np.float64) + value * full)
+    severity = int(round(value))
+    if severity != value or severity not in IMAGENET_C_SEVERITIES:
+        raise ValueError(f"Mức của ImageNet-C là số nguyên từ 1 đến 5 hoặc mức nhẹ trong (0, 1), nhận {value}.")
+    return module.corrupt(image, severity=severity, corruption_name=corruption)
+
+
 def apply_external_array(image: np.ndarray, source: str, corruption: str, value: float, seed: int) -> np.ndarray:
     """Áp một họ ngoài lên ảnh uint8 H×W×3. Trả về uint8 cùng kích thước."""
     if image.dtype != np.uint8 or image.ndim != 3 or image.shape[2] != 3:
@@ -112,10 +132,7 @@ def apply_external_array(image: np.ndarray, source: str, corruption: str, value:
         raise ValueError(f"Họ {corruption} không có trong nguồn {source}.")
     with _seeded_numpy(seed):
         if source == SOURCE_IMAGENET_C:
-            severity = int(round(value))
-            if severity != value or severity not in IMAGENET_C_SEVERITIES:
-                raise ValueError(f"Mức của ImageNet-C là số nguyên từ 1 đến 5, nhận {value}.")
-            out = _imagenet_c_module().corrupt(image, severity=severity, corruption_name=corruption)
+            out = _imagenet_c_at(image, corruption, float(value))
         else:
             if image.shape[0] != image.shape[1]:
                 raise ValueError("ImageNet-C-bar cần ảnh vuông.")

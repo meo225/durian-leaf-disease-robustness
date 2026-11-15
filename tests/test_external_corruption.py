@@ -10,6 +10,8 @@ from src.corruption import corrupt_tensor, load_conditions
 from src.corruption.external import (
     EXTERNAL_TYPE,
     IMAGENET_C_BAR_GRID,
+    IMAGENET_C_GRID,
+    IMAGENET_C_MILD_WEIGHTS,
     IMAGENET_C_CORRUPTIONS,
     SOURCE_IMAGENET_C,
     SOURCE_IMAGENET_C_BAR,
@@ -80,7 +82,7 @@ def test_names_and_candidates():
     assert split_family_name("cbar_sparkles") == (SOURCE_IMAGENET_C_BAR, "sparkles")
     with pytest.raises(ValueError):
         split_family_name("fog")
-    assert candidate_values(SOURCE_IMAGENET_C) == (1.0, 2.0, 3.0, 4.0, 5.0)
+    assert candidate_values(SOURCE_IMAGENET_C) == IMAGENET_C_GRID == (0.1, 0.2, 0.35, 0.5, 0.7, 1.0, 2.0, 3.0, 4.0, 5.0)
     assert candidate_values(SOURCE_IMAGENET_C_BAR) == IMAGENET_C_BAR_GRID
     assert corruptions_of(SOURCE_IMAGENET_C) == IMAGENET_C_CORRUPTIONS
 
@@ -114,10 +116,9 @@ def test_imagenet_c_families_repeatable_and_severity_is_integer(image):
         a = apply_external_array(array, SOURCE_IMAGENET_C, corruption, 3.0, seed=3)
         b = apply_external_array(array, SOURCE_IMAGENET_C, corruption, 3.0, seed=3)
         assert np.array_equal(a, b) and a.shape == array.shape
-    with pytest.raises(ValueError):
-        apply_external_array(array, SOURCE_IMAGENET_C, "gaussian_noise", 2.5, seed=0)
-    with pytest.raises(ValueError):
-        apply_external_array(array, SOURCE_IMAGENET_C, "gaussian_noise", 6.0, seed=0)
+    for bad in (2.5, 6.0, 0.0, -0.3):
+        with pytest.raises(ValueError):
+            apply_external_array(array, SOURCE_IMAGENET_C, "gaussian_noise", bad, seed=0)
 
 
 def test_invalid_inputs_are_rejected():
@@ -132,16 +133,49 @@ def test_invalid_inputs_are_rejected():
         apply_external_array(array, SOURCE_IMAGENET_C_BAR, "single_frequency_greyscale", 11.0, 0)
 
 
-def test_corrupt_tensor_routes_external_and_depends_on_condition_name(image):
-    spec = {"type": EXTERNAL_TYPE, "source": SOURCE_IMAGENET_C_BAR, "corruption": "blue_noise_sample", "value": 5.0}
-    first = corrupt_tensor(image, "cbar_blue_noise_sample_s1", spec, 42)
-    again = corrupt_tensor(image, "cbar_blue_noise_sample_s1", spec, 42)
-    other_name = corrupt_tensor(image, "cbar_blue_noise_sample_s2", spec, 42)
+def test_corrupt_tensor_routes_external_and_seeds_from_family_and_value(image):
+    spec = {"type": EXTERNAL_TYPE, "source": SOURCE_IMAGENET_C_BAR, "corruption": "blue_noise_sample", "value": 5.0, "family": "cbar_blue_noise_sample"}
+    first = corrupt_tensor(image, "cbar_blue_noise_sample_c5", spec, 42)
     assert first.shape == image.shape and 0.0 <= first.min() and first.max() <= 1.0
-    assert torch.equal(first, again)
-    assert not torch.equal(first, other_name)
+    assert torch.equal(first, corrupt_tensor(image, "cbar_blue_noise_sample_c5", spec, 42))
     assert torch.equal(first, torch.round(first * 255) / 255)
     assert torch.equal(apply_external(image, spec, 1), apply_external(image, spec, 1))
+    # Mức đo lúc hiệu chỉnh (_c) và mức đã khóa (_s) cho cùng ảnh, vì seed lấy từ (họ, giá trị).
+    assert torch.equal(first, corrupt_tensor(image, "cbar_blue_noise_sample_s3", spec, 42))
+    assert not torch.equal(first, corrupt_tensor(image, "cbar_blue_noise_sample_c5", {**spec, "value": 6.0}, 42))
+    assert not torch.equal(first, corrupt_tensor(image, "cbar_blue_noise_sample_c5", spec, 43))
+
+
+def test_condition_without_family_still_seeds_from_the_name(image):
+    spec = {"type": EXTERNAL_TYPE, "source": SOURCE_IMAGENET_C_BAR, "corruption": "blue_noise_sample", "value": 5.0}
+    assert torch.equal(corrupt_tensor(image, "a", spec, 42), corrupt_tensor(image, "a", spec, 42))
+    assert not torch.equal(corrupt_tensor(image, "a", spec, 42), corrupt_tensor(image, "b", spec, 42))
+
+
+@needs_imagecorruptions
+def test_mild_imagenet_c_levels_blend_toward_severity_one():
+    array = (np.random.RandomState(2).rand(64, 64, 3) * 255).astype(np.uint8)
+    full = apply_external_array(array, SOURCE_IMAGENET_C, "gaussian_noise", 1.0, seed=9)
+    previous = 0.0
+    for weight in IMAGENET_C_MILD_WEIGHTS:
+        mild = apply_external_array(array, SOURCE_IMAGENET_C, "gaussian_noise", weight, seed=9)
+        assert mild.dtype == np.uint8 and mild.shape == array.shape
+        expected = np.clip(np.rint((1 - weight) * array.astype(float) + weight * full.astype(float)), 0, 255)
+        assert np.abs(mild.astype(float) - expected).max() <= 1  # dùng chung nhiễu của mức 1, chênh nhiều nhất do làm tròn
+        distance = np.abs(mild.astype(float) - array).mean()
+        assert distance > previous  # cường độ tăng theo trọng số
+        previous = distance
+    assert previous < np.abs(full.astype(float) - array).mean()
+
+
+@needs_imagecorruptions
+@pytest.mark.parametrize("corruption", ["gaussian_noise", "contrast", "brightness", "defocus_blur", "jpeg_compression", "snow"])
+def test_mild_levels_are_repeatable_and_weaker_than_severity_one(corruption):
+    array = (np.random.RandomState(3).rand(64, 64, 3) * 255).astype(np.uint8)
+    a = apply_external_array(array, SOURCE_IMAGENET_C, corruption, 0.2, seed=4)
+    assert np.array_equal(a, apply_external_array(array, SOURCE_IMAGENET_C, corruption, 0.2, seed=4))
+    full = apply_external_array(array, SOURCE_IMAGENET_C, corruption, 1.0, seed=4)
+    assert np.abs(a.astype(float) - array).mean() < np.abs(full.astype(float) - array).mean()
 
 
 def test_probe_reports_every_family_with_status_and_time():

@@ -1,6 +1,6 @@
 # Bộ họ chưa thấy v2 (task 5.7 và 5.8). Thay thế bộ v1 (configs/unseen_corruption.yaml) làm bộ đánh giá chính, v1 giữ nguyên để đối chiếu.
 # Đây là bản ĐĂNG KÝ TRƯỚC: quy tắc đã cố định, danh sách họ còn trống (locked: false). Notebook 13 và 14 sinh danh sách họ, mức, nhóm, vai trò và mã sha256 rồi ghi đè file này.
-# Không sửa `registration` sau khi đã chạy notebook 13. Mã băm khóa luôn phủ cả phần quy tắc này.
+# Không sửa `registration` sau khi đã chạy notebook 13 (trừ khi ghi thành bản sửa ở `amendments`, như v2.1). Mã băm khóa luôn phủ cả phần quy tắc này.
 
 protocol: unseen_families_v2
 version: 2
@@ -23,7 +23,8 @@ registration:
     sources: [imagenet_c, imagenet_c_bar]
     # Họ chạy lỗi trong môi trường (probe_families) hoặc chậm hơn ngưỡng này bị loại. Quyết định theo chi phí tính toán, không theo kết quả.
     max_seconds_per_image: 0.5
-    imagenet_c_severities: [1, 2, 3, 4, 5]
+    # Bản v2.1: thêm năm mức nhẹ hơn mức 1 (trộn alpha ảnh gốc với ImageNet-C mức 1, xem `amendments` và external.IMAGENET_C_MILD_WEIGHTS). Lưới v2.0 là [1, 2, 3, 4, 5].
+    imagenet_c_severities: [0.1, 0.2, 0.35, 0.5, 0.7, 1, 2, 3, 4, 5]
     imagenet_c_bar_severities: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
   difficulty:
@@ -33,6 +34,20 @@ registration:
     quantiles: [0.2, 0.5, 0.8]
     # Sai lệch tuyệt đối tối đa giữa ΔF1 của mức chọn và mục tiêu. Họ không có mức nào trong dung sai bị bỏ.
     tolerance: 0.05
+
+  # Sửa đổi quy tắc sau khi đăng ký, ghi lại nguyên văn để người đọc biết đâu là quy tắc gốc và đâu là bản sửa.
+  amendments:
+    - id: v2.1
+      date: "2026-11-15"
+      what: >-
+        Lưới mức ứng viên của ImageNet-C mở rộng xuống phía nhẹ (năm mức trộn alpha với mức 1). Seed ảnh suy giảm của họ ngoài lấy từ (họ, giá trị) thay vì tên điều kiện.
+      why: >-
+        Lượt hiệu chỉnh đầu theo quy tắc v2.0 chỉ giữ 2 trên 20 họ. Nguyên nhân là mức 1 của ImageNet-C đã có ΔF1 từ 0.09 đến 0.44 ở 13 họ, cao hơn mục tiêu nhẹ nhất 0.036,
+        nên lưới không với tới mục tiêu. Ngoài ra họ ngẫu nhiên có ΔF1 lúc chọn lệch ΔF1 lúc đo lại tới 0.026 vì seed lấy theo tên điều kiện.
+      unchanged: [quantiles, tolerance, luật ba mức tăng dần, ngưỡng thời gian, mô hình thay thế và tham chiếu, MSD, chia vai trò]
+      disclosure: >-
+        Quyết định sau khi đã thấy bảng ΔF1 ứng viên của mô hình thay thế ở lượt đầu. Chưa thấy kết quả nào của hệ thống cần so (các nhánh retrain 5.9, 5.10, bộ chọn 5.11) và chưa mở test.
+        Lượt đầu lưu ở reports/unseen_v2/pass1_v2.0/. Tiêu chí quyết định là độ phủ của lưới, không phải họ nào có lợi cho hệ thống nào.
 
   msd:
     split: val

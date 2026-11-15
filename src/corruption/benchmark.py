@@ -71,7 +71,9 @@ def corrupt_tensor(image: torch.Tensor, name: str, spec: Mapping[str, Any], seed
     không phụ thuộc thứ tự batch hay số worker.
     """
     if spec["type"] == EXTERNAL_TYPE:
-        digest = hashlib.sha256(image.numpy().tobytes() + f"{seed}:{name}".encode()).digest()
+        # Họ ngoài lấy seed từ (họ, giá trị) chứ không từ tên điều kiện: mức đo lúc hiệu chỉnh (`<họ>_c<giá trị>`) và mức đã khóa (`<họ>_s<mức>`) cho cùng ảnh suy giảm.
+        key = f"{spec['family']}@{float(spec['value']):g}" if "family" in spec else name
+        digest = hashlib.sha256(image.numpy().tobytes() + f"{seed}:{key}".encode()).digest()
         return torch.round(apply_external(image, spec, int.from_bytes(digest[:4], "big")) * 255) / 255
     unseen = spec["type"] in UNSEEN_CORRUPTIONS
     generator = None
