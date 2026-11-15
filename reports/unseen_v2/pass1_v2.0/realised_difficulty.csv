@@ -1,0 +1,7 @@
+họ,mức,giá trị,mục tiêu,ΔF1 thay thế (lúc chọn),ΔF1 thay thế (thực),ΔF1 Swin-Tiny (thực)
+cbar_checkerboard_cutout,1,1.0,0.036,0.033,0.03,0.035
+cbar_checkerboard_cutout,2,3.0,0.129,0.12,0.094,0.057
+cbar_checkerboard_cutout,3,10.0,0.33,0.355,0.331,0.359
+inc_brightness,1,2.0,0.036,0.05,0.05,0.056
+inc_brightness,2,3.0,0.129,0.149,0.149,0.135
+inc_brightness,3,4.0,0.33,0.32,0.32,0.235
