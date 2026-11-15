@@ -1,0 +1,30 @@
+# Giao thức chung của các đối chứng huấn luyện lại (task 5.9, 5.10). Khóa trước khi chạy, không chỉnh theo kết quả.
+# Mọi nhánh nạp file này rồi thêm phần riêng (model_name, augmentation) từ file nhánh. File nhánh không được đặt lại khóa nào ở đây.
+#
+# Sửa so với task 4.5 và 5.6, theo rà soát độ chặt của TN7:
+# - Mọi nhánh, kể cả baseline, chạy đủ 30 epoch, không dừng sớm (trước đây baseline dừng ở epoch 12, hai nhánh kia chạy 30).
+# - Mọi nhánh chọn checkpoint bằng cùng một quy tắc: macro F1 trên validation hỗn hợp (trước đây baseline chọn trên validation sạch).
+# - Nhiều seed cho mỗi nhánh (trước đây một seed).
+
+pipeline_config: configs/pipeline.yaml
+library: timm
+backbone: swin_tiny_patch4_window7_224
+pretrained: true
+epochs: 30
+# Tắt dừng sớm: ngân sách epoch bằng nhau giữa các nhánh. Seed 42 của nhánh suy giảm và TA đã chạy đủ 30 epoch (patience 7 không kích hoạt),
+# nên dùng lại được mà không cần train lại.
+early_stopping: false
+min_delta: 0.0
+learning_rate: 0.0002
+weight_decay: 0.01
+optimizer: adamw
+scheduler: cosine
+selection_metric: macro_f1
+# Cùng số worker với task 4.5 và 5.6, vì suy giảm tính trên CPU trong DataLoader.
+num_workers: 2
+
+validation:
+  # Validation hỗn hợp dùng chung cho mọi nhánh: ảnh sạch cộng mỗi họ của benchmark 4.1 ở mức này.
+  # Lưu ý: tập này chứa chính các họ đang đo, nên điểm trên nó là điểm chọn checkpoint, không phải điểm báo cáo.
+  corruption_config: configs/corruption.yaml
+  severity: 2

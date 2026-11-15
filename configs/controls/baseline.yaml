@@ -1,0 +1,7 @@
+# Nhánh baseline của 5.9: chỉ lật và xoay như reference, không augmentation thêm.
+# Khác configs/train_swin_tiny.yaml ở hai điểm theo giao thức chung: chạy đủ 30 epoch và chọn checkpoint trên validation hỗn hợp.
+protocol: configs/controls/protocol.yaml
+arm: baseline
+model_name: swin_tiny_ctrl_baseline
+augmentation:
+  method: none

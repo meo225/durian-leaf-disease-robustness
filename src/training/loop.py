@@ -143,6 +143,9 @@ def fit_model(
 ) -> dict[str, Any]:
     """Fine-tune và giữ trọng số có macro F1 validation cao nhất.
 
+    Mặc định dừng sớm sau `patience` epoch không tăng. Đặt `early_stopping: false` trong config để chạy đủ `epochs` epoch (giao thức 5.9 cần ngân sách epoch bằng nhau
+    giữa các nhánh), khi đó `patience` không được dùng.
+
     Tập test không được truyền vào hàm này. Kết quả gồm epoch được chọn, chỉ số validation,
     lịch sử từng epoch, trọng số tốt nhất, thời gian train và số tham số.
     """
@@ -154,7 +157,8 @@ def fit_model(
     scheduler = build_scheduler(optimizer, train_cfg)
     criterion = nn.CrossEntropyLoss()
     epochs = int(train_cfg["epochs"])
-    patience = int(train_cfg["patience"])
+    early_stopping = bool(train_cfg.get("early_stopping", True))
+    patience = int(train_cfg["patience"]) if early_stopping else epochs
     min_delta = float(train_cfg.get("min_delta", 0.0))
 
     best_score = float("-inf")
@@ -204,7 +208,7 @@ def fit_model(
             f"{marker}",
             flush=True,
         )
-        if epochs_without_improvement >= patience:
+        if early_stopping and epochs_without_improvement >= patience:
             print(
                 f"Dừng sớm sau {patience} epoch validation không tăng macro F1.",
                 flush=True,

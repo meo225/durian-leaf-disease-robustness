@@ -1,0 +1,11 @@
+# Nhánh TrivialAugment Wide của 5.9. Giống configs/train_swin_tiny_trivialaugment.yaml (task 5.6), nên seed 42 cũ dùng lại được.
+protocol: configs/controls/protocol.yaml
+arm: trivialaugment
+model_name: swin_tiny_trivialaugment
+augmentation:
+  method: trivialaugment_wide
+  num_magnitude_bins: 31
+reuse:
+  seed: 42
+  record: reports/generic_augmentation/swin_tiny_trivialaugment_seed42.json
+  conditions: reports/generic_augmentation/generic_augmentation_val_conditions.csv
