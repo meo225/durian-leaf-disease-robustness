@@ -1,0 +1,54 @@
+# Bộ họ chưa thấy v2 (task 5.7 và 5.8). Thay thế bộ v1 (configs/unseen_corruption.yaml) làm bộ đánh giá chính, v1 giữ nguyên để đối chiếu.
+# Đây là bản ĐĂNG KÝ TRƯỚC: quy tắc đã cố định, danh sách họ còn trống (locked: false). Notebook 13 và 14 sinh danh sách họ, mức, nhóm, vai trò và mã sha256 rồi ghi đè file này.
+# Không sửa `registration` sau khi đã chạy notebook 13. Mã băm khóa luôn phủ cả phần quy tắc này.
+
+protocol: unseen_families_v2
+version: 2
+locked: false
+seed: 42
+
+registration:
+  # Mô hình. Mức khớp theo ΔF1 của mô hình thay thế, MSD đo trên reference. Hai mô hình khác nhau để mức không bị chọn theo chính mô hình sẽ được đánh giá.
+  surrogate:
+    model: convnext_tiny
+    train_config: configs/train_convnext_tiny.yaml
+    checkpoint: convnext_tiny_seed42.pt
+  reference:
+    model: swin_tiny
+    train_config: configs/train_swin_tiny.yaml
+    checkpoint: swin_tiny_seed42.pt
+  seen_benchmark: configs/corruption.yaml
+
+  candidates:
+    sources: [imagenet_c, imagenet_c_bar]
+    # Họ chạy lỗi trong môi trường (probe_families) hoặc chậm hơn ngưỡng này bị loại. Quyết định theo chi phí tính toán, không theo kết quả.
+    max_seconds_per_image: 0.5
+    imagenet_c_severities: [1, 2, 3, 4, 5]
+    imagenet_c_bar_severities: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+  difficulty:
+    split: val
+    metric: macro_f1_drop
+    # Mục tiêu ΔF1 của ba mức = các phân vị này của ΔF1 mô hình thay thế trên 42 điều kiện của benchmark 4.1 (cũng trên validation).
+    quantiles: [0.2, 0.5, 0.8]
+    # Sai lệch tuyệt đối tối đa giữa ΔF1 của mức chọn và mục tiêu. Họ không có mức nào trong dung sai bị bỏ.
+    tolerance: 0.05
+
+  msd:
+    split: val
+    n_images: 100
+    n_samples: 1000
+    n_bootstrap: 200
+    jitter: 0.1
+    seed: 42
+    feature: forward_head_pre_logits
+    augmentations: [trivialaugment_wide, degradation_aug]
+    # Ngưỡng gần/xa = MSD leave-one-out lớn nhất trong 14 họ đã thấy. Họ có khoảng bootstrap chứa ngưỡng xếp là ambiguous.
+    threshold_rule: max_leave_one_out
+
+  roles:
+    stratify_by: group
+    fractions: {train: 0.4, val: 0.2, test: 0.4}
+    # Họ vai trò test chỉ từ nguồn ngoài (imagenet_c, imagenet_c_bar).
+
+families: {}
