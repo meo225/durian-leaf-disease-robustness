@@ -61,22 +61,22 @@
     "inc_gaussian_noise": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.33704813900001795
+      "seconds_per_image": 0.3112436525000106
     },
     "inc_shot_noise": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.01575872249998156
+      "seconds_per_image": 0.01565597199999047
     },
     "inc_impulse_noise": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.00390200750001668
+      "seconds_per_image": 0.0053982845000035695
     },
     "inc_defocus_blur": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.03944246349999503
+      "seconds_per_image": 0.04096873099999243
     },
     "inc_glass_blur": {
       "ok": false,
@@ -86,22 +86,22 @@
     "inc_motion_blur": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.014736404500013123
+      "seconds_per_image": 0.01558444149999616
     },
     "inc_zoom_blur": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.09364368850000915
+      "seconds_per_image": 0.0965780475000031
     },
     "inc_snow": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.01610247899998285
+      "seconds_per_image": 0.016503458000002524
     },
     "inc_frost": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.03088163000001032
+      "seconds_per_image": 0.02876459050000335
     },
     "inc_fog": {
       "ok": false,
@@ -111,32 +111,32 @@
     "inc_brightness": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.04128223500001127
+      "seconds_per_image": 0.03920902599999465
     },
     "inc_contrast": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.0029271985000036693
+      "seconds_per_image": 0.003024824999997122
     },
     "inc_elastic_transform": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.024569186999997328
+      "seconds_per_image": 0.025045797499998912
     },
     "inc_pixelate": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.0014572825000129797
+      "seconds_per_image": 0.001421498500008056
     },
     "inc_jpeg_compression": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.019643037999998114
+      "seconds_per_image": 0.020014519000000064
     },
     "inc_speckle_noise": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.005065241500005868
+      "seconds_per_image": 0.00608914750000622
     },
     "inc_gaussian_blur": {
       "ok": false,
@@ -146,62 +146,62 @@
     "inc_spatter": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.02146414899999627
+      "seconds_per_image": 0.023592673499990724
     },
     "inc_saturate": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.027711861000000226
+      "seconds_per_image": 0.02731909300000268
     },
     "cbar_single_frequency_greyscale": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.0702361199999757
+      "seconds_per_image": 0.07528268949999983
     },
     "cbar_cocentric_sine_waves": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.2349382710000043
+      "seconds_per_image": 0.2382508984999987
     },
     "cbar_plasma_noise": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 2.142182098500001
+      "seconds_per_image": 2.3452346265000017
     },
     "cbar_sparkles": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 5.857368684500017
+      "seconds_per_image": 6.1530386824999965
     },
     "cbar_inverse_sparkles": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 1.0343360500000074
+      "seconds_per_image": 1.065482159499993
     },
     "cbar_perlin_noise": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 2.0584085060000064
+      "seconds_per_image": 2.095503104500011
     },
     "cbar_brownish_noise": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.7319218975000013
+      "seconds_per_image": 0.7520037264999928
     },
     "cbar_checkerboard_cutout": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.267487489500013
+      "seconds_per_image": 0.29193693250002184
     },
     "cbar_blue_noise_sample": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 0.22086126350001223
+      "seconds_per_image": 0.23181524899999317
     },
     "cbar_caustic_refraction": {
       "ok": true,
       "error": null,
-      "seconds_per_image": 7.641395217499991
+      "seconds_per_image": 7.838162637000011
     }
   },
   "eligible": [
@@ -227,12 +227,12 @@
     "inc_zoom_blur"
   ],
   "excluded_by_probe": {
-    "cbar_brownish_noise": "chậm: 0.73 giây mỗi ảnh, quá ngưỡng 0.5",
-    "cbar_caustic_refraction": "chậm: 7.64 giây mỗi ảnh, quá ngưỡng 0.5",
-    "cbar_inverse_sparkles": "chậm: 1.03 giây mỗi ảnh, quá ngưỡng 0.5",
-    "cbar_perlin_noise": "chậm: 2.06 giây mỗi ảnh, quá ngưỡng 0.5",
-    "cbar_plasma_noise": "chậm: 2.14 giây mỗi ảnh, quá ngưỡng 0.5",
-    "cbar_sparkles": "chậm: 5.86 giây mỗi ảnh, quá ngưỡng 0.5",
+    "cbar_brownish_noise": "chậm: 0.75 giây mỗi ảnh, quá ngưỡng 0.5",
+    "cbar_caustic_refraction": "chậm: 7.84 giây mỗi ảnh, quá ngưỡng 0.5",
+    "cbar_inverse_sparkles": "chậm: 1.07 giây mỗi ảnh, quá ngưỡng 0.5",
+    "cbar_perlin_noise": "chậm: 2.10 giây mỗi ảnh, quá ngưỡng 0.5",
+    "cbar_plasma_noise": "chậm: 2.35 giây mỗi ảnh, quá ngưỡng 0.5",
+    "cbar_sparkles": "chậm: 6.15 giây mỗi ảnh, quá ngưỡng 0.5",
     "inc_fog": "lỗi khi chạy thử: AttributeError: `np.float_` was removed in the NumPy 2.0 release. Use `np.float64` instead.",
     "inc_gaussian_blur": "lỗi khi chạy thử: TypeError: gaussian() got an unexpected keyword argument 'multichannel'",
     "inc_glass_blur": "lỗi khi chạy thử: TypeError: gaussian() got an unexpected keyword argument 'multichannel'"
@@ -359,16 +359,16 @@
       "5.0": 0.8078258359882077
     },
     "inc_impulse_noise": {
-      "0.1": 0.005057955535575642,
-      "0.2": 0.01670280826828896,
-      "0.35": 0.040439860245524484,
-      "0.5": 0.15737648957077377,
-      "0.7": 0.3055715852261227,
-      "1.0": 0.4405694651382317,
-      "2.0": 0.4526142001862806,
-      "3.0": 0.5080413690705164,
-      "4.0": 0.7229682242068919,
-      "5.0": 0.7995340120570927
+      "0.1": 0.0003633303508088215,
+      "0.2": 0.008941507204851984,
+      "0.35": 0.04886748518912354,
+      "0.5": 0.16375365557183497,
+      "0.7": 0.32912615643489174,
+      "1.0": 0.4411484805908048,
+      "2.0": 0.4789931196137249,
+      "3.0": 0.5268228131043585,
+      "4.0": 0.7299509729182759,
+      "5.0": 0.7926164067151431
     },
     "inc_jpeg_compression": {
       "0.1": 0.002432291401889941,
@@ -578,14 +578,14 @@
         0.7
       ],
       "delta_f1": [
-        0.040439860245524484,
-        0.15737648957077377,
-        0.3055715852261227
+        0.04886748518912354,
+        0.16375365557183497,
+        0.32912615643489174
       ],
       "errors": [
-        0.004679043864690681,
-        0.0284642198304646,
-        -0.024040702972220773
+        0.013106668808289736,
+        0.034841385831525795,
+        -0.000486131763451747
       ]
     },
     "inc_motion_blur": {
@@ -721,16 +721,16 @@
           "delta_f1": 0.31914114170304475
         },
         "inc_impulse_noise_s1": {
-          "macro_f1": 0.9261468051181669,
-          "delta_f1": 0.051313705792641384
+          "macro_f1": 0.9285930257216848,
+          "delta_f1": 0.04886748518912354
         },
         "inc_impulse_noise_s2": {
-          "macro_f1": 0.829824286855126,
-          "delta_f1": 0.14763622405568233
+          "macro_f1": 0.8137068553389734,
+          "delta_f1": 0.16375365557183497
         },
         "inc_impulse_noise_s3": {
-          "macro_f1": 0.6719778274013216,
-          "delta_f1": 0.3054826835094867
+          "macro_f1": 0.6483343544759166,
+          "delta_f1": 0.32912615643489174
         },
         "inc_motion_blur_s1": {
           "macro_f1": 0.9365934270890588,
@@ -834,16 +834,16 @@
           "delta_f1": 0.3460046545672115
         },
         "inc_impulse_noise_s1": {
-          "macro_f1": 0.9432095106108527,
-          "delta_f1": 0.0231838130387233
+          "macro_f1": 0.9288703104887693,
+          "delta_f1": 0.03752301316080664
         },
         "inc_impulse_noise_s2": {
-          "macro_f1": 0.9124420930768963,
-          "delta_f1": 0.0539512305726797
+          "macro_f1": 0.9321706167210957,
+          "delta_f1": 0.034222706928480284
         },
         "inc_impulse_noise_s3": {
-          "macro_f1": 0.9096491624488804,
-          "delta_f1": 0.056744161200695586
+          "macro_f1": 0.8906033921021631,
+          "delta_f1": 0.07578993154741287
         },
         "inc_motion_blur_s1": {
           "macro_f1": 0.9481840910412339,
@@ -901,6 +901,12 @@
         "chia vai trò"
       ],
       "disclosure": "Quyết định sau khi đã thấy bảng ΔF1 ứng viên của mô hình thay thế ở lượt đầu. Chưa thấy kết quả nào của hệ thống cần so (các nhánh retrain 5.9, 5.10, bộ chọn 5.11) và chưa mở test. Lượt đầu lưu ở reports/unseen_v2/pass1_v2.0/. Tiêu chí quyết định là độ phủ của lưới, không phải họ nào có lợi cho hệ thống nào."
+    },
+    {
+      "id": "v2.1-fix",
+      "date": "2026-11-16",
+      "what": "Sửa lỗi tái lập của inc_impulse_noise: skimage.util.random_noise không seed nên cùng ảnh cho nhiễu khác nhau mỗi lần. Họ này được gắn seed và đo lại, không đổi quy tắc chọn.",
+      "why": "Lượt hai thấy ΔF1 lúc chọn và lúc đo lại của họ này lệch (0.040 so với 0.051, 0.157 so với 0.148), trong khi mọi họ khác khớp tuyệt đối. Điều kiện của một họ không tái lập được thì không thể khóa."
     }
   ]
 }
