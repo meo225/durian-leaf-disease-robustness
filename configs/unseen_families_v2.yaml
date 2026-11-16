@@ -48,6 +48,12 @@ registration:
       disclosure: >-
         Quyết định sau khi đã thấy bảng ΔF1 ứng viên của mô hình thay thế ở lượt đầu. Chưa thấy kết quả nào của hệ thống cần so (các nhánh retrain 5.9, 5.10, bộ chọn 5.11) và chưa mở test.
         Lượt đầu lưu ở reports/unseen_v2/pass1_v2.0/. Tiêu chí quyết định là độ phủ của lưới, không phải họ nào có lợi cho hệ thống nào.
+    - id: v2.1-fix
+      date: "2026-11-16"
+      what: >-
+        Sửa lỗi tái lập của inc_impulse_noise: skimage.util.random_noise không seed nên cùng ảnh cho nhiễu khác nhau mỗi lần. Họ này được gắn seed và đo lại, không đổi quy tắc chọn.
+      why: >-
+        Lượt hai thấy ΔF1 lúc chọn và lúc đo lại của họ này lệch (0.040 so với 0.051, 0.157 so với 0.148), trong khi mọi họ khác khớp tuyệt đối. Điều kiện của một họ không tái lập được thì không thể khóa.
 
   msd:
     split: val

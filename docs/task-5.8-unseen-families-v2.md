@@ -79,3 +79,7 @@ Kiểm tra tự động khi chạy xong: số điều kiện bằng 3 lần số
 - ImageNet-C đã gồm họ cùng cơ chế với vài họ đã thấy (nhiễu, mờ, độ sáng, tương phản, jpeg). MSD sẽ xếp chúng vào nhóm gần, và đó là mục đích: nhóm gần/xa do đo.
 - Không giải quyết được ở nhánh này: tập test đã mở 6 lần trước đây (`manifests/SPLIT_PROTOCOL.md`, mục 3 điểm 4), và họ ở vai trò test của v2 chỉ sạch từ lúc khóa.
 - Số liệu: lượt hiệu chỉnh v2.0 đã chạy (2 trên 20 họ, ở `pass1_v2.0/`). Lượt v2.1 và notebook 14 cần chạy trên Kaggle (GPU, dataset, checkpoint ConvNeXt-Tiny và Swin-Tiny seed 42).
+
+## Bản sửa v2.1-fix (tái lập của impulse noise)
+
+Lượt hai cho thấy `inc_impulse_noise` không tái lập: `imagecorruptions.impulse_noise` gọi `skimage.util.random_noise` không seed nên hai lần đo cùng điều kiện cho số khác nhau. Bản sửa seed hàm này theo (họ, giá trị) như các họ ngẫu nhiên khác (`_seeded_skimage`), thêm kiểm thử tái lập cho mọi họ ImageNet-C, và đo lại riêng họ này. Bản sửa được ghi trong `registration.amendments` (id `v2.1-fix`). Chưa xem kết quả hệ thống nào, tập test chưa mở.

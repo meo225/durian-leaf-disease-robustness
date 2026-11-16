@@ -169,7 +169,7 @@ def test_mild_imagenet_c_levels_blend_toward_severity_one():
 
 
 @needs_imagecorruptions
-@pytest.mark.parametrize("corruption", ["gaussian_noise", "contrast", "brightness", "defocus_blur", "jpeg_compression", "snow"])
+@pytest.mark.parametrize("corruption", ["gaussian_noise", "impulse_noise", "contrast", "brightness", "defocus_blur", "jpeg_compression", "snow"])
 def test_mild_levels_are_repeatable_and_weaker_than_severity_one(corruption):
     array = (np.random.RandomState(3).rand(64, 64, 3) * 255).astype(np.uint8)
     a = apply_external_array(array, SOURCE_IMAGENET_C, corruption, 0.2, seed=4)
@@ -208,3 +208,27 @@ def test_load_conditions_carries_external_fields(tmp_path):
     assert set(load_conditions(path, "val", roles=["train"])) == {f"cbar_perlin_noise_s{k}" for k in (1, 2, 3)}
     with pytest.raises(PermissionError):
         load_conditions(path, "test")
+
+
+@needs_imagecorruptions
+@pytest.mark.parametrize("corruption", IMAGENET_C_CORRUPTIONS)
+def test_every_working_imagenet_c_family_is_reproducible_for_a_seed(corruption):
+    """Một ảnh luôn nhận cùng một suy giảm. Lỗi này từng lọt ở impulse_noise (skimage không seed)."""
+    array = (np.random.RandomState(7).rand(48, 48, 3) * 255).astype(np.uint8)
+    try:
+        first = apply_external_array(array, SOURCE_IMAGENET_C, corruption, 3.0, seed=5)
+    except Exception:  # họ hỏng trên numpy 2 bị loại ở bước chạy thử, không thuộc test này
+        pytest.skip(f"{corruption} không chạy được trong môi trường này")
+    assert np.array_equal(first, apply_external_array(array, SOURCE_IMAGENET_C, corruption, 3.0, seed=5))
+
+
+@needs_imagecorruptions
+def test_impulse_noise_depends_on_the_seed_and_skimage_is_restored():
+    import skimage.util as sk_util
+
+    original = sk_util.random_noise
+    array = (np.random.RandomState(7).rand(48, 48, 3) * 255).astype(np.uint8)
+    a = apply_external_array(array, SOURCE_IMAGENET_C, "impulse_noise", 3.0, seed=5)
+    b = apply_external_array(array, SOURCE_IMAGENET_C, "impulse_noise", 3.0, seed=6)
+    assert not np.array_equal(a, b)
+    assert sk_util.random_noise is original

@@ -178,8 +178,9 @@ def test_other_protocols_are_not_affected_by_the_v2_guard(monkeypatch):
 
 
 def test_registration_records_the_v2_1_amendment_and_keeps_the_matching_rule():
-    amendment, = REGISTRATION["amendments"]
+    amendment, fix = REGISTRATION["amendments"]
     assert amendment["id"] == "v2.1" and "reports/unseen_v2/pass1_v2.0" in amendment["disclosure"]
+    assert fix["id"] == "v2.1-fix" and "impulse_noise" in fix["what"]
     # Quy tắc khớp độ khó giữ nguyên như bản đăng ký đầu: phân vị, dung sai, lưới ImageNet-C-bar.
     assert REGISTRATION["difficulty"]["quantiles"] == [0.2, 0.5, 0.8] and REGISTRATION["difficulty"]["tolerance"] == 0.05
     assert REGISTRATION["candidates"]["max_seconds_per_image"] == 0.5

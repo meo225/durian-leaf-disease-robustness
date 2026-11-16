@@ -14,6 +14,7 @@ và cùng seed luôn cho cùng kết quả, không đụng tới các nơi khác
 from __future__ import annotations
 
 import csv
+import inspect
 import time
 import warnings
 from contextlib import contextmanager
@@ -46,6 +47,8 @@ IMAGENET_C_MILD_WEIGHTS = (0.1, 0.2, 0.35, 0.5, 0.7)
 IMAGENET_C_GRID = (*(float(v) for v in IMAGENET_C_MILD_WEIGHTS), *(float(v) for v in IMAGENET_C_SEVERITIES))
 # Seed của họ ngoài lấy từ (họ, giá trị), không từ tên điều kiện, để ảnh suy giảm lúc hiệu chỉnh (`_c`) và lúc đánh giá (`_s`) giống hệt nhau.
 SEED_RULE = "family@value"
+# Họ có lỗi tái lập đã sửa sau lượt hiệu chỉnh v2.1 đầu: số ΔF1 đã cache trước bản sửa không dùng lại được, notebook 13 đo lại các họ này.
+REPRODUCIBILITY_FIXES = ("inc_impulse_noise",)
 # Lưới mức của ImageNet-C-bar: thang 0 đến 10, bước 1. Bản gốc chọn năm mức rời rạc từ thang liên tục này (imagenet_c_bar.csv). Bước 1 thay vì 0.5 để hiệu chỉnh độ khó
 # (mỗi ứng viên là một lượt chạy suy luận trên cả validation) không vượt quá vài giờ trên Kaggle.
 IMAGENET_C_BAR_GRID = tuple(float(k) for k in range(1, 11))
@@ -112,6 +115,25 @@ def _seeded_numpy(seed: int) -> Iterator[None]:
         np.random.set_state(state)
 
 
+@contextmanager
+def _seeded_skimage(seed: int) -> Iterator[None]:
+    """`impulse_noise` của imagecorruptions gọi `skimage.util.random_noise` không seed, nên cùng ảnh cho ra nhiễu khác nhau mỗi lần. Gắn seed trong lúc áp họ ImageNet-C."""
+    import skimage.util as sk_util
+
+    original = sk_util.random_noise
+    key = "rng" if "rng" in inspect.signature(original).parameters else "seed"
+
+    def seeded(image, *args, **kwargs):
+        kwargs.setdefault(key, int(seed) % (2**32))
+        return original(image, *args, **kwargs)
+
+    sk_util.random_noise = seeded
+    try:
+        yield
+    finally:
+        sk_util.random_noise = original
+
+
 def _imagenet_c_at(image: np.ndarray, corruption: str, value: float) -> np.ndarray:
     """ImageNet-C ở mức nguyên 1 đến 5, hoặc mức nhẹ a trong (0, 1) bằng trộn alpha với mức 1."""
     module = _imagenet_c_module()
@@ -132,7 +154,8 @@ def apply_external_array(image: np.ndarray, source: str, corruption: str, value:
         raise ValueError(f"Họ {corruption} không có trong nguồn {source}.")
     with _seeded_numpy(seed):
         if source == SOURCE_IMAGENET_C:
-            out = _imagenet_c_at(image, corruption, float(value))
+            with _seeded_skimage(seed):
+                out = _imagenet_c_at(image, corruption, float(value))
         else:
             if image.shape[0] != image.shape[1]:
                 raise ValueError("ImageNet-C-bar cần ảnh vuông.")
