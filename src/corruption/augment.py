@@ -22,6 +22,20 @@ VALUE_BOUNDS: dict[str, tuple[float | None, float | None]] = {
 }
 
 
+def jitter_value(spec: Mapping[str, Any], jitter: float, uniform: float) -> float:
+    """Giá trị của một điều kiện sau khi nhân hệ số 1 ± jitter (`uniform` trong [0, 1)) và cắt theo `VALUE_BOUNDS`.
+
+    Tách khỏi `RandomCorruption` để `src.evaluation.msd` lấy mẫu augmentation bằng đúng công thức đang dùng khi train.
+    """
+    value = float(spec["value"]) * (1.0 + jitter * (2.0 * uniform - 1.0))
+    low, high = VALUE_BOUNDS.get(str(spec["type"]), (None, None))
+    if low is not None:
+        value = max(value, low)
+    if high is not None:
+        value = min(value, high)
+    return value
+
+
 class RandomCorruption:
     """Với xác suất `probability` áp một điều kiện suy giảm chọn đều trong `conditions`, còn lại giữ ảnh nguyên.
 
@@ -51,13 +65,7 @@ class RandomCorruption:
         return list(dict.fromkeys(spec["family"] for spec in self.specs))
 
     def _value(self, spec: Mapping[str, Any]) -> float:
-        value = float(spec["value"]) * (1.0 + self.jitter * (2.0 * float(torch.rand(1)) - 1.0))
-        low, high = VALUE_BOUNDS.get(str(spec["type"]), (None, None))
-        if low is not None:
-            value = max(value, low)
-        if high is not None:
-            value = min(value, high)
-        return value
+        return jitter_value(spec, self.jitter, float(torch.rand(1)))
 
     def __call__(self, image: torch.Tensor) -> torch.Tensor:
         if float(torch.rand(1)) >= self.probability:

@@ -1,0 +1,10 @@
+,group,role
+inc_brightness,ambiguous,test
+inc_frost,ambiguous,train
+inc_snow,far,test
+cbar_cocentric_sine_waves,far,train
+cbar_checkerboard_cutout,far,val
+inc_motion_blur,near,test
+inc_impulse_noise,near,test
+inc_zoom_blur,near,train
+inc_defocus_blur,near,val

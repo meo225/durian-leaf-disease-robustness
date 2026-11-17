@@ -23,6 +23,8 @@ Không có một bài báo nào trùng câu hỏi nghiên cứu của đồ án.
 
 - [Task 5.5. Bộ họ suy giảm chưa thấy](task-5.5-unseen-families.md)
 - [Task 5.6. Đối chứng augmentation tổng quát](task-5.6-generic-augmentation-control.md)
+- [Task 5.7. Khoảng cách MSD giữa họ suy giảm và augmentation](task-5.7-msd-family-distance.md)
+- [Task 5.8. Bộ họ chưa thấy v2](task-5.8-unseen-families-v2.md)
 
 ## Từng nguồn đã đọc
 
