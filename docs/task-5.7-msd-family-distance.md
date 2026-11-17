@@ -44,6 +44,10 @@ Quy tắc này nhạy với họ ngoại lai trong 14 họ (một họ rất l�
 - 1000 mẫu thay vì 100 000. MSD là cực tiểu nên ít mẫu cho giá trị lớn hơn thật, thiên về "xa". Điều này làm `τ` và MSD của họ mới cùng lệch về một phía, nhưng độ lệch không bằng nhau, nên chưa thể bảo đảm nhãn gần/xa không đổi khi tăng mẫu. Nếu có thời gian, chạy lại với `n_samples` lớn hơn như phân tích thăm dò và so nhãn.
 - Bài báo báo Spearman giữa MSD và lỗi của mô hình trên ImageNet-C. Ở đây chưa kiểm chứng MSD dự đoán được lỗi trên bộ lá sầu riêng, nên nhãn gần/xa chỉ là thước đo khoảng cách đặc trưng, chưa phải bằng chứng về độ khó.
 
-## Chưa có số liệu
+## Kết quả
 
-Chưa chạy trên dữ liệu thật. Cần Kaggle (GPU, dataset, checkpoint Swin-Tiny seed 42). Thời gian ước tính vài chục phút cho hai bộ 1000 mẫu và các họ đo, phần lớn là CPU làm hỏng ảnh.
+Đã chạy trên Kaggle với Swin-Tiny seed 42, 100 ảnh validation, 1000 mẫu, bootstrap 200 lần. Hai bộ augmentation mất 903 giây và 643 giây. Ngưỡng gần xa là 3.14 do jpeg quyết định. Chín họ của bộ v2 chia thành 4 gần, 3 xa, 2 chưa rõ. Số liệu, bảng độ nhạy ngưỡng và so sánh nhãn v1 ở `reports/unseen_v2/README.md`.
+
+Bảng `msd_threshold_sensitivity.csv` do `src/evaluation/v2_summary.py` tạo từ file đã commit. Đây là phân tích thăm dò, nhãn đã khóa không đổi.
+
+Spearman giữa MSD và kết quả hệ thống chưa tính vì chưa có kết quả hệ thống, chờ task 5.11.

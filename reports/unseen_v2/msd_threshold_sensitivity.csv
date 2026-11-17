@@ -1,0 +1,10 @@
+family,msd,ci_low,ci_high,label_max,label_second_max,label_median,changed
+inc_defocus_blur,0.776,0.644,0.885,near,near,near,False
+inc_motion_blur,1.293,1.109,1.488,near,near,ambiguous,True
+inc_impulse_noise,1.398,1.239,1.51,near,near,ambiguous,True
+inc_zoom_blur,2.438,2.106,2.665,near,near,far,True
+inc_brightness,2.667,2.376,3.185,ambiguous,ambiguous,far,True
+inc_frost,3.068,2.837,3.464,ambiguous,far,far,True
+cbar_checkerboard_cutout,3.555,3.376,3.967,far,far,far,False
+inc_snow,3.774,3.587,4.146,far,far,far,False
+cbar_cocentric_sine_waves,3.817,3.551,4.205,far,far,far,False

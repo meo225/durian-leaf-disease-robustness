@@ -78,7 +78,7 @@ Kiểm tra tự động khi chạy xong: số điều kiện bằng 3 lần số
 - ImageNet-C và ImageNet-C-bar thiết kế cho ImageNet. Với ảnh lá 224×224 và 5 lớp, một số họ có thể không giống suy giảm thật ngoài vườn. Ảnh mẫu ở notebook 13 mục 9 là chỗ kiểm tra bằng mắt. Nhận xét ghi vào báo cáo, không đổi mức.
 - ImageNet-C đã gồm họ cùng cơ chế với vài họ đã thấy (nhiễu, mờ, độ sáng, tương phản, jpeg). MSD sẽ xếp chúng vào nhóm gần, và đó là mục đích: nhóm gần/xa do đo.
 - Không giải quyết được ở nhánh này: tập test đã mở 6 lần trước đây (`manifests/SPLIT_PROTOCOL.md`, mục 3 điểm 4), và họ ở vai trò test của v2 chỉ sạch từ lúc khóa.
-- Số liệu: lượt hiệu chỉnh v2.0 đã chạy (2 trên 20 họ, ở `pass1_v2.0/`). Lượt v2.1 và notebook 14 cần chạy trên Kaggle (GPU, dataset, checkpoint ConvNeXt-Tiny và Swin-Tiny seed 42).
+- Số liệu: lượt v2.0 giữ 2 trên 20 họ, ở `pass1_v2.0/`. Lượt v2.1 giữ 9 họ, đã khóa cùng nhóm và vai trò. Kết quả, danh sách họ bị loại và kế hoạch phân tích đăng ký trước ở `reports/unseen_v2/README.md`.
 
 ## Bản sửa v2.1-fix (tái lập của impulse noise)
 
