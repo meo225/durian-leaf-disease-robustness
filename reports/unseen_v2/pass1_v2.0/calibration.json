@@ -1,0 +1,520 @@
+{
+  "split": "val",
+  "config": "configs/unseen_families_v2.yaml",
+  "targets": [
+    0.0357608163808338,
+    0.12891226974030917,
+    0.3296122881983435
+  ],
+  "tolerance": 0.05,
+  "quantiles": [
+    0.2,
+    0.5,
+    0.8
+  ],
+  "seen_surrogate_delta_f1": {
+    "brightness_dark_s1": 0.02306092498948331,
+    "brightness_dark_s2": 0.08519266180085405,
+    "brightness_dark_s3": 0.37383925222914693,
+    "brightness_bright_s1": 0.027701900738959506,
+    "brightness_bright_s2": 0.17304175479897466,
+    "brightness_bright_s3": 0.40122798153542183,
+    "contrast_low_s1": 0.021916173541091544,
+    "contrast_low_s2": 0.1037633226733653,
+    "contrast_low_s3": 0.5515762603228768,
+    "blur_s1": 0.029816684967025053,
+    "blur_s2": 0.27958880638979244,
+    "blur_s3": 0.4003736586477602,
+    "noise_s1": 0.020676639939587793,
+    "noise_s2": 0.12808395600945177,
+    "noise_s3": 0.35573004892172566,
+    "contrast_high_s1": 0.04485016025911537,
+    "contrast_high_s2": 0.2649719849365594,
+    "contrast_high_s3": 0.4498383874234957,
+    "glare_s1": 0.009479485355599948,
+    "glare_s2": 0.023271422262595598,
+    "glare_s3": 0.05944395268189773,
+    "shadow_s1": 0.01899411595988132,
+    "shadow_s2": 0.06953681004765211,
+    "shadow_s3": 0.18501003581473408,
+    "lowlight_s1": 0.0735480992924209,
+    "lowlight_s2": 0.15163637089311977,
+    "lowlight_s3": 0.34064476072461036,
+    "motion_blur_s1": 0.06882707324931969,
+    "motion_blur_s2": 0.20985664280983984,
+    "motion_blur_s3": 0.34259068373983914,
+    "sensor_noise_s1": 0.051559342698691224,
+    "sensor_noise_s2": 0.12974058347116657,
+    "sensor_noise_s3": 0.2273025158579529,
+    "jpeg_s1": 0.08145206763620427,
+    "jpeg_s2": 0.09283770965127136,
+    "jpeg_s3": 0.2666079026092889,
+    "lowres_s1": 0.20951589052609854,
+    "lowres_s2": 0.2854823980932749,
+    "lowres_s3": 0.34103223193845666,
+    "color_cast_s1": 0.0334884804112634,
+    "color_cast_s2": 0.08814242220199997,
+    "color_cast_s3": 0.1578759466978341
+  },
+  "surrogate_clean_macro_f1": 0.9774605109108083,
+  "probe": {
+    "inc_gaussian_noise": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.32021167850001575
+    },
+    "inc_shot_noise": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.016361799500003826
+    },
+    "inc_impulse_noise": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.0038709054999799264
+    },
+    "inc_defocus_blur": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.03980310149998445
+    },
+    "inc_glass_blur": {
+      "ok": false,
+      "error": "TypeError: gaussian() got an unexpected keyword argument 'multichannel'",
+      "seconds_per_image": NaN
+    },
+    "inc_motion_blur": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.014524934000007761
+    },
+    "inc_zoom_blur": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.10360447200000067
+    },
+    "inc_snow": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.016985284000014644
+    },
+    "inc_frost": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.030302070499999445
+    },
+    "inc_fog": {
+      "ok": false,
+      "error": "AttributeError: `np.float_` was removed in the NumPy 2.0 release. Use `np.float64` instead.",
+      "seconds_per_image": NaN
+    },
+    "inc_brightness": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.03989206849999505
+    },
+    "inc_contrast": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.003360876000016333
+    },
+    "inc_elastic_transform": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.025651987000003373
+    },
+    "inc_pixelate": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.0015843424999957278
+    },
+    "inc_jpeg_compression": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.02064066049999269
+    },
+    "inc_speckle_noise": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.005202577999995128
+    },
+    "inc_gaussian_blur": {
+      "ok": false,
+      "error": "TypeError: gaussian() got an unexpected keyword argument 'multichannel'",
+      "seconds_per_image": NaN
+    },
+    "inc_spatter": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.0228786729999797
+    },
+    "inc_saturate": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.025701373999993393
+    },
+    "cbar_single_frequency_greyscale": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.07099421449999
+    },
+    "cbar_cocentric_sine_waves": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.24569017350000877
+    },
+    "cbar_plasma_noise": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 2.2414604589999954
+    },
+    "cbar_sparkles": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 6.307737390500023
+    },
+    "cbar_inverse_sparkles": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 1.0912535734999835
+    },
+    "cbar_perlin_noise": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 2.099879089500007
+    },
+    "cbar_brownish_noise": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.7508294939999871
+    },
+    "cbar_checkerboard_cutout": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.2701292320000164
+    },
+    "cbar_blue_noise_sample": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 0.23201356650000093
+    },
+    "cbar_caustic_refraction": {
+      "ok": true,
+      "error": null,
+      "seconds_per_image": 7.932623664999994
+    }
+  },
+  "eligible": [
+    "cbar_blue_noise_sample",
+    "cbar_checkerboard_cutout",
+    "cbar_cocentric_sine_waves",
+    "cbar_single_frequency_greyscale",
+    "inc_brightness",
+    "inc_contrast",
+    "inc_defocus_blur",
+    "inc_elastic_transform",
+    "inc_frost",
+    "inc_gaussian_noise",
+    "inc_impulse_noise",
+    "inc_jpeg_compression",
+    "inc_motion_blur",
+    "inc_pixelate",
+    "inc_saturate",
+    "inc_shot_noise",
+    "inc_snow",
+    "inc_spatter",
+    "inc_speckle_noise",
+    "inc_zoom_blur"
+  ],
+  "excluded_by_probe": {
+    "cbar_brownish_noise": "chậm: 0.75 giây mỗi ảnh, quá ngưỡng 0.5",
+    "cbar_caustic_refraction": "chậm: 7.93 giây mỗi ảnh, quá ngưỡng 0.5",
+    "cbar_inverse_sparkles": "chậm: 1.09 giây mỗi ảnh, quá ngưỡng 0.5",
+    "cbar_perlin_noise": "chậm: 2.10 giây mỗi ảnh, quá ngưỡng 0.5",
+    "cbar_plasma_noise": "chậm: 2.24 giây mỗi ảnh, quá ngưỡng 0.5",
+    "cbar_sparkles": "chậm: 6.31 giây mỗi ảnh, quá ngưỡng 0.5",
+    "inc_fog": "lỗi khi chạy thử: AttributeError: `np.float_` was removed in the NumPy 2.0 release. Use `np.float64` instead.",
+    "inc_gaussian_blur": "lỗi khi chạy thử: TypeError: gaussian() got an unexpected keyword argument 'multichannel'",
+    "inc_glass_blur": "lỗi khi chạy thử: TypeError: gaussian() got an unexpected keyword argument 'multichannel'"
+  },
+  "candidate_delta_f1": {
+    "cbar_blue_noise_sample": {
+      "1.0": 0.04099296738456282,
+      "2.0": 0.16518236699554778,
+      "3.0": 0.41457890558460286,
+      "4.0": 0.7485462900881961,
+      "5.0": 0.8760032732804276,
+      "6.0": 0.9002753257256231,
+      "7.0": 0.9057414720938027,
+      "8.0": 0.9057414720938027,
+      "9.0": 0.9057414720938027,
+      "10.0": 0.9057414720938027
+    },
+    "cbar_checkerboard_cutout": {
+      "1.0": 0.032546527759316546,
+      "2.0": 0.0670559975925138,
+      "3.0": 0.12031116554070043,
+      "4.0": 0.14255697879450668,
+      "5.0": 0.1821894460624074,
+      "6.0": 0.20254681388197182,
+      "7.0": 0.2516268640649999,
+      "8.0": 0.26101111697669077,
+      "9.0": 0.30086604203726186,
+      "10.0": 0.3553606474707617
+    },
+    "cbar_cocentric_sine_waves": {
+      "1.0": 0.009294326918996898,
+      "2.0": 0.03756509884118975,
+      "3.0": 0.07847999138676154,
+      "4.0": 0.20452114685379041,
+      "5.0": 0.19628014311151465,
+      "6.0": 0.3022246143317462,
+      "7.0": 0.3603207333905659,
+      "8.0": 0.41059803209863666,
+      "9.0": 0.4693802907473046,
+      "10.0": 0.47628553850824407
+    },
+    "cbar_single_frequency_greyscale": {
+      "1.0": 0.1650168657947494,
+      "2.0": 0.5316137644683172,
+      "3.0": 0.6712895044719329,
+      "4.0": 0.7746578110544994,
+      "5.0": 0.787202381478817,
+      "6.0": 0.8108051779396859,
+      "7.0": 0.8191256710002315,
+      "8.0": 0.8344544207934506,
+      "9.0": 0.8606380931428439,
+      "10.0": 0.8633370015044628
+    },
+    "inc_brightness": {
+      "1.0": 0.00866892421566956,
+      "2.0": 0.05020186852102826,
+      "3.0": 0.14877651369279965,
+      "4.0": 0.319955109914845,
+      "5.0": 0.5040031612843542
+    },
+    "inc_contrast": {
+      "1.0": 0.4056417667600568,
+      "2.0": 0.695688694733032,
+      "3.0": 0.859696277978036,
+      "4.0": 0.9057414720938027,
+      "5.0": 0.9057414720938027
+    },
+    "inc_defocus_blur": {
+      "1.0": 0.3781485049202933,
+      "2.0": 0.4056289393815624,
+      "3.0": 0.580706421977246,
+      "4.0": 0.7606490265004752,
+      "5.0": 0.8331361413037044
+    },
+    "inc_elastic_transform": {
+      "1.0": 0.03161077363524978,
+      "2.0": 0.0341660768829275,
+      "3.0": 0.06112667821602191,
+      "4.0": 0.08334683020681588,
+      "5.0": 0.16023135671626298
+    },
+    "inc_frost": {
+      "1.0": 0.09146512638206195,
+      "2.0": 0.20120766631501785,
+      "3.0": 0.32758543422571074,
+      "4.0": 0.3147906536865812,
+      "5.0": 0.36497632541954106
+    },
+    "inc_gaussian_noise": {
+      "1.0": 0.25628586549669585,
+      "2.0": 0.3969078066269546,
+      "3.0": 0.5747895510185034,
+      "4.0": 0.7480752760956734,
+      "5.0": 0.8080492691840475
+    },
+    "inc_impulse_noise": {
+      "1.0": 0.4350406314630406,
+      "2.0": 0.45720929963766266,
+      "3.0": 0.5253899907809678,
+      "4.0": 0.7237968897299458,
+      "5.0": 0.7914944226696776
+    },
+    "inc_jpeg_compression": {
+      "1.0": 0.09283770965127136,
+      "2.0": 0.11006826161350469,
+      "3.0": 0.16215831782029944,
+      "4.0": 0.2666079026092889,
+      "5.0": 0.45657571662305874
+    },
+    "inc_motion_blur": {
+      "1.0": 0.21376955693783506,
+      "2.0": 0.370997556767265,
+      "3.0": 0.4516196850699825,
+      "4.0": 0.6776110151678987,
+      "5.0": 0.748877653523048
+    },
+    "inc_pixelate": {
+      "1.0": 0.036727382919389595,
+      "2.0": 0.07411498223790514,
+      "3.0": 0.11791164159667078,
+      "4.0": 0.20599596032697542,
+      "5.0": 0.3901959402754511
+    },
+    "inc_saturate": {
+      "1.0": 0.22951179149623668,
+      "2.0": 0.577193786202899,
+      "3.0": 0.16577611862815667,
+      "4.0": 0.6384034930589082,
+      "5.0": 0.6777123805585783
+    },
+    "inc_shot_noise": {
+      "1.0": 0.22950672763898328,
+      "2.0": 0.4031685143904088,
+      "3.0": 0.6180267514460942,
+      "4.0": 0.7813091791152729,
+      "5.0": 0.8201275775521825
+    },
+    "inc_snow": {
+      "1.0": 0.2420970946221528,
+      "2.0": 0.4388640706762451,
+      "3.0": 0.3550820892870732,
+      "4.0": 0.42168636821495986,
+      "5.0": 0.6791793051767724
+    },
+    "inc_spatter": {
+      "1.0": 0.025389908825086405,
+      "2.0": 0.09327298080857938,
+      "3.0": 0.2369014405492219,
+      "4.0": 0.48644719390623653,
+      "5.0": 0.5613889272546907
+    },
+    "inc_speckle_noise": {
+      "1.0": 0.1580958119777779,
+      "2.0": 0.21272028694245437,
+      "3.0": 0.49443359287174854,
+      "4.0": 0.6455242152536326,
+      "5.0": 0.7709366613031434
+    },
+    "inc_zoom_blur": {
+      "1.0": 0.1790874327273202,
+      "2.0": 0.2586326592911572,
+      "3.0": 0.34902858751916943,
+      "4.0": 0.396738536135802,
+      "5.0": 0.46012339946578884
+    }
+  },
+  "kept": {
+    "cbar_checkerboard_cutout": {
+      "ok": true,
+      "values": [
+        1.0,
+        3.0,
+        10.0
+      ],
+      "delta_f1": [
+        0.032546527759316546,
+        0.12031116554070043,
+        0.3553606474707617
+      ],
+      "errors": [
+        -0.003214288621517257,
+        -0.008601104199608745,
+        0.025748359272418198
+      ]
+    },
+    "inc_brightness": {
+      "ok": true,
+      "values": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "delta_f1": [
+        0.05020186852102826,
+        0.14877651369279965,
+        0.319955109914845
+      ],
+      "errors": [
+        0.014441052140194456,
+        0.01986424395249048,
+        -0.009657178283498491
+      ]
+    }
+  },
+  "dropped_by_difficulty": {
+    "cbar_blue_noise_sample": "không mức nào trong ±0.05 của mục tiêu 0.330 (gần nhất lệch 0.085)",
+    "cbar_cocentric_sine_waves": "không mức nào trong ±0.05 của mục tiêu 0.129 (gần nhất lệch 0.050)",
+    "cbar_single_frequency_greyscale": "không mức nào trong ±0.05 của mục tiêu 0.036 (gần nhất lệch 0.129)",
+    "inc_contrast": "không mức nào trong ±0.05 của mục tiêu 0.036 (gần nhất lệch 0.370)",
+    "inc_defocus_blur": "không mức nào trong ±0.05 của mục tiêu 0.036 (gần nhất lệch 0.342)",
+    "inc_elastic_transform": "không mức nào trong ±0.05 của mục tiêu 0.330 (gần nhất lệch 0.169)",
+    "inc_frost": "không mức nào trong ±0.05 của mục tiêu 0.036 (gần nhất lệch 0.056)",
+    "inc_gaussian_noise": "không mức nào trong ±0.05 của mục tiêu 0.036 (gần nhất lệch 0.221)",
+    "inc_impulse_noise": "không mức nào trong ±0.05 của mục tiêu 0.036 (gần nhất lệch 0.399)",
+    "inc_jpeg_compression": "không mức nào trong ±0.05 của mục tiêu 0.036 (gần nhất lệch 0.057)",
+    "inc_motion_blur": "không mức nào trong ±0.05 của mục tiêu 0.036 (gần nhất lệch 0.178)",
+    "inc_pixelate": "không mức nào trong ±0.05 của mục tiêu 0.330 (gần nhất lệch 0.061)",
+    "inc_saturate": "không mức nào trong ±0.05 của mục tiêu 0.036 (gần nhất lệch 0.130)",
+    "inc_shot_noise": "không mức nào trong ±0.05 của mục tiêu 0.036 (gần nhất lệch 0.194)",
+    "inc_snow": "không mức nào trong ±0.05 của mục tiêu 0.036 (gần nhất lệch 0.206)",
+    "inc_spatter": "không mức nào trong ±0.05 của mục tiêu 0.330 (gần nhất lệch 0.093)",
+    "inc_speckle_noise": "không mức nào trong ±0.05 của mục tiêu 0.036 (gần nhất lệch 0.122)",
+    "inc_zoom_blur": "không mức nào trong ±0.05 của mục tiêu 0.036 (gần nhất lệch 0.143)"
+  },
+  "realised": {
+    "surrogate": {
+      "clean_macro_f1": 0.9774605109108083,
+      "conditions": {
+        "cbar_checkerboard_cutout_s1": {
+          "macro_f1": 0.9477508191727267,
+          "delta_f1": 0.02970969173808158
+        },
+        "cbar_checkerboard_cutout_s2": {
+          "macro_f1": 0.8837242099058583,
+          "delta_f1": 0.09373630100495
+        },
+        "cbar_checkerboard_cutout_s3": {
+          "macro_f1": 0.6463250979264965,
+          "delta_f1": 0.3311354129843118
+        },
+        "inc_brightness_s1": {
+          "macro_f1": 0.9272586423897801,
+          "delta_f1": 0.05020186852102826
+        },
+        "inc_brightness_s2": {
+          "macro_f1": 0.8286839972180087,
+          "delta_f1": 0.14877651369279965
+        },
+        "inc_brightness_s3": {
+          "macro_f1": 0.6575054009959633,
+          "delta_f1": 0.319955109914845
+        }
+      }
+    },
+    "reference": {
+      "clean_macro_f1": 0.966393323649576,
+      "conditions": {
+        "cbar_checkerboard_cutout_s1": {
+          "macro_f1": 0.9310315429291652,
+          "delta_f1": 0.03536178072041074
+        },
+        "cbar_checkerboard_cutout_s2": {
+          "macro_f1": 0.9093370145608951,
+          "delta_f1": 0.05705630908868087
+        },
+        "cbar_checkerboard_cutout_s3": {
+          "macro_f1": 0.6071264499029267,
+          "delta_f1": 0.35926687374664923
+        },
+        "inc_brightness_s1": {
+          "macro_f1": 0.9107392528404568,
+          "delta_f1": 0.055654070809119216
+        },
+        "inc_brightness_s2": {
+          "macro_f1": 0.8313156163712989,
+          "delta_f1": 0.13507770727827706
+        },
+        "inc_brightness_s3": {
+          "macro_f1": 0.7315132275132274,
+          "delta_f1": 0.23488009613634853
+        }
+      }
+    }
+  }
+}

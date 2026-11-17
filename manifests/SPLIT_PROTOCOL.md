@@ -45,3 +45,7 @@ Tài liệu này quy định nguyên tắc phân chia, quản lý và sử dụn
    | 4.2 độ nhạy | Swin-Tiny | 2026-10-29 | `0b8c1b4`, chạy lại 4.1 đến 4.4 với reference mới |
    | 4.5 bản đồ phục hồi, oracle | Swin-Tiny | 2026-10-29 | `6f3ef20` |
    | 4.5 đối chứng augmentation | Swin-Tiny | 2026-10-29 | `639b111` |
+5. **Bổ sung (2026-11-15): cổng cho bộ họ chưa thấy v2 (task 5.7, 5.8).**
+   - `configs/unseen_families_v2.yaml` mang mã sha256 của quy tắc đăng ký trước và danh sách họ. `load_conditions` từ chối config đã khóa mà mã băm không khớp.
+   - Mở `test` với config này cần thêm `FINAL_FAMILY_EVAL=1` (cùng `FINAL_EVAL=1` của `get_split`). Mỗi lần mở vẫn phải thêm một dòng vào bảng ở điểm 4.
+   - Khớp mức, đo MSD và chia vai trò họ chỉ dùng `val` (MSD từ chối split `test`).

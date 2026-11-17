@@ -1,5 +1,7 @@
 # Task 5.5. Bộ họ suy giảm chưa thấy
 
+> **Cập nhật 2026-11-15:** bộ v1 này giữ nguyên làm tham khảo và không còn là bộ đánh giá chính. Lý do và bộ thay thế (họ từ ImageNet-C và ImageNet-C-bar, mức khớp theo ΔF1, nhóm gần/xa theo MSD, chia vai trò train/val/test, khóa sha256) ở [task 5.8](task-5.8-unseen-families-v2.md) và [task 5.7](task-5.7-msd-family-distance.md). Mọi con số bên dưới và ở `reports/unseen/README.md` vẫn đúng cho v1, nhưng nhóm gần/xa của v1 chia theo tên, chưa đo.
+
 Mục đích: kiểm tra bộ chọn xử lý thích ứng (5.1 đến 5.3) và các mô hình có khái quát ra ngoài 14 họ của benchmark 4.1 hay chỉ khớp với những gì đã thấy khi hiệu chỉnh. Bộ này **chỉ để đánh giá**: không đưa vào augmentation, không dùng để hiệu chỉnh ngưỡng của bộ chọn.
 
 ## Sáu họ

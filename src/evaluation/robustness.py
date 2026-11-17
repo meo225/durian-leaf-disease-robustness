@@ -32,6 +32,7 @@ def evaluate_conditions(
     conditions: Mapping[str, Mapping[str, Any]],
     device: torch.device,
     seed: int,
+    num_workers: int = 0,
 ) -> dict[str, Any]:
     """Điểm trên ảnh sạch và trên từng điều kiện, cùng các mẫu và nhãn. Degradation là F1 sạch trừ F1 suy giảm."""
     classes = list(pipeline_cfg["classes"])
@@ -39,7 +40,7 @@ def evaluate_conditions(
     clean = evaluate_loader(model, build_loader(pipeline_cfg, split), criterion, device, classes)
     results = {}
     for name, spec in conditions.items():
-        scores = evaluate_loader(model, build_loader(pipeline_cfg, split, name, spec, seed), criterion, device, classes)
+        scores = evaluate_loader(model, build_loader(pipeline_cfg, split, name, spec, seed, num_workers), criterion, device, classes)
         results[name] = {**scores, "degradation": clean["macro_f1"] - scores["macro_f1"]}
     return {"clean": clean, "conditions": results}
 

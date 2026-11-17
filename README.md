@@ -150,10 +150,12 @@ kaggle kernels push --no-run -p <thư-mục-tạm>
 | `notebooks/04_corruption_benchmark.ipynb` | `04_corruption_benchmark` | `TEN_KAGGLE/04-corruption-benchmark` |
 | `notebooks/11_unseen_corruption_calibration.ipynb` | `11_unseen_corruption_calibration` | `TEN_KAGGLE/11-unseen-corruption-calibration` |
 | `notebooks/12_generic_augmentation_control.ipynb` | `12_generic_augmentation_control` | `TEN_KAGGLE/12-generic-augmentation-control` |
+| `notebooks/13_unseen_v2_calibration.ipynb` | `13_unseen_v2_calibration` | `TEN_KAGGLE/13-unseen-v2-calibration` |
+| `notebooks/14_msd_family_distance.ipynb` | `14_msd_family_distance` | `TEN_KAGGLE/14-msd-family-distance` |
 | `notebooks/06_restoration_benchmark.ipynb` | `06_restoration_benchmark` | `TEN_KAGGLE/06-restoration-benchmark` |
 | `notebooks/07_augmentation_control.ipynb` | `07_augmentation_control` | `TEN_KAGGLE/07-augmentation-control` |
 
-Ba notebook kiểm tra dữ liệu và `03_train_hog_svm` dùng Accelerator None. `03_train_resnet50`, `03_train_mobilenetv3_small`, `03_train_convnext_tiny`, `03_select_reference_model`, `04_corruption_benchmark`, `06_restoration_benchmark`, `07_augmentation_control`, `11_unseen_corruption_calibration` và `12_generic_augmentation_control` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
+Ba notebook kiểm tra dữ liệu và `03_train_hog_svm` dùng Accelerator None. `03_train_resnet50`, `03_train_mobilenetv3_small`, `03_train_convnext_tiny`, `03_select_reference_model`, `04_corruption_benchmark`, `06_restoration_benchmark`, `07_augmentation_control`, `11_unseen_corruption_calibration`, `12_generic_augmentation_control`, `13_unseen_v2_calibration` và `14_msd_family_distance` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
 
 ### Phiên chạy
 
@@ -184,7 +186,8 @@ Model đưa lên Hugging Face khi đã chọn bản phát hành. Ảnh suy giả
 | Train HOG + SVM (CPU) | `configs/train_hog_svm.yaml` |
 | Chọn reference model | `configs/reference_selection.yaml` |
 | Suy giảm ảnh | `configs/corruption.yaml` |
-| Họ suy giảm chưa thấy (5.5) | `configs/unseen_corruption.yaml` |
+| Họ suy giảm chưa thấy (5.5, bộ v1 tham khảo) | `configs/unseen_corruption.yaml` |
+| Họ suy giảm chưa thấy v2 (5.7, 5.8, đăng ký trước và khóa sha256) | `configs/unseen_families_v2.yaml` |
 | Khử nhiễu và làm nét | `configs/restoration.yaml` |
 | Đối chứng huấn luyện lại bằng augmentation suy giảm | `configs/train_convnext_tiny_aug.yaml` |
 | Kiểm tra dữ liệu | `configs/data_audit.yaml` |

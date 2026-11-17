@@ -1,0 +1,798 @@
+{
+  "n_images": 100,
+  "n_samples": 1000,
+  "n_bootstrap": 200,
+  "threshold": 3.142345905303955,
+  "threshold_rule": "max_leave_one_out",
+  "seen_leave_one_out": {
+    "brightness_dark": {
+      "msd": 1.3228137493133545,
+      "nearest": "contrast_low",
+      "ci_low": 1.275445830821991,
+      "ci_high": 1.5212208122015,
+      "n_samples": 923
+    },
+    "brightness_bright": {
+      "msd": 2.0725107192993164,
+      "nearest": "contrast_high",
+      "ci_low": 1.7591060727834702,
+      "ci_high": 2.568620669841766,
+      "n_samples": 914
+    },
+    "contrast_low": {
+      "msd": 0.9950184226036072,
+      "nearest": "brightness_dark",
+      "ci_low": 0.9185869216918945,
+      "ci_high": 1.1193903475999833,
+      "n_samples": 925
+    },
+    "blur": {
+      "msd": 0.8052833080291748,
+      "nearest": "motion_blur",
+      "ci_low": 0.7720204398036004,
+      "ci_high": 0.9498225033283234,
+      "n_samples": 934
+    },
+    "noise": {
+      "msd": 0.6234809756278992,
+      "nearest": "sensor_noise",
+      "ci_low": 0.6258594229817391,
+      "ci_high": 0.8056346774101257,
+      "n_samples": 923
+    },
+    "contrast_high": {
+      "msd": 2.0265984535217285,
+      "nearest": "brightness_bright",
+      "ci_low": 1.6823708027601243,
+      "ci_high": 2.730981719493866,
+      "n_samples": 917
+    },
+    "glare": {
+      "msd": 1.5442571640014648,
+      "nearest": "blur",
+      "ci_low": 1.3927941650152207,
+      "ci_high": 1.814166209101677,
+      "n_samples": 932
+    },
+    "shadow": {
+      "msd": 2.6745524406433105,
+      "nearest": "brightness_dark",
+      "ci_low": 2.478975433111191,
+      "ci_high": 2.884488159418106,
+      "n_samples": 939
+    },
+    "lowlight": {
+      "msd": 2.5669381618499756,
+      "nearest": "brightness_dark",
+      "ci_low": 2.4317246615886687,
+      "ci_high": 2.7567440152168277,
+      "n_samples": 934
+    },
+    "motion_blur": {
+      "msd": 1.4023126363754272,
+      "nearest": "lowres",
+      "ci_low": 1.1650077998638153,
+      "ci_high": 1.7309197813272477,
+      "n_samples": 936
+    },
+    "sensor_noise": {
+      "msd": 0.6688030958175659,
+      "nearest": "noise",
+      "ci_low": 0.6363680750131607,
+      "ci_high": 0.8253582403063775,
+      "n_samples": 943
+    },
+    "jpeg": {
+      "msd": 3.142345905303955,
+      "nearest": "lowlight",
+      "ci_low": 2.8041384637355806,
+      "ci_high": 3.468582379817963,
+      "n_samples": 936
+    },
+    "lowres": {
+      "msd": 0.27570241689682007,
+      "nearest": "blur",
+      "ci_low": 0.25517940893769264,
+      "ci_high": 0.34822036474943163,
+      "n_samples": 924
+    },
+    "color_cast": {
+      "msd": 2.6925301551818848,
+      "nearest": "contrast_high",
+      "ci_low": 2.4766612529754637,
+      "ci_high": 3.0170913994312287,
+      "n_samples": 920
+    }
+  },
+  "seen_to_trivialaugment": {
+    "brightness_dark": {
+      "msd": 0.5742171406745911,
+      "nearest": "Brightness",
+      "ci_low": 0.5299088761210442,
+      "ci_high": 0.7025777846574784,
+      "n_samples": 1000
+    },
+    "brightness_bright": {
+      "msd": 0.34686291217803955,
+      "nearest": "Brightness",
+      "ci_low": 0.3309159338474274,
+      "ci_high": 0.5432428449392319,
+      "n_samples": 1000
+    },
+    "contrast_low": {
+      "msd": 0.28417134284973145,
+      "nearest": "Contrast",
+      "ci_low": 0.26714236214756965,
+      "ci_high": 0.32422749027609826,
+      "n_samples": 1000
+    },
+    "blur": {
+      "msd": 1.9421948194503784,
+      "nearest": "Sharpness",
+      "ci_low": 1.7233349889516831,
+      "ci_high": 2.3863480389118195,
+      "n_samples": 1000
+    },
+    "noise": {
+      "msd": 2.3494083881378174,
+      "nearest": "ShearX",
+      "ci_low": 2.269711709022522,
+      "ci_high": 2.592181444168091,
+      "n_samples": 1000
+    },
+    "contrast_high": {
+      "msd": 0.6491339206695557,
+      "nearest": "Contrast",
+      "ci_low": 0.5734490141272545,
+      "ci_high": 0.8519699230790139,
+      "n_samples": 1000
+    },
+    "glare": {
+      "msd": 1.506529688835144,
+      "nearest": "Sharpness",
+      "ci_low": 1.3292047142982484,
+      "ci_high": 1.7478603959083558,
+      "n_samples": 1000
+    },
+    "shadow": {
+      "msd": 2.6798386573791504,
+      "nearest": "Brightness",
+      "ci_low": 2.5096544325351715,
+      "ci_high": 2.9605671405792235,
+      "n_samples": 1000
+    },
+    "lowlight": {
+      "msd": 2.4492011070251465,
+      "nearest": "Brightness",
+      "ci_low": 2.3496422827243806,
+      "ci_high": 2.6797088146209718,
+      "n_samples": 1000
+    },
+    "motion_blur": {
+      "msd": 1.779484748840332,
+      "nearest": "Sharpness",
+      "ci_low": 1.5466834366321565,
+      "ci_high": 2.1762491285800936,
+      "n_samples": 1000
+    },
+    "sensor_noise": {
+      "msd": 2.31543231010437,
+      "nearest": "ShearX",
+      "ci_low": 2.2375329613685606,
+      "ci_high": 2.5919575333595275,
+      "n_samples": 1000
+    },
+    "jpeg": {
+      "msd": 3.3959593772888184,
+      "nearest": "ShearX",
+      "ci_low": 3.1194597125053405,
+      "ci_high": 3.721020185947418,
+      "n_samples": 1000
+    },
+    "lowres": {
+      "msd": 2.2508368492126465,
+      "nearest": "Sharpness",
+      "ci_low": 1.9125450879335406,
+      "ci_high": 2.948929405212403,
+      "n_samples": 1000
+    },
+    "color_cast": {
+      "msd": 2.5506882667541504,
+      "nearest": "Color",
+      "ci_low": 2.4026905477046965,
+      "ci_high": 2.8414898037910463,
+      "n_samples": 1000
+    }
+  },
+  "new_families": [
+    {
+      "family": "inc_defocus_blur",
+      "group": "near",
+      "msd": 0.7763779163360596,
+      "ci_low": 0.6435723453760147,
+      "ci_high": 0.8849510043859482,
+      "nearest": "motion_blur",
+      "msd_ta": 0.82389897108078,
+      "ci_low_ta": 0.7737770542502403,
+      "ci_high_ta": 0.984105396270752,
+      "nearest_ta": "Sharpness"
+    },
+    {
+      "family": "inc_motion_blur",
+      "group": "near",
+      "msd": 1.2929983139038086,
+      "ci_low": 1.1092371582984926,
+      "ci_high": 1.4876864850521088,
+      "nearest": "motion_blur",
+      "msd_ta": 1.7163772583007812,
+      "ci_low_ta": 1.5031492203474046,
+      "ci_high_ta": 2.186976307630539,
+      "nearest_ta": "Sharpness"
+    },
+    {
+      "family": "inc_impulse_noise",
+      "group": "near",
+      "msd": 1.3981870412826538,
+      "ci_low": 1.2388213276863098,
+      "ci_high": 1.5099354416131974,
+      "nearest": "sensor_noise",
+      "msd_ta": 1.649675726890564,
+      "ci_low_ta": 1.5320408791303635,
+      "ci_high_ta": 1.9132415860891343,
+      "nearest_ta": "ShearX"
+    },
+    {
+      "family": "inc_zoom_blur",
+      "group": "near",
+      "msd": 2.438196897506714,
+      "ci_low": 2.106032580137253,
+      "ci_high": 2.664972424507141,
+      "nearest": "motion_blur",
+      "msd_ta": 2.731222629547119,
+      "ci_low_ta": 2.5065797686576845,
+      "ci_high_ta": 3.0504489660263063,
+      "nearest_ta": "ShearX"
+    },
+    {
+      "family": "inc_brightness",
+      "group": "ambiguous",
+      "msd": 2.66738224029541,
+      "ci_low": 2.3761054396629335,
+      "ci_high": 3.184756815433502,
+      "nearest": "brightness_bright",
+      "msd_ta": 2.2436227798461914,
+      "ci_low_ta": 2.044807517528534,
+      "ci_high_ta": 2.6280518054962156,
+      "nearest_ta": "Color"
+    },
+    {
+      "family": "inc_frost",
+      "group": "ambiguous",
+      "msd": 3.0682120323181152,
+      "ci_low": 2.8369465053081515,
+      "ci_high": 3.464048910140991,
+      "nearest": "noise",
+      "msd_ta": 2.9652764797210693,
+      "ci_low_ta": 2.897026777267456,
+      "ci_high_ta": 3.3153714537620544,
+      "nearest_ta": "Posterize"
+    },
+    {
+      "family": "cbar_checkerboard_cutout",
+      "group": "far",
+      "msd": 3.555119276046753,
+      "ci_low": 3.375949424505234,
+      "ci_high": 3.9668360590934757,
+      "nearest": "jpeg",
+      "msd_ta": 3.896548271179199,
+      "ci_low_ta": 3.5983244597911836,
+      "ci_high_ta": 4.221714603900909,
+      "nearest_ta": "ShearY"
+    },
+    {
+      "family": "inc_snow",
+      "group": "far",
+      "msd": 3.774326801300049,
+      "ci_low": 3.5865992605686188,
+      "ci_high": 4.145626747608185,
+      "nearest": "jpeg",
+      "msd_ta": 3.782092332839966,
+      "ci_low_ta": 3.566869467496872,
+      "ci_high_ta": 4.123026788234711,
+      "nearest_ta": "Color"
+    },
+    {
+      "family": "cbar_cocentric_sine_waves",
+      "group": "far",
+      "msd": 3.816952705383301,
+      "ci_low": 3.5505261719226837,
+      "ci_high": 4.204557299613953,
+      "nearest": "jpeg",
+      "msd_ta": 3.644505500793457,
+      "ci_low_ta": 3.482934892177582,
+      "ci_high_ta": 3.9533111214637757,
+      "nearest_ta": "ShearY"
+    }
+  ],
+  "v1_families": [
+    {
+      "family": "defocus_blur",
+      "group_by_name": "near",
+      "group_by_msd": "near",
+      "msd": 0.34215375781059265,
+      "nearest": "blur",
+      "ci_low": 0.2667172268033028,
+      "ci_high": 0.4716340646147728,
+      "n_samples": 1000
+    },
+    {
+      "family": "chroma_noise",
+      "group_by_name": "near",
+      "group_by_msd": "far",
+      "msd": 3.608577013015747,
+      "nearest": "contrast_high",
+      "ci_low": 3.5212397038936616,
+      "ci_high": 3.952629894018173,
+      "n_samples": 1000
+    },
+    {
+      "family": "fog",
+      "group_by_name": "far",
+      "group_by_msd": "near",
+      "msd": 1.412160873413086,
+      "nearest": "glare",
+      "ci_low": 1.356704592704773,
+      "ci_high": 1.5602705538272859,
+      "n_samples": 1000
+    },
+    {
+      "family": "spatter",
+      "group_by_name": "far",
+      "group_by_msd": "near",
+      "msd": 1.5343049764633179,
+      "nearest": "blur",
+      "ci_low": 1.4208023816347122,
+      "ci_high": 1.735333088040352,
+      "n_samples": 1000
+    },
+    {
+      "family": "rain_streak",
+      "group_by_name": "far",
+      "group_by_msd": "ambiguous",
+      "msd": 3.2939505577087402,
+      "nearest": "jpeg",
+      "ci_low": 3.004386377334595,
+      "ci_high": 3.7255458235740666,
+      "n_samples": 1000
+    },
+    {
+      "family": "saturate",
+      "group_by_name": "far",
+      "group_by_msd": "ambiguous",
+      "msd": 3.4213247299194336,
+      "nearest": "brightness_bright",
+      "ci_low": 3.0833655893802643,
+      "ci_high": 3.836110085248947,
+      "n_samples": 1000
+    }
+  ],
+  "ta_overlap": [
+    {
+      "family": "brightness_dark",
+      "severity": 1,
+      "value": 0.7,
+      "ta_op": "Brightness",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": true,
+      "p_ta_within_tolerance": 0.00576036866359447
+    },
+    {
+      "family": "brightness_dark",
+      "severity": 2,
+      "value": 0.5,
+      "ta_op": "Brightness",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": true,
+      "p_ta_within_tolerance": 0.003456221198156682
+    },
+    {
+      "family": "brightness_dark",
+      "severity": 3,
+      "value": 0.3,
+      "ta_op": "Brightness",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": true,
+      "p_ta_within_tolerance": 0.002304147465437788
+    },
+    {
+      "family": "brightness_bright",
+      "severity": 1,
+      "value": 1.3,
+      "ta_op": "Brightness",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": true,
+      "p_ta_within_tolerance": 0.009216589861751152
+    },
+    {
+      "family": "brightness_bright",
+      "severity": 2,
+      "value": 1.6,
+      "ta_op": "Brightness",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": true,
+      "p_ta_within_tolerance": 0.01152073732718894
+    },
+    {
+      "family": "brightness_bright",
+      "severity": 3,
+      "value": 2.0,
+      "ta_op": "Brightness",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": false,
+      "p_ta_within_tolerance": 0.006912442396313364
+    },
+    {
+      "family": "contrast_low",
+      "severity": 1,
+      "value": 0.7,
+      "ta_op": "Contrast",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": true,
+      "p_ta_within_tolerance": 0.00576036866359447
+    },
+    {
+      "family": "contrast_low",
+      "severity": 2,
+      "value": 0.5,
+      "ta_op": "Contrast",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": true,
+      "p_ta_within_tolerance": 0.003456221198156682
+    },
+    {
+      "family": "contrast_low",
+      "severity": 3,
+      "value": 0.3,
+      "ta_op": "Contrast",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": true,
+      "p_ta_within_tolerance": 0.002304147465437788
+    },
+    {
+      "family": "contrast_high",
+      "severity": 1,
+      "value": 1.5,
+      "ta_op": "Contrast",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": true,
+      "p_ta_within_tolerance": 0.010368663594470046
+    },
+    {
+      "family": "contrast_high",
+      "severity": 2,
+      "value": 2.2,
+      "ta_op": "Contrast",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": false,
+      "p_ta_within_tolerance": 0.001152073732718894
+    },
+    {
+      "family": "contrast_high",
+      "severity": 3,
+      "value": 3.0,
+      "ta_op": "Contrast",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": false,
+      "p_ta_within_tolerance": 0.0
+    },
+    {
+      "family": "saturate",
+      "severity": 1,
+      "value": 1.4,
+      "ta_op": "Color",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": true,
+      "p_ta_within_tolerance": 0.010368663594470046
+    },
+    {
+      "family": "saturate",
+      "severity": 2,
+      "value": 2.0,
+      "ta_op": "Color",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": false,
+      "p_ta_within_tolerance": 0.006912442396313364
+    },
+    {
+      "family": "saturate",
+      "severity": 3,
+      "value": 3.0,
+      "ta_op": "Color",
+      "ta_factor_range": [
+        0.009999990463256836,
+        1.9900000095367432
+      ],
+      "inside_ta_range": false,
+      "p_ta_within_tolerance": 0.0
+    }
+  ],
+  "roles": {
+    "cbar_checkerboard_cutout": "val",
+    "cbar_cocentric_sine_waves": "train",
+    "inc_brightness": "test",
+    "inc_defocus_blur": "val",
+    "inc_frost": "train",
+    "inc_impulse_noise": "test",
+    "inc_motion_blur": "test",
+    "inc_snow": "test",
+    "inc_zoom_blur": "train"
+  },
+  "seen_pairwise_distance": {
+    "brightness_dark": {
+      "brightness_dark": 0.0,
+      "brightness_bright": 7.08523416519165,
+      "contrast_low": 1.703628659248352,
+      "blur": 3.22971510887146,
+      "noise": 4.6881537437438965,
+      "contrast_high": 6.549943923950195,
+      "glare": 3.527395248413086,
+      "shadow": 2.8537750244140625,
+      "lowlight": 2.4569456577301025,
+      "motion_blur": 3.032291889190674,
+      "sensor_noise": 4.533537864685059,
+      "jpeg": 3.6478352546691895,
+      "lowres": 3.644442319869995,
+      "color_cast": 5.989929676055908
+    },
+    "brightness_bright": {
+      "brightness_dark": 7.08523416519165,
+      "brightness_bright": 0.0,
+      "contrast_low": 5.929238319396973,
+      "blur": 6.05072021484375,
+      "noise": 4.155201435089111,
+      "contrast_high": 2.085848331451416,
+      "glare": 4.136529445648193,
+      "shadow": 5.973947525024414,
+      "lowlight": 7.633657455444336,
+      "motion_blur": 5.702835559844971,
+      "sensor_noise": 4.36155366897583,
+      "jpeg": 7.515801906585693,
+      "lowres": 6.556214332580566,
+      "color_cast": 3.3821494579315186
+    },
+    "contrast_low": {
+      "brightness_dark": 1.703628659248352,
+      "brightness_bright": 5.929238319396973,
+      "contrast_low": 0.0,
+      "blur": 3.1550755500793457,
+      "noise": 4.187626838684082,
+      "contrast_high": 5.629489421844482,
+      "glare": 2.475918769836426,
+      "shadow": 2.930037021636963,
+      "lowlight": 3.4305193424224854,
+      "motion_blur": 2.874187469482422,
+      "sensor_noise": 4.066281795501709,
+      "jpeg": 4.244102954864502,
+      "lowres": 3.6343116760253906,
+      "color_cast": 4.859735488891602
+    },
+    "blur": {
+      "brightness_dark": 3.22971510887146,
+      "brightness_bright": 6.05072021484375,
+      "contrast_low": 3.1550755500793457,
+      "blur": 0.0,
+      "noise": 4.508830547332764,
+      "contrast_high": 5.684770584106445,
+      "glare": 3.2241177558898926,
+      "shadow": 3.1262028217315674,
+      "lowlight": 4.295435905456543,
+      "motion_blur": 0.9512166976928711,
+      "sensor_noise": 4.408839225769043,
+      "jpeg": 4.889997482299805,
+      "lowres": 0.9471911191940308,
+      "color_cast": 4.920675277709961
+    },
+    "noise": {
+      "brightness_dark": 4.6881537437438965,
+      "brightness_bright": 4.155201435089111,
+      "contrast_low": 4.187626838684082,
+      "blur": 4.508830547332764,
+      "noise": 0.0,
+      "contrast_high": 3.279297113418579,
+      "glare": 3.2488110065460205,
+      "shadow": 4.03357458114624,
+      "lowlight": 4.3363847732543945,
+      "motion_blur": 4.067589282989502,
+      "sensor_noise": 0.5981815457344055,
+      "jpeg": 4.404531478881836,
+      "lowres": 5.104045391082764,
+      "color_cast": 4.5850043296813965
+    },
+    "contrast_high": {
+      "brightness_dark": 6.549943923950195,
+      "brightness_bright": 2.085848331451416,
+      "contrast_low": 5.629489421844482,
+      "blur": 5.684770584106445,
+      "noise": 3.279297113418579,
+      "contrast_high": 0.0,
+      "glare": 3.889650344848633,
+      "shadow": 5.358164310455322,
+      "lowlight": 6.909196853637695,
+      "motion_blur": 5.280088901519775,
+      "sensor_noise": 3.5099549293518066,
+      "jpeg": 6.423989295959473,
+      "lowres": 6.223120212554932,
+      "color_cast": 3.679326295852661
+    },
+    "glare": {
+      "brightness_dark": 3.527395248413086,
+      "brightness_bright": 4.136529445648193,
+      "contrast_low": 2.475918769836426,
+      "blur": 3.2241177558898926,
+      "noise": 3.2488110065460205,
+      "contrast_high": 3.889650344848633,
+      "glare": 0.0,
+      "shadow": 2.786177396774292,
+      "lowlight": 4.511871337890625,
+      "motion_blur": 2.8397741317749023,
+      "sensor_noise": 3.190660238265991,
+      "jpeg": 4.726027488708496,
+      "lowres": 3.739860773086548,
+      "color_cast": 3.4646849632263184
+    },
+    "shadow": {
+      "brightness_dark": 2.8537750244140625,
+      "brightness_bright": 5.973947525024414,
+      "contrast_low": 2.930037021636963,
+      "blur": 3.1262028217315674,
+      "noise": 4.03357458114624,
+      "contrast_high": 5.358164310455322,
+      "glare": 2.786177396774292,
+      "shadow": 0.0,
+      "lowlight": 3.3111634254455566,
+      "motion_blur": 2.900960683822632,
+      "sensor_noise": 3.8676443099975586,
+      "jpeg": 4.017462253570557,
+      "lowres": 3.6316511631011963,
+      "color_cast": 5.165687561035156
+    },
+    "lowlight": {
+      "brightness_dark": 2.4569456577301025,
+      "brightness_bright": 7.633657455444336,
+      "contrast_low": 3.4305193424224854,
+      "blur": 4.295435905456543,
+      "noise": 4.3363847732543945,
+      "contrast_high": 6.909196853637695,
+      "glare": 4.511871337890625,
+      "shadow": 3.3111634254455566,
+      "lowlight": 0.0,
+      "motion_blur": 4.082460880279541,
+      "sensor_noise": 4.105815887451172,
+      "jpeg": 3.3783679008483887,
+      "lowres": 4.692410945892334,
+      "color_cast": 6.878960609436035
+    },
+    "motion_blur": {
+      "brightness_dark": 3.032291889190674,
+      "brightness_bright": 5.702835559844971,
+      "contrast_low": 2.874187469482422,
+      "blur": 0.9512166976928711,
+      "noise": 4.067589282989502,
+      "contrast_high": 5.280088901519775,
+      "glare": 2.8397741317749023,
+      "shadow": 2.900960683822632,
+      "lowlight": 4.082460880279541,
+      "motion_blur": 0.0,
+      "sensor_noise": 3.996105670928955,
+      "jpeg": 4.5104780197143555,
+      "lowres": 1.5746643543243408,
+      "color_cast": 4.709990978240967
+    },
+    "sensor_noise": {
+      "brightness_dark": 4.533537864685059,
+      "brightness_bright": 4.36155366897583,
+      "contrast_low": 4.066281795501709,
+      "blur": 4.408839225769043,
+      "noise": 0.5981815457344055,
+      "contrast_high": 3.5099549293518066,
+      "glare": 3.190660238265991,
+      "shadow": 3.8676443099975586,
+      "lowlight": 4.105815887451172,
+      "motion_blur": 3.996105670928955,
+      "sensor_noise": 0.0,
+      "jpeg": 4.310591220855713,
+      "lowres": 4.962952613830566,
+      "color_cast": 4.633815288543701
+    },
+    "jpeg": {
+      "brightness_dark": 3.6478352546691895,
+      "brightness_bright": 7.515801906585693,
+      "contrast_low": 4.244102954864502,
+      "blur": 4.889997482299805,
+      "noise": 4.404531478881836,
+      "contrast_high": 6.423989295959473,
+      "glare": 4.726027488708496,
+      "shadow": 4.017462253570557,
+      "lowlight": 3.3783679008483887,
+      "motion_blur": 4.5104780197143555,
+      "sensor_noise": 4.310591220855713,
+      "jpeg": 0.0,
+      "lowres": 5.386806964874268,
+      "color_cast": 7.229118347167969
+    },
+    "lowres": {
+      "brightness_dark": 3.644442319869995,
+      "brightness_bright": 6.556214332580566,
+      "contrast_low": 3.6343116760253906,
+      "blur": 0.9471911191940308,
+      "noise": 5.104045391082764,
+      "contrast_high": 6.223120212554932,
+      "glare": 3.739860773086548,
+      "shadow": 3.6316511631011963,
+      "lowlight": 4.692410945892334,
+      "motion_blur": 1.5746643543243408,
+      "sensor_noise": 4.962952613830566,
+      "jpeg": 5.386806964874268,
+      "lowres": 0.0,
+      "color_cast": 5.266317844390869
+    },
+    "color_cast": {
+      "brightness_dark": 5.989929676055908,
+      "brightness_bright": 3.3821494579315186,
+      "contrast_low": 4.859735488891602,
+      "blur": 4.920675277709961,
+      "noise": 4.5850043296813965,
+      "contrast_high": 3.679326295852661,
+      "glare": 3.4646849632263184,
+      "shadow": 5.165687561035156,
+      "lowlight": 6.878960609436035,
+      "motion_blur": 4.709990978240967,
+      "sensor_noise": 4.633815288543701,
+      "jpeg": 7.229118347167969,
+      "lowres": 5.266317844390869,
+      "color_cast": 0.0
+    }
+  }
+}
