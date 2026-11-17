@@ -1,14 +1,14 @@
 # Bộ họ chưa thấy v2 (task 5.7 và 5.8). Thay thế bộ v1 (configs/unseen_corruption.yaml) làm bộ đánh giá chính, v1 giữ nguyên để đối chiếu.
-# Đây là bản ĐĂNG KÝ TRƯỚC: quy tắc đã cố định, danh sách họ còn trống (locked: false). Notebook 13 và 14 sinh danh sách họ, mức, nhóm, vai trò và mã sha256 rồi ghi đè file này.
-# Không sửa `registration` sau khi đã chạy notebook 13 (trừ khi ghi thành bản sửa ở `amendments`, như v2.1). Mã băm khóa luôn phủ cả phần quy tắc này.
+# Mọi quy tắc nằm ở `registration` và được đăng ký trước khi chạy. Mức do notebook 13 khớp theo ΔF1 của ConvNeXt-Tiny, nhóm gần/xa và vai trò do notebook 14
+# lấy từ MSD của Swin-Tiny. Họ chỉ lấy từ ImageNet-C (imagecorruptions) và ImageNet-C-bar, không có họ nhóm tự cài.
+# `lock.sha256` là mã băm của protocol, version, seed, registration và families. Sửa bất kỳ phần nào sau khi khóa thì load_conditions báo lỗi.
+# Mở tập test cần FINAL_FAMILY_EVAL=1. Không chỉnh mức, nhóm hay vai trò sau khi đã thấy kết quả. Thử thêm thì ghi là phân tích thăm dò.
 
 protocol: unseen_families_v2
 version: 2
-locked: false
+locked: true
 seed: 42
-
 registration:
-  # Mô hình. Mức khớp theo ΔF1 của mô hình thay thế, MSD đo trên reference. Hai mô hình khác nhau để mức không bị chọn theo chính mô hình sẽ được đánh giá.
   surrogate:
     model: convnext_tiny
     train_config: configs/train_convnext_tiny.yaml
@@ -18,43 +18,72 @@ registration:
     train_config: configs/train_swin_tiny.yaml
     checkpoint: swin_tiny_seed42.pt
   seen_benchmark: configs/corruption.yaml
-
   candidates:
-    sources: [imagenet_c, imagenet_c_bar]
-    # Họ chạy lỗi trong môi trường (probe_families) hoặc chậm hơn ngưỡng này bị loại. Quyết định theo chi phí tính toán, không theo kết quả.
+    sources:
+    - imagenet_c
+    - imagenet_c_bar
     max_seconds_per_image: 0.5
-    # Bản v2.1: thêm năm mức nhẹ hơn mức 1 (trộn alpha ảnh gốc với ImageNet-C mức 1, xem `amendments` và external.IMAGENET_C_MILD_WEIGHTS). Lưới v2.0 là [1, 2, 3, 4, 5].
-    imagenet_c_severities: [0.1, 0.2, 0.35, 0.5, 0.7, 1, 2, 3, 4, 5]
-    imagenet_c_bar_severities: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
+    imagenet_c_severities:
+    - 0.1
+    - 0.2
+    - 0.35
+    - 0.5
+    - 0.7
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    imagenet_c_bar_severities:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
   difficulty:
     split: val
     metric: macro_f1_drop
-    # Mục tiêu ΔF1 của ba mức = các phân vị này của ΔF1 mô hình thay thế trên 42 điều kiện của benchmark 4.1 (cũng trên validation).
-    quantiles: [0.2, 0.5, 0.8]
-    # Sai lệch tuyệt đối tối đa giữa ΔF1 của mức chọn và mục tiêu. Họ không có mức nào trong dung sai bị bỏ.
+    quantiles:
+    - 0.2
+    - 0.5
+    - 0.8
     tolerance: 0.05
-
-  # Sửa đổi quy tắc sau khi đăng ký, ghi lại nguyên văn để người đọc biết đâu là quy tắc gốc và đâu là bản sửa.
   amendments:
-    - id: v2.1
-      date: "2026-11-15"
-      what: >-
-        Lưới mức ứng viên của ImageNet-C mở rộng xuống phía nhẹ (năm mức trộn alpha với mức 1). Seed ảnh suy giảm của họ ngoài lấy từ (họ, giá trị) thay vì tên điều kiện.
-      why: >-
-        Lượt hiệu chỉnh đầu theo quy tắc v2.0 chỉ giữ 2 trên 20 họ. Nguyên nhân là mức 1 của ImageNet-C đã có ΔF1 từ 0.09 đến 0.44 ở 13 họ, cao hơn mục tiêu nhẹ nhất 0.036,
-        nên lưới không với tới mục tiêu. Ngoài ra họ ngẫu nhiên có ΔF1 lúc chọn lệch ΔF1 lúc đo lại tới 0.026 vì seed lấy theo tên điều kiện.
-      unchanged: [quantiles, tolerance, luật ba mức tăng dần, ngưỡng thời gian, mô hình thay thế và tham chiếu, MSD, chia vai trò]
-      disclosure: >-
-        Quyết định sau khi đã thấy bảng ΔF1 ứng viên của mô hình thay thế ở lượt đầu. Chưa thấy kết quả nào của hệ thống cần so (các nhánh retrain 5.9, 5.10, bộ chọn 5.11) và chưa mở test.
-        Lượt đầu lưu ở reports/unseen_v2/pass1_v2.0/. Tiêu chí quyết định là độ phủ của lưới, không phải họ nào có lợi cho hệ thống nào.
-    - id: v2.1-fix
-      date: "2026-11-16"
-      what: >-
-        Sửa lỗi tái lập của inc_impulse_noise: skimage.util.random_noise không seed nên cùng ảnh cho nhiễu khác nhau mỗi lần. Họ này được gắn seed và đo lại, không đổi quy tắc chọn.
-      why: >-
-        Lượt hai thấy ΔF1 lúc chọn và lúc đo lại của họ này lệch (0.040 so với 0.051, 0.157 so với 0.148), trong khi mọi họ khác khớp tuyệt đối. Điều kiện của một họ không tái lập được thì không thể khóa.
-
+  - id: v2.1
+    date: '2026-11-15'
+    what: Lưới mức ứng viên của ImageNet-C mở rộng xuống phía nhẹ (năm mức trộn alpha
+      với mức 1). Seed ảnh suy giảm của họ ngoài lấy từ (họ, giá trị) thay vì tên
+      điều kiện.
+    why: Lượt hiệu chỉnh đầu theo quy tắc v2.0 chỉ giữ 2 trên 20 họ. Nguyên nhân là
+      mức 1 của ImageNet-C đã có ΔF1 từ 0.09 đến 0.44 ở 13 họ, cao hơn mục tiêu nhẹ
+      nhất 0.036, nên lưới không với tới mục tiêu. Ngoài ra họ ngẫu nhiên có ΔF1 lúc
+      chọn lệch ΔF1 lúc đo lại tới 0.026 vì seed lấy theo tên điều kiện.
+    unchanged:
+    - quantiles
+    - tolerance
+    - luật ba mức tăng dần
+    - ngưỡng thời gian
+    - mô hình thay thế và tham chiếu
+    - MSD
+    - chia vai trò
+    disclosure: Quyết định sau khi đã thấy bảng ΔF1 ứng viên của mô hình thay thế
+      ở lượt đầu. Chưa thấy kết quả nào của hệ thống cần so (các nhánh retrain 5.9,
+      5.10, bộ chọn 5.11) và chưa mở test. Lượt đầu lưu ở reports/unseen_v2/pass1_v2.0/.
+      Tiêu chí quyết định là độ phủ của lưới, không phải họ nào có lợi cho hệ thống
+      nào.
+  - id: v2.1-fix
+    date: '2026-11-16'
+    what: 'Sửa lỗi tái lập của inc_impulse_noise: skimage.util.random_noise không
+      seed nên cùng ảnh cho nhiễu khác nhau mỗi lần. Họ này được gắn seed và đo lại,
+      không đổi quy tắc chọn.'
+    why: Lượt hai thấy ΔF1 lúc chọn và lúc đo lại của họ này lệch (0.040 so với 0.051,
+      0.157 so với 0.148), trong khi mọi họ khác khớp tuyệt đối. Điều kiện của một
+      họ không tái lập được thì không thể khóa.
   msd:
     split: val
     n_images: 100
@@ -63,13 +92,110 @@ registration:
     jitter: 0.1
     seed: 42
     feature: forward_head_pre_logits
-    augmentations: [trivialaugment_wide, degradation_aug]
-    # Ngưỡng gần/xa = MSD leave-one-out lớn nhất trong 14 họ đã thấy. Họ có khoảng bootstrap chứa ngưỡng xếp là ambiguous.
+    augmentations:
+    - trivialaugment_wide
+    - degradation_aug
     threshold_rule: max_leave_one_out
-
   roles:
     stratify_by: group
-    fractions: {train: 0.4, val: 0.2, test: 0.4}
-    # Họ vai trò test chỉ từ nguồn ngoài (imagenet_c, imagenet_c_bar).
-
-families: {}
+    fractions:
+      train: 0.4
+      val: 0.2
+      test: 0.4
+families:
+  cbar_checkerboard_cutout:
+    type: external
+    source: imagenet_c_bar
+    corruption: checkerboard_cutout
+    group: far
+    role: val
+    levels:
+    - 1.0
+    - 5.0
+    - 9.0
+  cbar_cocentric_sine_waves:
+    type: external
+    source: imagenet_c_bar
+    corruption: cocentric_sine_waves
+    group: far
+    role: train
+    levels:
+    - 2.0
+    - 4.0
+    - 6.0
+  inc_brightness:
+    type: external
+    source: imagenet_c
+    corruption: brightness
+    group: ambiguous
+    role: test
+    levels:
+    - 2.0
+    - 3.0
+    - 4.0
+  inc_defocus_blur:
+    type: external
+    source: imagenet_c
+    corruption: defocus_blur
+    group: near
+    role: val
+    levels:
+    - 0.2
+    - 0.5
+    - 0.7
+  inc_frost:
+    type: external
+    source: imagenet_c
+    corruption: frost
+    group: ambiguous
+    role: train
+    levels:
+    - 0.7
+    - 1.0
+    - 3.0
+  inc_impulse_noise:
+    type: external
+    source: imagenet_c
+    corruption: impulse_noise
+    group: near
+    role: test
+    levels:
+    - 0.35
+    - 0.5
+    - 0.7
+  inc_motion_blur:
+    type: external
+    source: imagenet_c
+    corruption: motion_blur
+    group: near
+    role: test
+    levels:
+    - 0.35
+    - 0.7
+    - 2.0
+  inc_snow:
+    type: external
+    source: imagenet_c
+    corruption: snow
+    group: far
+    role: test
+    levels:
+    - 0.35
+    - 0.7
+    - 3.0
+  inc_zoom_blur:
+    type: external
+    source: imagenet_c
+    corruption: zoom_blur
+    group: near
+    role: train
+    levels:
+    - 0.35
+    - 0.7
+    - 3.0
+lock:
+  sha256: fe72d34a4c599f624bcbb460b0b35f059d38dcae1200c02eb83ea55027945eb8
+  locked_on: '2026-11-16'
+  inputs:
+    calibration: 5c7f9d44ef5ac6f152f29004417c5b33dd78cb76f56f27edc2981b701494df48
+    msd: 5ec5080fc287469dc95c725b0adc62884f7442f5fa6f7bc58c2747fc70d94aaa
