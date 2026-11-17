@@ -39,10 +39,12 @@ def test_registration_is_consistent_with_code_constants():
     assert REGISTRATION["surrogate"]["model"] != REGISTRATION["reference"]["model"]
 
 
-def test_repo_config_is_an_unlocked_preregistration_skeleton():
+def test_repo_config_is_locked_and_the_test_split_is_gated(monkeypatch):
+    monkeypatch.delenv("FINAL_FAMILY_EVAL", raising=False)
     cfg = yaml.safe_load(open(U.CONFIG_PATH, encoding="utf-8"))
-    assert is_v2(cfg) and cfg["protocol"] == PROTOCOL and cfg["locked"] is False and cfg["families"] == {}
-    assert load_conditions(U.CONFIG_PATH, "val") == {}
+    assert is_v2(cfg) and cfg["protocol"] == PROTOCOL and cfg["locked"] is True
+    assert len(cfg["families"]) == 9 and {spec["role"] for spec in cfg["families"].values()} == {"train", "val", "test"}
+    assert load_conditions(U.CONFIG_PATH, "val")
     with pytest.raises(PermissionError):
         load_conditions(U.CONFIG_PATH, "test")
 
