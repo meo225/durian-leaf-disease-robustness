@@ -1,5 +1,7 @@
 # Kết quả đối chứng augmentation tổng quát, task 5.6
 
+> **Trạng thái: kết quả v1, chỉ để tham khảo.** Một seed, baseline dừng sớm ở epoch 12 trong khi hai nhánh kia chạy 30 epoch, baseline chọn checkpoint trên validation sạch còn hai nhánh kia chọn trên validation hỗn hợp, và TrivialAugment có phép quang học trùng họ của benchmark. Tỉ lệ tách 73/27 và câu kết "không nhờ học trước đúng loại hỏng" không dùng làm kết luận. So sánh chính nằm ở `reports/controls/` (tasks 5.9 và 5.10, xem `docs/task-5.6-generic-augmentation-control.md`, mục "Cập nhật sau rà soát độ chặt").
+
 Task này fine-tune Swin-Tiny (reference model, seed 42) chỉ với TrivialAugment, không có phép làm hỏng nhắm vào benchmark, để tách phần cải thiện do augmentation nói chung khỏi phần do augmentation nhắm đúng các họ suy giảm của task 4.5. Thiết kế và bảng diễn giải đã đăng ký trước nằm ở `docs/task-5.6-generic-augmentation-control.md`.
 
 Mọi số liệu đo trên **tập validation**, 444 ảnh, một seed. Tập test chưa mở. Khoảng tin cậy 95% lấy từ paired bootstrap 1000 lần, dùng chung chỉ số ảnh cho mọi cách. Kiểm định từng điều kiện là McNemar chính xác, hiệu chỉnh Holm.

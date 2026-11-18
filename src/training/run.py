@@ -94,7 +94,8 @@ def build_record(
         "trainable_parameters": result["trainable_parameters"],
         "hyperparameters": {
             "epochs": train_cfg["epochs"],
-            "patience": train_cfg["patience"],
+            "early_stopping": bool(train_cfg.get("early_stopping", True)),
+            "patience": train_cfg.get("patience"),
             "min_delta": train_cfg["min_delta"],
             "learning_rate": train_cfg["learning_rate"],
             "weight_decay": train_cfg["weight_decay"],

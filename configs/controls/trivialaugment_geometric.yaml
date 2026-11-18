@@ -1,0 +1,9 @@
+# 5.10, nhánh 1: TrivialAugment chỉ giữ phép hình học (Identity, ShearX, ShearY, TranslateX, TranslateY, Rotate).
+# Bỏ Brightness, Color, Contrast, Sharpness, Posterize, Solarize, AutoContrast, Equalize. R31 xác nhận các phép quang học trùng họ hỏng của benchmark.
+# Một seed (42). Nếu TA hình học gần baseline thì phần cải thiện của TA ở 5.9 đến từ phép quang học trùng họ, không phải từ augmentation nói chung.
+protocol: configs/controls/protocol.yaml
+arm: trivialaugment_geometric
+model_name: swin_tiny_trivialaugment_geometric
+augmentation:
+  method: trivialaugment_geometric
+  num_magnitude_bins: 31

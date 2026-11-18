@@ -1,0 +1,15 @@
+# Nhánh augmentation suy giảm của 5.9. Giống configs/train_swin_tiny_aug.yaml (task 4.5), nên seed 42 cũ dùng lại được.
+protocol: configs/controls/protocol.yaml
+arm: degradation
+model_name: swin_tiny_aug
+augmentation:
+  method: degradation
+  corruption_config: configs/corruption.yaml
+  probability: 0.5
+  jitter: 0.1
+  exclude_families: []
+# Seed 42 đã chạy ở task 4.5. Dùng lại nếu JSON cũ khớp giao thức (kiểm bằng reusable_problems), không thì train lại.
+reuse:
+  seed: 42
+  record: reports/augmentation/swin_tiny_aug_seed42.json
+  conditions: reports/augmentation/augmentation_val_conditions.csv

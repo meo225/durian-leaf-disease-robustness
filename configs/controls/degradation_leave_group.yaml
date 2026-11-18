@@ -1,0 +1,18 @@
+# 5.10, nhánh 2: augmentation suy giảm bỏ một nhóm họ (leave-group-out, R32).
+# Nhóm lấy bằng số: họ mỏ neo cộng các họ gần nó nhất theo ma trận khoảng cách đặc trưng giữa 14 họ đã thấy (task 5.7, reports/unseen_v2/msd.json).
+# Mỏ neo và kích thước nhóm khóa ở đây trước khi thấy ma trận. Nhóm cụ thể được tính lúc chạy và ghi vào file kết quả.
+# Một seed (42). Cần reports/unseen_v2/msd.json, tức chạy sau khi nhánh unseen-families-v2 có kết quả 5.7.
+protocol: configs/controls/protocol.yaml
+arm: degradation_leave_group
+model_name: swin_tiny_aug_leave_group
+augmentation:
+  method: degradation
+  corruption_config: configs/corruption.yaml
+  probability: 0.5
+  jitter: 0.1
+  exclude_families: []
+  leave_group:
+    anchor: blur
+    size: 3
+    matrix: reports/unseen_v2/msd.json
+    key: seen_pairwise_distance

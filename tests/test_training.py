@@ -115,3 +115,26 @@ def test_seed_measurement_config_matches_original_except_models_and_paths(seed):
     assert other["checkpoint_name"] == f"{{model_name}}_seed{seed}.pt" and other["seed"] == base["seed"] == 42
     for key in ("pipeline_config", "latency", "close_margin", "corruptions"):
         assert other[key] == base[key]
+
+
+def _frozen_run(**overrides):
+    generator = torch.Generator().manual_seed(0)
+    loader = DataLoader(_NamedTensorDataset(torch.randn(8, 4, generator=generator), torch.tensor([0, 1] * 4)), batch_size=4, shuffle=False)
+    train_cfg = {"optimizer": "adamw", "learning_rate": 0.0, "weight_decay": 0.0, "epochs": 5, "patience": 1, "min_delta": 0.0, "selection_metric": "macro_f1", **overrides}
+    return fit_model(model=nn.Linear(4, 2), train_loader=loader, val_loader=loader, class_names=["a", "b"], train_cfg=train_cfg, device=torch.device("cpu"))
+
+
+def test_early_stopping_default_stops_when_validation_stalls():
+    # Learning rate 0: validation score never changes, so patience 1 stops after epoch 2.
+    assert len(_frozen_run()["history"]) == 2
+
+
+def test_early_stopping_off_runs_every_epoch_and_needs_no_patience():
+    result = _frozen_run(early_stopping=False)
+    assert len(result["history"]) == 5
+    assert result["best_epoch"] == 1
+
+    without_patience = {"optimizer": "adamw", "learning_rate": 0.0, "weight_decay": 0.0, "epochs": 3, "min_delta": 0.0, "selection_metric": "macro_f1", "early_stopping": False}
+    generator = torch.Generator().manual_seed(0)
+    loader = DataLoader(_NamedTensorDataset(torch.randn(8, 4, generator=generator), torch.tensor([0, 1] * 4)), batch_size=4, shuffle=False)
+    assert len(fit_model(nn.Linear(4, 2), loader, loader, ["a", "b"], without_patience, torch.device("cpu"))["history"]) == 3
