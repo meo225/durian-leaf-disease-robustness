@@ -155,10 +155,13 @@ kaggle kernels push --no-run -p <thư-mục-tạm>
 | `notebooks/06_restoration_benchmark.ipynb` | `06_restoration_benchmark` | `TEN_KAGGLE/06-restoration-benchmark` |
 | `notebooks/07_augmentation_control.ipynb` | `07_augmentation_control` | `TEN_KAGGLE/07-augmentation-control` |
 | `notebooks/15_retrain_controls.ipynb` | `15_retrain_controls` | `TEN_KAGGLE/15-retrain-controls` |
+| `notebooks/16_robustness_v2.ipynb` | `16_robustness_v2` | `TEN_KAGGLE/16-robustness-v2` |
 
 Ba notebook kiểm tra dữ liệu và `03_train_hog_svm` dùng Accelerator None. `03_train_resnet50`, `03_train_mobilenetv3_small`, `03_train_convnext_tiny`, `03_select_reference_model`, `04_corruption_benchmark`, `06_restoration_benchmark`, `07_augmentation_control`, `11_unseen_corruption_calibration`, `12_generic_augmentation_control`, `13_unseen_v2_calibration` và `14_msd_family_distance` bật GPU trong metadata hoặc trong Session options. Nếu tab Input chưa có dataset, thêm `cthng123/durian-leaf-disease-dataset`. Dataset gắn một lần cho mỗi notebook.
 
 `15_retrain_controls` (tasks 5.9 và 5.10) cũng bật GPU. Mỗi lần train khoảng 40 đến 45 phút, nên chia thành nhiều phiên bằng biến `STAGE` và `SEEDS` ở mục 2 của notebook, và thêm output của phiên trước làm input để bỏ qua phần đã xong.
+
+`16_robustness_v2` (task 5.11) bật GPU và cần thêm một dataset chứa checkpoint của reference 4.4 và 11 lần train của 5.9, 5.10 (danh sách ở mục 1 của notebook). Chỉ đọc validation và họ vai trò train, val của bộ v2, không mở test.
 
 ### Phiên chạy
 
@@ -194,6 +197,7 @@ Model đưa lên Hugging Face khi đã chọn bản phát hành. Ảnh suy giả
 | Khử nhiễu và làm nét | `configs/restoration.yaml` |
 | Đối chứng huấn luyện lại bằng augmentation suy giảm | `configs/train_convnext_tiny_aug.yaml` |
 | Đối chứng huấn luyện lại cùng giao thức, nhiều seed (5.9, 5.10) | `configs/controls/` (giao thức chung `protocol.yaml`, mỗi nhánh một file) |
+| Đo bốn hệ trên bộ họ v2 (5.11, khóa trước khi chạy) | `configs/robustness_v2.yaml` |
 | Kiểm tra dữ liệu | `configs/data_audit.yaml` |
 
 Pipeline chuẩn: train dùng lật ngang, lật dọc, xoay ±15°, rồi chuẩn hóa ImageNet. Val và test resize về 224 khi cần, rồi chuẩn hóa. Gamma, CLAHE, Retinex, khử nhiễu và làm nét không nằm trong pipeline này.

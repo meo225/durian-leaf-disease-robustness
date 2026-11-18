@@ -1,0 +1,40 @@
+# Đánh giá bốn hệ trên bộ họ chưa thấy v2 (task 5.11). Đặc tả và kỳ vọng đăng ký trước: docs/task-5.11-robustness-v2.md.
+# Khóa trước khi chạy notebook 16, không chỉnh theo kết quả. Muốn đổi thì ghi là bản sửa trong docs và nêu lý do.
+#
+# Phạm vi: chỉ validation, chỉ họ vai trò train và val của bộ v2. Họ vai trò test và tập ảnh test để dành cho P6.1, mở một lần.
+# `load_settings` từ chối vai trò test ở đây.
+
+task: "5.11"
+split: val
+unseen_config: configs/unseen_families_v2.yaml
+roles: [train, val]
+
+# Bộ chọn và oracle chạy trên reference đóng băng của 4.4 (Swin-Tiny, chọn checkpoint trên validation sạch). Bộ chọn đã khóa ở 5.3 trên chính model này,
+# nên không hiệu chỉnh lại. Hiệu chỉnh lại sau khi thấy kết quả bộ họ v2 là phá đăng ký trước.
+reference:
+  train_config: configs/train_swin_tiny.yaml
+  checkpoint: swin_tiny_seed42.pt
+selector:
+  config: configs/selector.yaml
+  calibrated: reports/selector/selector_calibrated.json
+
+# Kiểm tra phụ: đo cùng bộ chọn và oracle trên baseline đúng giao thức 5.9 (seed 42). Bộ chọn không hiệu chỉnh lại. Chỉ để biết mức tăng có chuyển sang model mới không.
+side_check:
+  arm: baseline
+  seed: 42
+
+# Các nhánh huấn luyện lại của 5.9 và 5.10, lấy từ configs/controls. Checkpoint tên `<model_name>_seed<seed>.pt`.
+retrained:
+  three_seed: [baseline, degradation, trivialaugment]
+  seeds: [42, 43, 44]
+  single_seed: [trivialaugment_geometric, degradation_leave_group]
+
+statistics:
+  bootstrap_resamples: 1000
+  bootstrap_seed: 42
+  # Quy tắc 5.9: chỉ kết luận khi |hiệu| lớn hơn k lần SD seed.
+  k: 2.5
+  # Phần ΔF1 lấy lại được chỉ tính khi tổng ΔF1 của base ở họ đó (ba mức cộng lại) không nhỏ hơn ngưỡng này. Nhỏ hơn thì ghi NaN thay vì chia cho số gần 0.
+  min_reference_drop: 0.05
+  # Lớp ít ảnh cần khoảng Wilson cho recall.
+  small_class: ALLOCARIDARA_ATTACK
